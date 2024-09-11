@@ -12,6 +12,11 @@ if ( ! defined( '_S_VERSION' ) ) {
 	define( '_S_VERSION', '1.0.0' );
 }
 
+if ( ! function_exists( 'acf' ) ) {
+    // Include ACF
+    include_once ABSPATH . 'wp-content/plugins/advanced-custom-fields/acf.php';
+}
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
@@ -248,14 +253,14 @@ function theme_activation_setup() {
     create_page_with_template('Commercial', 'template-parts/template-commercial.php', 'commercial');
 
     
-set_default_acf_field_values();
+
 
 	
   
 }
 
 add_action('acf/init', 'setup_acf_fields_for_pages');
-
+add_action('acf/init', 'set_default_acf_field_values');
 
 
 // Function to create a page with a specific template and slug
@@ -375,39 +380,104 @@ function setup_acf_fields_for_pages() {
     }
 }
 
-// Function to set default values for ACF fields if not already set
-function set_default_acf_field_values() {
-    $pages = array(
-        'Home' => array(
-            'home_title1' => 'Welcome to Our Website',
-            'home_image1' => 'https://example.com/default-image1.jpg',
-            'home_description' => 'Welcome to the home page of our website. We provide the best services in the industry.',
-        ),
-        'News' => array(
-            'news_title' => 'Latest News',
-            'news_image' => 'https://example.com/default-news.jpg',
-        ),
-       /* 'Team' => array(
-            'team_title1' => 'Meet Our Team',
-            'team_image1' => 'https://example.com/team-image1.jpg',
-            'team_link' => 'https://example.com/team',
-        ),
-        'Commercial' => array(
-            'commercial_title' => 'Commercial Page Title',
-            'commercial_description' => 'Description for the Commercial page.',
-            'commercial_link' => 'https://example.com/commercial',
-        ),*/
-        // Add default values for additional pages
+function upload_image_from_theme($filename) {
+    $theme_directory = get_template_directory(); // Get the theme directory path
+    $full_path = $theme_directory . '/hwc-images/' . $filename; // Build the full path to the image
+
+    // Check if the file exists in the theme folder
+    if (!file_exists($full_path)) {
+        return new WP_Error('file_not_found', 'The specified image file does not exist.');
+    }
+
+    // Get the upload directory path
+    $wp_upload_dir = wp_upload_dir();
+    $upload_path = $wp_upload_dir['path'] . '/' . $filename;
+
+    // Copy the file from the theme directory to the uploads directory
+    copy($full_path, $upload_path);
+
+    // Check the file type
+    $wp_filetype = wp_check_filetype($filename, null);
+
+    // Prepare the attachment array
+    $attachment = array(
+        'guid'           => $wp_upload_dir['url'] . '/' . basename($upload_path),
+        'post_mime_type' => $wp_filetype['type'],
+        'post_title'     => sanitize_file_name($filename),
+        'post_content'   => '',
+        'post_status'    => 'inherit',
     );
 
-    foreach ($pages as $page_title => $fields) {
-        $page_id = get_page_id_by_title($page_title);
-        if ($page_id) {
-            foreach ($fields as $field_name => $default_value) {
-                if (get_field($field_name, $page_id) === false) {
-                    update_field($field_name, $default_value, $page_id);
+    // Insert the attachment
+    $attach_id = wp_insert_attachment($attachment, $upload_path);
+
+    // Include image.php to make sure image metadata is generated
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+    // Generate metadata and update the attachment
+    $attach_data = wp_generate_attachment_metadata($attach_id, $upload_path);
+    wp_update_attachment_metadata($attach_id, $attach_data);
+
+    return $attach_id;
+}
+
+function set_default_acf_field_values() {
+    // Check if default values have already been set
+   /* if (get_option('acf_defaults_set')) {
+        return; // Exit if defaults have already been set
+    }*/
+
+    $page_fields = array(
+        'Home' => array(
+            'home_title1' => 'Welcome to Our Website',
+            'home_image1' => 'wp-img.png', // Store image filename
+            'home_description' => 'Welcome to the home page of our website. We provide the best services in the industry.',
+        ),
+
+        'News' => array(
+            'news_title' => 'Latest News',
+            'news_image' => 'wp-img.png', // Store image filename
+        ),
+        // Add other pages and fields here as needed...
+    );
+
+    foreach ($page_fields as $page_title => $fields) {
+        // Use WP_Query to get the page by title
+        $query = new WP_Query(array(
+            'post_type' => 'page',
+            'title'     => $page_title,
+            'posts_per_page' => 1,
+        ));
+
+        if ($query->have_posts()) {
+            $page_id = $query->post->ID;
+
+            foreach ($fields as $field_key => $default_value) {
+                if (strpos($field_key, 'image') !== false) {
+                    $attachment_id = upload_image_from_theme($default_value);
+
+                    if (is_wp_error($attachment_id)) {
+                        error_log("Error with image field '$field_key': " . $attachment_id->get_error_message());
+                    } else {
+                        // Update image field with attachment ID
+                        update_field($field_key, $attachment_id, $page_id);
+                    }
+                } else {
+                    $current_value = get_field($field_key, $page_id);
+
+                    // Update the field only if it's empty or unset
+                    if (empty($current_value)) {
+                        update_field($field_key, $default_value, $page_id);
+                    }
                 }
             }
+        } else {
+            error_log("Page '$page_title' not found.");
         }
     }
+
+    // Set an option to indicate that defaults have been set
+   /* update_option('acf_defaults_set', true);*/
 }
+
+
