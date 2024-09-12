@@ -14,7 +14,7 @@ if ( ! defined( '_S_VERSION' ) ) {
 
 if ( ! function_exists( 'acf' ) ) {
     // Include ACF
-    include_once ABSPATH . 'wp-content/plugins/advanced-custom-fields/acf.php';
+    include_once ABSPATH . 'wp-content/plugins/advanced-custom-fields-pro/acf.php';
 }
 
 /**
@@ -251,12 +251,6 @@ function theme_activation_setup() {
     create_page_with_template('Video', 'template-parts/template-video.php', 'video');
     create_page_with_template('Accessibility', 'template-parts/template-accessibility.php', 'accessibility');
     create_page_with_template('Commercial', 'template-parts/template-commercial.php', 'commercial');
-
-    
-
-
-	
-  
 }
 
 add_action('acf/init', 'setup_acf_fields_for_pages');
