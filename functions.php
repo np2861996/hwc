@@ -232,53 +232,113 @@ function acf_pro_missing_error() {
 add_action('after_switch_theme', 'theme_activation_setup');
 
 function theme_activation_setup() {
-    if (!class_exists('ACF')) {
-        add_action('admin_notices', function() {
-            echo '<div class="error"><p>ACF Pro plugin is required for this theme to function correctly.</p></div>';
-        });
-        return;
+    // Define an array of pages to create with their templates and slugs
+    $pages = array(
+        array(
+            'title'     => 'Home',
+            'template'  => 'template-parts/template-home.php',
+            'slug'      => 'home'
+        ),
+        array(
+            'title'     => 'News',
+            'template'  => 'template-parts/template-news.php',
+            'slug'      => 'news'
+        ),
+        array(
+            'title'     => 'Team',
+            'template'  => 'template-parts/template-team.php',
+            'slug'      => 'team'
+        ),
+        array(
+            'title'     => 'Matches',
+            'template'  => 'template-parts/template-matches.php',
+            'slug'      => 'matches'
+        ),
+        array(
+            'title'     => 'Club',
+            'template'  => 'template-parts/template-club.php',
+            'slug'      => 'club'
+        ),
+        array(
+            'title'     => 'Community',
+            'template'  => 'template-parts/template-community.php',
+            'slug'      => 'community'
+        ),
+        array(
+            'title'     => 'Academy',
+            'template'  => 'template-parts/template-academy.php',
+            'slug'      => 'academy'
+        ),
+        array(
+            'title'     => 'Video',
+            'template'  => 'template-parts/template-video.php',
+            'slug'      => 'video'
+        ),
+        array(
+            'title'     => 'Accessibility',
+            'template'  => 'template-parts/template-accessibility.php',
+            'slug'      => 'accessibility'
+        ),
+        array(
+            'title'     => 'Commercial',
+            'template'  => 'template-parts/template-commercial.php',
+            'slug'      => 'commercial'
+        )
+    );
+
+    // Create pages and set their templates
+    $home_page_id = 0; // Initialize variable to store Home page ID
+
+    foreach ($pages as $page) {
+        $page_id = create_page_with_template($page['title'], $page['template'], $page['slug']);
+        
+        // Store Home page ID
+        if ($page['slug'] === 'home') {
+            $home_page_id = $page_id;
+        }
     }
 
-
-    // Create pages with specific templates and slugs
-    create_page_with_template('Home', 'template-parts/template-home.php', 'home');
-    create_page_with_template('News', 'template-parts/template-news.php', 'news');
-    create_page_with_template('Team', 'template-parts/template-team.php', 'team'); // Custom slug 'team'
-    create_page_with_template('Matches', 'template-parts/template-matches.php', 'matches');
-    create_page_with_template('Club', 'template-parts/template-club.php', 'club');
-    create_page_with_template('Community', 'template-parts/template-community.php', 'community');
-    create_page_with_template('Academy', 'template-parts/template-academy.php', 'academy');
-    create_page_with_template('Video', 'template-parts/template-video.php', 'video');
-    create_page_with_template('Accessibility', 'template-parts/template-accessibility.php', 'accessibility');
-    create_page_with_template('Commercial', 'template-parts/template-commercial.php', 'commercial');
+    // Set Home page as the front page
+    if ($home_page_id) {
+        update_option('show_on_front', 'page');
+        update_option('page_on_front', $home_page_id);
+    }
 }
+
+function create_page_with_template($title, $template_path, $slug) {
+    // Check if the page already exists
+    $page = get_page_by_path($slug);
+
+    if (!$page) {
+        // Create the page
+        $page_id = wp_insert_post(array(
+            'post_title'    => $title,
+            'post_name'     => $slug,
+            'post_content'  => '',
+            'post_status'   => 'publish',
+            'post_type'     => 'page',
+        ));
+
+        // Set the page template if the page was created successfully
+        if ($page_id) {
+            update_post_meta($page_id, '_wp_page_template', $template_path);
+            return $page_id; // Return the ID of the newly created page
+        }
+    } else {
+        // Optionally update the page template if it doesn't match the current template
+        $current_template = get_post_meta($page->ID, '_wp_page_template', true);
+        if ($current_template !== $template_path) {
+            update_post_meta($page->ID, '_wp_page_template', $template_path);
+        }
+        return $page->ID; // Return the ID of the existing page
+    }
+    
+    return 0; // Return 0 if the page wasn't created or found
+}
+
 
 add_action('acf/init', 'setup_acf_fields_for_pages');
 add_action('acf/init', 'set_default_acf_field_values');
-
-
-// Function to create a page with a specific template and slug
-function create_page_with_template($title, $template, $slug) {
-    $page_id = get_page_id_by_title($title);
-    if (!$page_id) {
-        $page_id = wp_insert_post(array(
-            'post_title' => $title,
-            'post_content' => '',
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'page_template' => $template,
-            'post_name' => $slug, // Set custom slug
-        ));
-    }
-
-    // Update the post slug if needed
-    if ($page_id && get_post($page_id)->post_name !== $slug) {
-        wp_update_post(array(
-            'ID' => $page_id,
-            'post_name' => $slug
-        ));
-    }
-}
 
 // Helper function to get page ID by title
 function get_page_id_by_title($title) {
