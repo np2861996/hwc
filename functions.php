@@ -12,11 +12,6 @@ if ( ! defined( '_S_VERSION' ) ) {
 	define( '_S_VERSION', '1.0.0' );
 }
 
-if ( ! function_exists( 'acf' ) ) {
-    // Include ACF
-    include_once ABSPATH . 'wp-content/plugins/advanced-custom-fields-pro/acf.php';
-}
-
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
@@ -191,11 +186,26 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 }
 
 /*--------------------------------------------------------------
+	>>> All Action and Filter Functions
+	----------------------------------------------------------------*/
+add_action('after_switch_theme', 'hwc_check_acf_pro_before_activation');
+add_action('after_switch_theme', 'hwc_theme_activation_setup');
+add_action('acf/init', 'hwc_setup_acf_fields_for_pages');
+add_action('acf/init', 'hwc_set_default_acf_field_values');
+add_action('after_switch_theme', 'hwc_activate_theme_setup');
+add_action('init', 'hwc_register_custom_post_types');
+add_action('acf/init', 'hwc_add_acf_fields');
+add_action('acf/init', 'hwc_populate_default_data');
+
+
+
+/*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
 	----------------------------------------------------------------*/
-add_action('after_switch_theme', 'check_acf_pro_before_activation');
+function hwc_check_acf_pro_before_activation() {
 
-function check_acf_pro_before_activation() {
+    include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
     // Check if ACF Pro is installed
     if (!is_acf_pro_installed()) {
         // Show error if ACF Pro is not available
@@ -228,10 +238,16 @@ function acf_pro_missing_error() {
     <?php
 }
 
+/*--------------------------------------------------------------
+	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
+	----------------------------------------------------------------*/
+function hwc_theme_activation_setup() {
 
-add_action('after_switch_theme', 'theme_activation_setup');
+    if (!is_acf_pro_installed()) {
+        // Return back if ACF Pro is not available
+        return;
+    }
 
-function theme_activation_setup() {
     // Define an array of pages to create with their templates and slugs
     $pages = array(
         array(
@@ -290,7 +306,7 @@ function theme_activation_setup() {
     $home_page_id = 0; // Initialize variable to store Home page ID
 
     foreach ($pages as $page) {
-        $page_id = create_page_with_template($page['title'], $page['template'], $page['slug']);
+        $page_id = hwc_create_page_with_template($page['title'], $page['template'], $page['slug']);
         
         // Store Home page ID
         if ($page['slug'] === 'home') {
@@ -305,7 +321,10 @@ function theme_activation_setup() {
     }
 }
 
-function create_page_with_template($title, $template_path, $slug) {
+/*--------------------------------------------------------------
+	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
+	----------------------------------------------------------------*/
+function hwc_create_page_with_template($title, $template_path, $slug) {
     // Check if the page already exists
     $page = get_page_by_path($slug);
 
@@ -336,10 +355,6 @@ function create_page_with_template($title, $template_path, $slug) {
     return 0; // Return 0 if the page wasn't created or found
 }
 
-
-add_action('acf/init', 'setup_acf_fields_for_pages');
-add_action('acf/init', 'set_default_acf_field_values');
-
 // Helper function to get page ID by title
 function get_page_id_by_title($title) {
     $query = new WP_Query(array(
@@ -351,8 +366,10 @@ function get_page_id_by_title($title) {
     return $query->posts ? $query->posts[0] : null;
 }
 
-// Function to set up ACF fields for each page
-function setup_acf_fields_for_pages() {
+/*--------------------------------------------------------------
+	>>> Function to set up ACF fields for each page
+	----------------------------------------------------------------*/
+function hwc_setup_acf_fields_for_pages() {
     if (function_exists('acf_add_local_field_group')) {
 
         // Define field groups for each page
@@ -434,7 +451,7 @@ function setup_acf_fields_for_pages() {
     }
 }
 
-function upload_image_from_theme($filename) {
+function hwc_upload_image_from_theme($filename) {
     $theme_directory = get_template_directory(); // Get the theme directory path
     $full_path = $theme_directory . '/hwc-images/' . $filename; // Build the full path to the image
 
@@ -475,7 +492,10 @@ function upload_image_from_theme($filename) {
     return $attach_id;
 }
 
-function set_default_acf_field_values() {
+/*--------------------------------------------------------------
+	>>> Function to set default values in ACF fields for each page
+	----------------------------------------------------------------*/
+function hwc_set_default_acf_field_values() {
     // Check if default values have already been set
    /* if (get_option('acf_defaults_set')) {
         return; // Exit if defaults have already been set
@@ -508,7 +528,7 @@ function set_default_acf_field_values() {
 
             foreach ($fields as $field_key => $default_value) {
                 if (strpos($field_key, 'image') !== false) {
-                    $attachment_id = upload_image_from_theme($default_value);
+                    $attachment_id = hwc_upload_image_from_theme($default_value);
 
                     if (is_wp_error($attachment_id)) {
                         error_log("Error with image field '$field_key': " . $attachment_id->get_error_message());
@@ -534,4 +554,546 @@ function set_default_acf_field_values() {
    /* update_option('acf_defaults_set', true);*/
 }
 
+/*--------------------------------------------------------------
+	>>> Function to set blog categories
+	----------------------------------------------------------------*/
+function hwc_create_blog_categories() {
+    $categories = array(
+        'club-news' => 'Club News',
+        'match-report' => 'Match Report',
+        'match-preview' => 'Match Preview',
+        'transfer-news' => 'Transfer News',
+        'ticket-news' => 'Ticket News',
+        'interview' => 'Interview',
+        'you-can-have-it-all' => 'You Can Have It All',
+        'the-bluebirds-nest' => 'The Bluebirds Nest',
+        'community-news' => 'Community News',
+        'video' => 'Video'
+    );
 
+    foreach ($categories as $slug => $title) {
+        if (!term_exists($slug, 'category')) {
+            wp_insert_term($title, 'category', array('slug' => $slug));
+        }
+    }
+}
+
+/*--------------------------------------------------------------
+	>>> Function to add dummy Content
+	----------------------------------------------------------------*/
+function hwc_create_image($image_url, $post_id) {
+    $upload_dir = wp_upload_dir();
+    $image_data = file_get_contents($image_url);
+    $filename = basename($image_url);
+    
+    if (wp_mkdir_p($upload_dir['path'])) {
+        $file = $upload_dir['path'] . '/' . $filename;
+    } else {
+        $file = $upload_dir['basedir'] . '/' . $filename;
+    }
+
+    file_put_contents($file, $image_data);
+
+    $wp_filetype = wp_check_filetype($filename, null);
+    $attachment = array(
+        'post_mime_type' => $wp_filetype['type'],
+        'post_title'     => sanitize_file_name($filename),
+        'post_content'   => '',
+        'post_status'    => 'inherit'
+    );
+
+    $attach_id = wp_insert_attachment($attachment, $file, $post_id);
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+    $attach_data = wp_generate_attachment_metadata($attach_id, $file);
+    wp_update_attachment_metadata($attach_id, $attach_data);
+
+    return $attach_id;
+}
+
+function hwc_create_dummy_posts() {
+    $categories = array(
+        'club-news' => 'Club News Title',
+        'match-report' => 'Match Report Title',
+        'match-preview' => 'Match Preview Title',
+        'transfer-news' => 'Transfer News Title',
+        'ticket-news' => 'Ticket News Title',
+        'interview' => 'Interview Title',
+        'you-can-have-it-all' => 'You Can Have It All Title',
+        'the-bluebirds-nest' => 'The Bluebirds Nest Title',
+        'community-news' => 'Community News Title',
+        'video' => 'Video Title'
+    );
+
+    $excerpts = array(
+        'club-news' => 'Excerpt for Club News.',
+        'match-report' => 'Excerpt for Match Report.',
+        'match-preview' => 'Excerpt for Match Preview.',
+        'transfer-news' => 'Excerpt for Transfer News.',
+        'ticket-news' => 'Excerpt for Ticket News.',
+        'interview' => 'Excerpt for Interview.',
+        'you-can-have-it-all' => 'Excerpt for You Can Have It All.',
+        'the-bluebirds-nest' => 'Excerpt for The Bluebirds Nest.',
+        'community-news' => 'Excerpt for Community News.',
+        'video' => 'Excerpt for Video.'
+    );
+
+    $image_url = get_template_directory_uri() . '/hwc-images/wp-img.png';
+    $youtube_url = 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Example YouTube URL
+
+    foreach ($categories as $slug => $post_title) {
+        $category = get_term_by('slug', $slug, 'category');
+        if (!$category) {
+            continue; // Skip if category does not exist
+        }
+
+        $category_id = $category->term_id;
+
+        // Create post
+        $post_id = wp_insert_post(array(
+            'post_title'   => $post_title,
+            'post_content' => '<p>This is a dummy post for ' . $post_title . '.</p>'
+                . '<p>Description for ' . $post_title . '.</p>'
+                . '<ul><li>Item 1</li><li>Item 2</li></ul>'
+                . '<ol><li>First</li><li>Second</li></ol>'
+                . '<table><tr><td>Dummy Table Cell</td></tr></table>'
+                . '<iframe width="560" height="315" src="' . $youtube_url . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+            'post_excerpt' => $excerpts[$slug], // Add excerpt
+            'post_status'  => 'publish',
+            'post_category'=> array($category_id)
+        ));
+
+        if ($post_id && !is_wp_error($post_id)) {
+            // Set featured image
+            $image_id = hwc_create_image($image_url, $post_id);
+            set_post_thumbnail($post_id, $image_id);
+
+            // Add tags
+            wp_set_post_tags($post_id, 'dummy, sample', true);
+        }
+    }
+}
+
+/*--------------------------------------------------------------
+	>>> Function to add funstions of blog categories and dummy_posts
+	----------------------------------------------------------------*/
+function hwc_activate_theme_setup() {
+
+    if (!is_acf_pro_installed()) {
+        // Return back if ACF Pro is not available
+        return;
+    }
+
+    // Create Blog Categories
+    hwc_create_blog_categories();
+    
+    // Create Dummy Posts
+    hwc_create_dummy_posts();
+}
+
+
+/*--------------------------------------------------------------
+	>>> Hook into theme activation Register Custom Post Types
+	----------------------------------------------------------------*/ 
+
+// Register Custom Post Types
+function hwc_register_custom_post_types() {
+    // Team
+    register_post_type('team', array(
+        'labels' => array(
+            'name' => 'Teams',
+            'singular_name' => 'Team',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'supports' => array('title', 'editor', 'thumbnail'),
+    ));
+
+    // Player
+    register_post_type('player', array(
+        'labels' => array(
+            'name' => 'Players',
+            'singular_name' => 'Player',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'supports' => array('title', 'editor', 'thumbnail'),
+    ));
+
+    // Match
+    register_post_type('match', array(
+        'labels' => array(
+            'name' => 'Matches',
+            'singular_name' => 'Match',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'supports' => array('title', 'editor', 'thumbnail'),
+    ));
+
+    // Result
+    register_post_type('result', array(
+        'labels' => array(
+            'name' => 'Results',
+            'singular_name' => 'Result',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'supports' => array('title', 'editor', 'thumbnail'),
+    ));
+
+    // League Table
+    register_post_type('league_table', array(
+        'labels' => array(
+            'name' => 'League Tables',
+            'singular_name' => 'League Table',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'supports' => array('title', 'editor'),
+    ));
+    
+    // Staff
+    register_post_type('staff', array(
+        'labels' => array(
+            'name' => 'Staff',
+            'singular_name' => 'Staff Member',
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'supports' => array('title', 'editor', 'thumbnail'),
+    ));
+}
+
+// Add ACF Fields
+function hwc_add_acf_fields() {
+    if (class_exists('ACF')) {
+        // Teams ACF Fields
+        if( function_exists('acf_add_local_field_group') ):
+            acf_add_local_field_group(array(
+                'key' => 'group_teams',
+                'title' => 'Teams Details',
+                'fields' => array(
+                    array(
+                        'key' => 'field_squad',
+                        'label' => 'Squad',
+                        'name' => 'squad',
+                        'type' => 'text',
+                        'instructions' => 'Enter the squad details.',
+                        'default_value' => 'Default Squad',
+                    ),
+                    array(
+                        'key' => 'field_staff',
+                        'label' => 'Staff',
+                        'name' => 'staff',
+                        'type' => 'text',
+                        'instructions' => 'Enter staff details.',
+                        'default_value' => 'Default Staff',
+                    ),
+                ),
+                'location' => array(
+                    array(
+                        array(
+                            'param' => 'post_type',
+                            'operator' => '==',
+                            'value' => 'team',
+                        ),
+                    ),
+                ),
+            ));
+        endif;
+
+        // Players ACF Fields
+        if( function_exists('acf_add_local_field_group') ):
+            acf_add_local_field_group(array(
+                'key' => 'group_players',
+                'title' => 'Players Details',
+                'fields' => array(
+                    array(
+                        'key' => 'field_team_selection',
+                        'label' => 'Team Selection',
+                        'name' => 'team_selection',
+                        'type' => 'post_object',
+                        'post_type' => array('team'),
+                        'return_format' => 'id',
+                        'multiple' => 0,
+                        'default_value' => array(
+                            array(1) // Default to first team, replace with the appropriate team ID if needed
+                        ),
+                    ),
+                    array(
+                        'key' => 'field_position_role',
+                        'label' => 'Position/Role',
+                        'name' => 'position_role',
+                        'type' => 'text',
+                        'default_value' => 'Default Position',
+                    ),
+                    array(
+                        'key' => 'field_states',
+                        'label' => 'States',
+                        'name' => 'states',
+                        'type' => 'repeater',
+                        'sub_fields' => array(
+                            array(
+                                'key' => 'field_state_name',
+                                'label' => 'State Name',
+                                'name' => 'state_name',
+                                'type' => 'text',
+                                'default_value' => 'Default State Name',
+                            ),
+                            array(
+                                'key' => 'field_state_value',
+                                'label' => 'State Value',
+                                'name' => 'state_value',
+                                'type' => 'number',
+                                'default_value' => 0,
+                            ),
+                        ),
+                        'button_label' => 'Add State',
+                    ),
+                    array(
+                        'key' => 'field_description',
+                        'label' => 'Description',
+                        'name' => 'description',
+                        'type' => 'textarea',
+                        'default_value' => 'Default Description',
+                    ),
+                    array(
+                        'key' => 'field_images',
+                        'label' => 'Images',
+                        'name' => 'images',
+                        'type' => 'gallery',
+                        'default_value' => array(), // Default empty gallery
+                    ),
+                ),
+                'location' => array(
+                    array(
+                        array(
+                            'param' => 'post_type',
+                            'operator' => '==',
+                            'value' => 'player',
+                        ),
+                    ),
+                ),
+            ));
+        endif;
+
+        // Matches ACF Fields
+        if( function_exists('acf_add_local_field_group') ):
+            acf_add_local_field_group(array(
+                'key' => 'group_matches',
+                'title' => 'Match Details',
+                'fields' => array(
+                    array(
+                        'key' => 'field_match_time',
+                        'label' => 'Match Time',
+                        'name' => 'match_time',
+                        'type' => 'time_picker',
+                        'default_value' => array(
+                            'hour' => '00',
+                            'minute' => '00',
+                        ),
+                    ),
+                    array(
+                        'key' => 'field_match_date',
+                        'label' => 'Match Date',
+                        'name' => 'match_date',
+                        'type' => 'date_picker',
+                        'default_value' => date('Y-m-d'),
+                    ),
+                    array(
+                        'key' => 'field_image',
+                        'label' => 'Image',
+                        'name' => 'image',
+                        'type' => 'image',
+                        'return_format' => 'url',
+                        'default_value' => '',
+                    ),
+                    array(
+                        'key' => 'field_teams',
+                        'label' => 'Teams',
+                        'name' => 'teams',
+                        'type' => 'relationship',
+                        'post_type' => array('team'),
+                        'filters' => array('search'),
+                        'result_elements' => array('post_title'),
+                        'return_format' => 'id',
+                        'multiple' => 2,
+                    ),
+                    array(
+                        'key' => 'field_league',
+                        'label' => 'League',
+                        'name' => 'league',
+                        'type' => 'post_object',
+                        'post_type' => array('league_table'),
+                        'return_format' => 'id',
+                    ),
+                ),
+                'location' => array(
+                    array(
+                        array(
+                            'param' => 'post_type',
+                            'operator' => '==',
+                            'value' => 'match',
+                        ),
+                    ),
+                ),
+            ));
+        endif;
+
+        // Results ACF Fields
+        if( function_exists('acf_add_local_field_group') ):
+            acf_add_local_field_group(array(
+                'key' => 'group_results',
+                'title' => 'Result Details',
+                'fields' => array(
+                    array(
+                        'key' => 'field_result_image',
+                        'label' => 'Result Image',
+                        'name' => 'result_image',
+                        'type' => 'image',
+                        'return_format' => 'url',
+                        'default_value' => '',
+                    ),
+                    array(
+                        'key' => 'field_line_up',
+                        'label' => 'Line Up',
+                        'name' => 'line_up',
+                        'type' => 'textarea',
+                        'default_value' => 'Default Line Up',
+                    ),
+                ),
+                'location' => array(
+                    array(
+                        array(
+                            'param' => 'post_type',
+                            'operator' => '==',
+                            'value' => 'result',
+                        ),
+                    ),
+                ),
+            ));
+        endif;
+
+        // League Table ACF Fields
+        if( function_exists('acf_add_local_field_group') ):
+            acf_add_local_field_group(array(
+                'key' => 'group_league_table',
+                'title' => 'League Table Details',
+                'fields' => array(
+                    array(
+                        'key' => 'field_tournament',
+                        'label' => 'Tournament',
+                        'name' => 'tournament',
+                        'type' => 'text',
+                        'default_value' => 'Default Tournament',
+                    ),
+                    array(
+                        'key' => 'field_position',
+                        'label' => 'Position',
+                        'name' => 'position',
+                        'type' => 'number',
+                        'default_value' => 1,
+                    ),
+                ),
+                'location' => array(
+                    array(
+                        array(
+                            'param' => 'post_type',
+                            'operator' => '==',
+                            'value' => 'league_table',
+                        ),
+                    ),
+                ),
+            ));
+        endif;
+    }
+}
+
+// Populate Default Data
+function hwc_populate_default_data() {
+    // Add default Teams
+    if (!get_posts(array('post_type' => 'team', 'posts_per_page' => 1))) {
+        for ($i = 1; $i <= 10; $i++) {
+            $team_id = wp_insert_post(array(
+                'post_type' => 'team',
+                'post_title' => 'Default Team ' . $i,
+                'post_content' => 'Description for default team ' . $i,
+                'post_status' => 'publish',
+            ));
+            update_field('squad', 'Default Squad', $team_id);
+            update_field('staff', 'Default Staff', $team_id);
+        }
+    }
+
+    // Add default Players
+    if (!get_posts(array('post_type' => 'player', 'posts_per_page' => 1))) {
+        for ($i = 1; $i <= 30; $i++) {
+            $player_id = wp_insert_post(array(
+                'post_type' => 'player',
+                'post_title' => 'Default Player ' . $i,
+                'post_content' => 'Description for default player ' . $i,
+                'post_status' => 'publish',
+            ));
+            update_field('team_selection', array(1), $player_id); // Default to first team
+            update_field('position_role', 'Default Position', $player_id);
+            update_field('states', array(array('state_name' => 'Default State Name', 'state_value' => 0)), $player_id);
+            update_field('description', 'Default Description', $player_id);
+        }
+    }
+
+    // Add default Matches
+    if (!get_posts(array('post_type' => 'match', 'posts_per_page' => 1))) {
+        for ($i = 1; $i <= 20; $i++) {
+            $match_id = wp_insert_post(array(
+                'post_type' => 'match',
+                'post_title' => 'Default Match ' . $i,
+                'post_content' => 'Description for default match ' . $i,
+                'post_status' => 'publish',
+            ));
+            update_field('match_time', array('hour' => '00', 'minute' => '00'), $match_id);
+            update_field('match_date', date('Y-m-d'), $match_id);
+            update_field('teams', array(1, 2), $match_id); // Default to first two teams
+            update_field('league', 1, $match_id); // Default to first league
+        }
+    }
+
+    // Add default Results
+    if (!get_posts(array('post_type' => 'result', 'posts_per_page' => 1))) {
+        for ($i = 1; $i <= 20; $i++) {
+            $result_id = wp_insert_post(array(
+                'post_type' => 'result',
+                'post_title' => 'Default Result ' . $i,
+                'post_content' => 'Description for default result ' . $i,
+                'post_status' => 'publish',
+            ));
+            update_field('result_image', '', $result_id);
+            update_field('line_up', 'Default Line Up', $result_id);
+        }
+    }
+
+    // Add default League Tables
+    if (!get_posts(array('post_type' => 'league_table', 'posts_per_page' => 1))) {
+        for ($i = 1; $i <= 5; $i++) {
+            $league_id = wp_insert_post(array(
+                'post_type' => 'league_table',
+                'post_title' => 'Default League Table ' . $i,
+                'post_content' => 'Description for default league table ' . $i,
+                'post_status' => 'publish',
+            ));
+            update_field('tournament', 'Default Tournament', $league_id);
+            update_field('position', 1, $league_id);
+        }
+    }
+
+    // Add default Staff
+    if (!get_posts(array('post_type' => 'staff', 'posts_per_page' => 1))) {
+        for ($i = 1; $i <= 10; $i++) {
+            wp_insert_post(array(
+                'post_type' => 'staff',
+                'post_title' => 'Default Staff Member ' . $i,
+                'post_content' => 'Description for default staff member ' . $i,
+                'post_status' => 'publish',
+            ));
+        }
+    }
+}
