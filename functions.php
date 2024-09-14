@@ -1,4 +1,5 @@
 <?php
+
 /**
  * hwc functions and definitions
  *
@@ -7,9 +8,9 @@
  * @package hwc
  */
 
-if ( ! defined( '_S_VERSION' ) ) {
-	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+if (! defined('_S_VERSION')) {
+    // Replace the version number of the theme on each release.
+    define('_S_VERSION', '1.0.0');
 }
 
 /**
@@ -19,88 +20,89 @@ if ( ! defined( '_S_VERSION' ) ) {
  * runs before the init hook. The init hook is too late for some features, such
  * as indicating support for post thumbnails.
  */
-function hwc_setup() {
-	/*
+function hwc_setup()
+{
+    /*
 		* Make theme available for translation.
 		* Translations can be filed in the /languages/ directory.
 		* If you're building a theme based on hwc, use a find and replace
 		* to change 'hwc' to the name of your theme in all the template files.
 		*/
-	load_theme_textdomain( 'hwc', get_template_directory() . '/languages' );
+    load_theme_textdomain('hwc', get_template_directory() . '/languages');
 
-	// Add default posts and comments RSS feed links to head.
-	add_theme_support( 'automatic-feed-links' );
+    // Add default posts and comments RSS feed links to head.
+    add_theme_support('automatic-feed-links');
 
-	/*
+    /*
 		* Let WordPress manage the document title.
 		* By adding theme support, we declare that this theme does not use a
 		* hard-coded <title> tag in the document head, and expect WordPress to
 		* provide it for us.
 		*/
-	add_theme_support( 'title-tag' );
+    add_theme_support('title-tag');
 
-	/*
+    /*
 		* Enable support for Post Thumbnails on posts and pages.
 		*
 		* @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
 		*/
-	add_theme_support( 'post-thumbnails' );
+    add_theme_support('post-thumbnails');
 
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus(
-		array(
-			'menu-1' => esc_html__( 'Primary', 'hwc' ),
-		)
-	);
+    // This theme uses wp_nav_menu() in one location.
+    register_nav_menus(
+        array(
+            'menu-1' => esc_html__('Primary', 'hwc'),
+        )
+    );
 
-	/*
+    /*
 		* Switch default core markup for search form, comment form, and comments
 		* to output valid HTML5.
 		*/
-	add_theme_support(
-		'html5',
-		array(
-			'search-form',
-			'comment-form',
-			'comment-list',
-			'gallery',
-			'caption',
-			'style',
-			'script',
-		)
-	);
+    add_theme_support(
+        'html5',
+        array(
+            'search-form',
+            'comment-form',
+            'comment-list',
+            'gallery',
+            'caption',
+            'style',
+            'script',
+        )
+    );
 
-	// Set up the WordPress core custom background feature.
-	add_theme_support(
-		'custom-background',
-		apply_filters(
-			'hwc_custom_background_args',
-			array(
-				'default-color' => 'ffffff',
-				'default-image' => '',
-			)
-		)
-	);
+    // Set up the WordPress core custom background feature.
+    add_theme_support(
+        'custom-background',
+        apply_filters(
+            'hwc_custom_background_args',
+            array(
+                'default-color' => 'ffffff',
+                'default-image' => '',
+            )
+        )
+    );
 
-	// Add theme support for selective refresh for widgets.
-	add_theme_support( 'customize-selective-refresh-widgets' );
+    // Add theme support for selective refresh for widgets.
+    add_theme_support('customize-selective-refresh-widgets');
 
-	/**
-	 * Add support for core custom logo.
-	 *
-	 * @link https://codex.wordpress.org/Theme_Logo
-	 */
-	add_theme_support(
-		'custom-logo',
-		array(
-			'height'      => 250,
-			'width'       => 250,
-			'flex-width'  => true,
-			'flex-height' => true,
-		)
-	);
+    /**
+     * Add support for core custom logo.
+     *
+     * @link https://codex.wordpress.org/Theme_Logo
+     */
+    add_theme_support(
+        'custom-logo',
+        array(
+            'height'      => 250,
+            'width'       => 250,
+            'flex-width'  => true,
+            'flex-height' => true,
+        )
+    );
 }
-add_action( 'after_setup_theme', 'hwc_setup' );
+add_action('after_setup_theme', 'hwc_setup');
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
@@ -109,54 +111,57 @@ add_action( 'after_setup_theme', 'hwc_setup' );
  *
  * @global int $content_width
  */
-function hwc_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'hwc_content_width', 640 );
+function hwc_content_width()
+{
+    $GLOBALS['content_width'] = apply_filters('hwc_content_width', 640);
 }
-add_action( 'after_setup_theme', 'hwc_content_width', 0 );
+add_action('after_setup_theme', 'hwc_content_width', 0);
 
 /**
  * Register widget area.
  *
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
-function hwc_widgets_init() {
-	register_sidebar(
-		array(
-			'name'          => esc_html__( 'Sidebar', 'hwc' ),
-			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', 'hwc' ),
-			'before_widget' => '<section id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h2 class="widget-title">',
-			'after_title'   => '</h2>',
-		)
-	);
+function hwc_widgets_init()
+{
+    register_sidebar(
+        array(
+            'name'          => esc_html__('Sidebar', 'hwc'),
+            'id'            => 'sidebar-1',
+            'description'   => esc_html__('Add widgets here.', 'hwc'),
+            'before_widget' => '<section id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</section>',
+            'before_title'  => '<h2 class="widget-title">',
+            'after_title'   => '</h2>',
+        )
+    );
 }
-add_action( 'widgets_init', 'hwc_widgets_init' );
+add_action('widgets_init', 'hwc_widgets_init');
 
 /**
  * Enqueue scripts and styles.
  */
-function hwc_scripts() {
-	wp_enqueue_style( 'hwc-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( 'hwc-style', 'rtl', 'replace' );
+function hwc_scripts()
+{
+    wp_enqueue_style('hwc-style', get_stylesheet_uri(), array(), _S_VERSION);
+    wp_style_add_data('hwc-style', 'rtl', 'replace');
 
-	/*--------------------------------------------------------------
+    /*--------------------------------------------------------------
 	>>> Enqueue JS:
 	----------------------------------------------------------------*/
-	wp_enqueue_script( 'hwc-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
-	wp_enqueue_script( 'hwc-main-js', get_template_directory_uri() . '/js/hwc-main.js', array(), _S_VERSION, true );
-	
-	/*--------------------------------------------------------------
+    wp_enqueue_script('hwc-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true);
+    wp_enqueue_script('hwc-main-js', get_template_directory_uri() . '/js/hwc-main.js', array(), _S_VERSION, true);
+
+    /*--------------------------------------------------------------
 	>>> Enqueue CSS:
 	----------------------------------------------------------------*/
-	wp_enqueue_style('hwc-main-css', get_template_directory_uri() . '/css/hwc-main.css' );
+    wp_enqueue_style('hwc-main-css', get_template_directory_uri() . '/css/hwc-main.css');
 
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
 }
-add_action( 'wp_enqueue_scripts', 'hwc_scripts' );
+add_action('wp_enqueue_scripts', 'hwc_scripts');
 
 /**
  * Implement the Custom Header feature.
@@ -181,8 +186,8 @@ require get_template_directory() . '/inc/customizer.php';
 /**
  * Load Jetpack compatibility file.
  */
-if ( defined( 'JETPACK__VERSION' ) ) {
-	require get_template_directory() . '/inc/jetpack.php';
+if (defined('JETPACK__VERSION')) {
+    require get_template_directory() . '/inc/jetpack.php';
 }
 
 /*--------------------------------------------------------------
@@ -196,14 +201,15 @@ add_action('after_switch_theme', 'hwc_activate_theme_setup');
 add_action('init', 'hwc_register_custom_post_types');
 add_action('acf/init', 'hwc_add_acf_fields');
 add_action('acf/init', 'hwc_populate_default_data');
-add_filter( 'template_include', 'hwc_load_custom_player_template' );
+add_filter('template_include', 'hwc_load_custom_player_template');
 
 
 
 /*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
 	----------------------------------------------------------------*/
-function hwc_check_acf_pro_before_activation() {
+function hwc_check_acf_pro_before_activation()
+{
 
     include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
@@ -224,25 +230,28 @@ function hwc_check_acf_pro_before_activation() {
     // Ensure ACF content remains unchanged (ACF data is saved in the database, so this happens automatically)
 }
 
-function is_acf_pro_installed() {
+function is_acf_pro_installed()
+{
     // Check if ACF Pro is installed by looking at the plugin directory
     $acf_pro_plugin_path = WP_PLUGIN_DIR . '/advanced-custom-fields-pro/acf.php';
     return file_exists($acf_pro_plugin_path);
 }
 
 // Admin notice to show when ACF Pro is missing
-function acf_pro_missing_error() {
-    ?>
+function acf_pro_missing_error()
+{
+?>
     <div class="error notice">
         <p><?php _e('Error: ACF Pro is required to use this theme. Please install and activate ACF Pro.', 'hwc'); ?></p>
     </div>
-    <?php
+<?php
 }
 
 /*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
 	----------------------------------------------------------------*/
-function hwc_theme_activation_setup() {
+function hwc_theme_activation_setup()
+{
 
     if (!is_acf_pro_installed()) {
         // Return back if ACF Pro is not available
@@ -308,7 +317,7 @@ function hwc_theme_activation_setup() {
 
     foreach ($pages as $page) {
         $page_id = hwc_create_page_with_template($page['title'], $page['template'], $page['slug']);
-        
+
         // Store Home page ID
         if ($page['slug'] === 'home') {
             $home_page_id = $page_id;
@@ -325,7 +334,8 @@ function hwc_theme_activation_setup() {
 /*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
 	----------------------------------------------------------------*/
-function hwc_create_page_with_template($title, $template_path, $slug) {
+function hwc_create_page_with_template($title, $template_path, $slug)
+{
     // Check if the page already exists
     $page = get_page_by_path($slug);
 
@@ -352,12 +362,13 @@ function hwc_create_page_with_template($title, $template_path, $slug) {
         }
         return $page->ID; // Return the ID of the existing page
     }
-    
+
     return 0; // Return 0 if the page wasn't created or found
 }
 
 // Helper function to get page ID by title
-function get_page_id_by_title($title) {
+function get_page_id_by_title($title)
+{
     $query = new WP_Query(array(
         'post_type' => 'page',
         'post_status' => 'publish',
@@ -370,7 +381,8 @@ function get_page_id_by_title($title) {
 /*--------------------------------------------------------------
 	>>> Function to set up ACF fields for each page
 	----------------------------------------------------------------*/
-function hwc_setup_acf_fields_for_pages() {
+function hwc_setup_acf_fields_for_pages()
+{
     if (function_exists('acf_add_local_field_group')) {
 
         // Define field groups for each page
@@ -455,7 +467,8 @@ function hwc_setup_acf_fields_for_pages() {
 /*--------------------------------------------------------------
 	>>> Function for upload image from theme
 	----------------------------------------------------------------*/
-function hwc_upload_image_from_theme($filename) {
+function hwc_upload_image_from_theme($filename)
+{
     $theme_directory = get_template_directory(); // Get the theme directory path
     $full_path = $theme_directory . '/hwc-images/' . $filename; // Build the full path to the image
 
@@ -499,9 +512,10 @@ function hwc_upload_image_from_theme($filename) {
 /*--------------------------------------------------------------
 	>>> Function to set default values in ACF fields for each page
 	----------------------------------------------------------------*/
-function hwc_set_default_acf_field_values() {
+function hwc_set_default_acf_field_values()
+{
     // Check if default values have already been set
-   /* if (get_option('acf_defaults_set')) {
+    /* if (get_option('acf_defaults_set')) {
         return; // Exit if defaults have already been set
     }*/
 
@@ -555,41 +569,18 @@ function hwc_set_default_acf_field_values() {
     }
 
     // Set an option to indicate that defaults have been set
-   /* update_option('acf_defaults_set', true);*/
-}
-
-/*--------------------------------------------------------------
-	>>> Function to set blog categories
-	----------------------------------------------------------------*/
-function hwc_create_blog_categories() {
-    $categories = array(
-        'club-news' => 'Club News',
-        'match-report' => 'Match Report',
-        'match-preview' => 'Match Preview',
-        'transfer-news' => 'Transfer News',
-        'ticket-news' => 'Ticket News',
-        'interview' => 'Interview',
-        'you-can-have-it-all' => 'You Can Have It All',
-        'the-bluebirds-nest' => 'The Bluebirds Nest',
-        'community-news' => 'Community News',
-        'video' => 'Video'
-    );
-
-    foreach ($categories as $slug => $title) {
-        if (!term_exists($slug, 'category')) {
-            wp_insert_term($title, 'category', array('slug' => $slug));
-        }
-    }
+    /* update_option('acf_defaults_set', true);*/
 }
 
 /*--------------------------------------------------------------
 	>>> Function to add dummy Content
 	----------------------------------------------------------------*/
-function hwc_create_image($image_url, $post_id) {
+function hwc_create_image($image_url, $post_id)
+{
     $upload_dir = wp_upload_dir();
     $image_data = file_get_contents($image_url);
     $filename = basename($image_url);
-    
+
     if (wp_mkdir_p($upload_dir['path'])) {
         $file = $upload_dir['path'] . '/' . $filename;
     } else {
@@ -617,33 +608,29 @@ function hwc_create_image($image_url, $post_id) {
 /*--------------------------------------------------------------
 	>>> Include Function for create dummy posts
 	----------------------------------------------------------------*/
-    // Include the file with post creation functions
-    require_once get_template_directory() . '/inc/hwc-posts/categories_and_manual_posts.php';   
-    
-    
+// Include the file with post creation functions
+require_once get_template_directory() . '/inc/hwc-posts/categories_and_manual_posts.php';
+
+
 
 /*--------------------------------------------------------------
 	>>> Function to add funstions of blog categories and dummy_posts
 	----------------------------------------------------------------*/
-function hwc_activate_theme_setup() {
+function hwc_activate_theme_setup()
+{
 
     if (!is_acf_pro_installed()) {
         // Return back if ACF Pro is not available
         return;
     }
-
-    // Create Blog Categories
-    hwc_create_blog_categories();
-    
-    // Create Dummy Posts
-    hwc_create_categories_and_manual_posts();
 }
 
 
 /*--------------------------------------------------------------
 	>>> Hook into theme activation Register Custom Post Types
-	----------------------------------------------------------------*/ 
-function hwc_register_custom_post_types() {
+	----------------------------------------------------------------*/
+function hwc_register_custom_post_types()
+{
     // Team
     register_post_type('team', array(
         'labels' => array(
@@ -698,7 +685,7 @@ function hwc_register_custom_post_types() {
         'has_archive' => true,
         'supports' => array('title', 'editor'),
     ));
-    
+
     // Staff
     register_post_type('staff', array(
         'labels' => array(
@@ -714,10 +701,11 @@ function hwc_register_custom_post_types() {
 /*--------------------------------------------------------------
 	>>> Function for Add ACF Fields
 	----------------------------------------------------------------*/
-function hwc_add_acf_fields() {
+function hwc_add_acf_fields()
+{
     if (class_exists('ACF')) {
         // Teams ACF Fields
-        if( function_exists('acf_add_local_field_group') ):
+        if (function_exists('acf_add_local_field_group')):
             acf_add_local_field_group(array(
                 'key' => 'group_teams',
                 'title' => 'Teams Details',
@@ -752,7 +740,7 @@ function hwc_add_acf_fields() {
         endif;
 
         // Players ACF Fields
-        if( function_exists('acf_add_local_field_group') ):
+        if (function_exists('acf_add_local_field_group')):
             acf_add_local_field_group(array(
                 'key' => 'group_players',
                 'title' => 'Players Details',
@@ -849,7 +837,7 @@ function hwc_add_acf_fields() {
                         'required' => 0,
                         'return_format' => 'array', // You can use 'url', 'array', or 'both' depending on your needs
                     ),
-                     // Player States Repeater
+                    // Player States Repeater
                     array(
                         'key' => 'field_player_stats_repeater',
                         'label' => 'Player Stats Repeater',
@@ -876,7 +864,7 @@ function hwc_add_acf_fields() {
                         'max' => 0,
                         'layout' => 'block',
                     ),
-                     // Player Biography Title
+                    // Player Biography Title
                     array(
                         'key' => 'field_player_biography_title',
                         'label' => 'Player Biography Title',
@@ -928,7 +916,7 @@ function hwc_add_acf_fields() {
         endif;
 
         // Matches ACF Fields
-        if( function_exists('acf_add_local_field_group') ):
+        if (function_exists('acf_add_local_field_group')):
             acf_add_local_field_group(array(
                 'key' => 'group_matches',
                 'title' => 'Match Details',
@@ -991,7 +979,7 @@ function hwc_add_acf_fields() {
         endif;
 
         // Results ACF Fields
-        if( function_exists('acf_add_local_field_group') ):
+        if (function_exists('acf_add_local_field_group')):
             acf_add_local_field_group(array(
                 'key' => 'group_results',
                 'title' => 'Result Details',
@@ -1025,7 +1013,7 @@ function hwc_add_acf_fields() {
         endif;
 
         // League Table ACF Fields
-        if( function_exists('acf_add_local_field_group') ):
+        if (function_exists('acf_add_local_field_group')):
             acf_add_local_field_group(array(
                 'key' => 'group_league_table',
                 'title' => 'League Table Details',
@@ -1061,7 +1049,8 @@ function hwc_add_acf_fields() {
 
 // Populate Default Data
 // Populate Default Data only once
-function hwc_populate_default_data() {
+function hwc_populate_default_data()
+{
     // Add default Teams with unique featured image
     if (!get_posts(array('post_type' => 'team', 'posts_per_page' => 1))) {
         for ($i = 1; $i <= 10; $i++) {
@@ -1103,81 +1092,81 @@ function hwc_populate_default_data() {
                 'post_status' => 'publish',
             ));
 
-        // Randomly select a team from the fetched team IDs
-        if (!empty($hwc_teams)) {
-            $random_team_id = $hwc_teams[array_rand($hwc_teams)];
-            update_field('team_selection', array($random_team_id), $player_id);
-        }
-            
+            // Randomly select a team from the fetched team IDs
+            if (!empty($hwc_teams)) {
+                $random_team_id = $hwc_teams[array_rand($hwc_teams)];
+                update_field('team_selection', array($random_team_id), $player_id);
+            }
+
             // Set default ACF fields
-        update_field('player_number', $i, $player_id); // Player number is unique
-        update_field('player_first_name', 'Player ' . $i . ' First Name', $player_id);
-        update_field('player_last_name', 'Player ' . $i . ' Last Name', $player_id);
-        update_field('player_role', 'Goalkeeper', $player_id); // Default to 'Goalkeeper', optional field
-        update_field('player_biography_title', 'Biography', $player_id); // Biography title
+            update_field('player_number', $i, $player_id); // Player number is unique
+            update_field('player_first_name', 'Player ' . $i . ' First Name', $player_id);
+            update_field('player_last_name', 'Player ' . $i . ' Last Name', $player_id);
+            update_field('player_role', 'Goalkeeper', $player_id); // Default to 'Goalkeeper', optional field
+            update_field('player_biography_title', 'Biography', $player_id); // Biography title
 
-        // Set player stats
-        $player_stats = array(
-            array('stat_title_1' => '7', 'stat_title_2' => 'Appearances'),
-            array('stat_title_1' => '7', 'stat_title_2' => 'Starts'),
-            array('stat_title_1' => '630\'', 'stat_title_2' => 'Mins'),
-            array('stat_title_1' => '57%', 'stat_title_2' => 'Win %'),
-            array('stat_title_1' => '0', 'stat_title_2' => 'Goals'),
-            array('stat_title_1' => '1', 'stat_title_2' => 'Bookings'),
-            array('stat_title_1' => '0', 'stat_title_2' => 'Sent Off'),
-        );
-        update_field('player_stats', $player_stats, $player_id);
+            // Set player stats
+            $player_stats = array(
+                array('stat_title_1' => '7', 'stat_title_2' => 'Appearances'),
+                array('stat_title_1' => '7', 'stat_title_2' => 'Starts'),
+                array('stat_title_1' => '630\'', 'stat_title_2' => 'Mins'),
+                array('stat_title_1' => '57%', 'stat_title_2' => 'Win %'),
+                array('stat_title_1' => '0', 'stat_title_2' => 'Goals'),
+                array('stat_title_1' => '1', 'stat_title_2' => 'Bookings'),
+                array('stat_title_1' => '0', 'stat_title_2' => 'Sent Off'),
+            );
+            update_field('player_stats', $player_stats, $player_id);
 
-        // Set player background image
-        $bg_image_filename = 'playerbg.jpg'; // Name of the background image file
-        $bg_image_id = hwc_upload_image_from_theme($bg_image_filename);
+            // Set player background image
+            $bg_image_filename = 'playerbg.jpg'; // Name of the background image file
+            $bg_image_id = hwc_upload_image_from_theme($bg_image_filename);
 
-        if (!is_wp_error($bg_image_id)) {
-            // Update the ACF field with the attachment ID
-            update_field('player_background_image', $bg_image_id, $player_id);
-        } else {
-            // Log the error message
-            error_log('Failed to upload background image: ' . $bg_image_id->get_error_message());
-        }
-
-
-        // Set big images
-        $big_image_1_filename = 'player-image1.jpg'; // Name of the first big image file
-        $big_image_2_filename = 'player-image2.jpg'; // Name of the second big image file
-
-        $big_image_1_id = hwc_upload_image_from_theme($big_image_1_filename);
-        $big_image_2_id = hwc_upload_image_from_theme($big_image_2_filename);
-
-        if (!is_wp_error($big_image_1_id)) {
-            update_field('player_big_image_1', $big_image_1_id, $player_id);
-        } else {
-            error_log('Failed to upload big image 1: ' . $big_image_1_id->get_error_message());
-        }
-
-        if (!is_wp_error($big_image_2_id)) {
-            update_field('player_big_image_2', $big_image_2_id, $player_id);
-        } else {
-            error_log('Failed to upload big image 2: ' . $big_image_2_id->get_error_message());
-        }
+            if (!is_wp_error($bg_image_id)) {
+                // Update the ACF field with the attachment ID
+                update_field('player_background_image', $bg_image_id, $player_id);
+            } else {
+                // Log the error message
+                error_log('Failed to upload background image: ' . $bg_image_id->get_error_message());
+            }
 
 
-       // Set player right card content
-        $right_card_image_filename = 'thatfootballdrawing.jpg'; // Filename of the right card image
+            // Set big images
+            $big_image_1_filename = 'player-image1.jpg'; // Name of the first big image file
+            $big_image_2_filename = 'player-image2.jpg'; // Name of the second big image file
 
-        $right_card_image_id = hwc_upload_image_from_theme($right_card_image_filename);
+            $big_image_1_id = hwc_upload_image_from_theme($big_image_1_filename);
+            $big_image_2_id = hwc_upload_image_from_theme($big_image_2_filename);
 
-        if (!is_wp_error($right_card_image_id)) {
-            update_field('player_right_card_image', $right_card_image_id, $player_id);
-        } else {
-            error_log('Failed to upload right card image for player ' . $i . ': ' . $right_card_image_id->get_error_message());
-        }
+            if (!is_wp_error($big_image_1_id)) {
+                update_field('player_big_image_1', $big_image_1_id, $player_id);
+            } else {
+                error_log('Failed to upload big image 1: ' . $big_image_1_id->get_error_message());
+            }
 
-        update_field('player_right_card_title', 'Player Card Title ' . $i, $player_id);
-        update_field('player_right_card_title_2', 'Player Card Title 2 ' . $i, $player_id);
-        update_field('player_right_card_button', array(
-            'url' => 'https://example.com/button-' . $i,
-            'title' => 'Button ' . $i,
-        ), $player_id);
+            if (!is_wp_error($big_image_2_id)) {
+                update_field('player_big_image_2', $big_image_2_id, $player_id);
+            } else {
+                error_log('Failed to upload big image 2: ' . $big_image_2_id->get_error_message());
+            }
+
+
+            // Set player right card content
+            $right_card_image_filename = 'thatfootballdrawing.jpg'; // Filename of the right card image
+
+            $right_card_image_id = hwc_upload_image_from_theme($right_card_image_filename);
+
+            if (!is_wp_error($right_card_image_id)) {
+                update_field('player_right_card_image', $right_card_image_id, $player_id);
+            } else {
+                error_log('Failed to upload right card image for player ' . $i . ': ' . $right_card_image_id->get_error_message());
+            }
+
+            update_field('player_right_card_title', 'Player Card Title ' . $i, $player_id);
+            update_field('player_right_card_title_2', 'Player Card Title 2 ' . $i, $player_id);
+            update_field('player_right_card_button', array(
+                'url' => 'https://example.com/button-' . $i,
+                'title' => 'Button ' . $i,
+            ), $player_id);
 
             // Set a unique Featured Image for each player
             $image_path = get_template_directory() . '/hwc-images/player-' . $i . '.jpg'; // Different image for each player
@@ -1274,7 +1263,8 @@ function hwc_populate_default_data() {
 }
 
 // Helper function to handle image upload and setting as featured image
-function hwc_set_featured_image($image_path, $post_id) {
+function hwc_set_featured_image($image_path, $post_id)
+{
     $upload_dir = wp_upload_dir(); // Get WordPress upload directory
 
     // Prepare image file for upload
@@ -1312,13 +1302,14 @@ function hwc_set_featured_image($image_path, $post_id) {
 }
 
 /* Use template_include Hook to Point to the New Template */
-function hwc_load_custom_player_template( $template ) {
-    if ( is_singular('player') ) {
+function hwc_load_custom_player_template($template)
+{
+    if (is_singular('player')) {
         // Point to the template inside the single-pages folder
         $custom_template = get_template_directory() . '/single-pages/single-player.php';
 
         // Check if the custom template exists
-        if ( file_exists( $custom_template ) ) {
+        if (file_exists($custom_template)) {
             return $custom_template;
         }
     }
