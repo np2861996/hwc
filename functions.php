@@ -615,70 +615,12 @@ function hwc_create_image($image_url, $post_id) {
 }
 
 /*--------------------------------------------------------------
-	>>> Function for create dummy posts
+	>>> Include Function for create dummy posts
 	----------------------------------------------------------------*/
-function hwc_create_dummy_posts() {
-    $categories = array(
-        'club-news' => 'Club News Title',
-        'match-report' => 'Match Report Title',
-        'match-preview' => 'Match Preview Title',
-        'transfer-news' => 'Transfer News Title',
-        'ticket-news' => 'Ticket News Title',
-        'interview' => 'Interview Title',
-        'you-can-have-it-all' => 'You Can Have It All Title',
-        'the-bluebirds-nest' => 'The Bluebirds Nest Title',
-        'community-news' => 'Community News Title',
-        'video' => 'Video Title'
-    );
-
-    $excerpts = array(
-        'club-news' => 'Excerpt for Club News.',
-        'match-report' => 'Excerpt for Match Report.',
-        'match-preview' => 'Excerpt for Match Preview.',
-        'transfer-news' => 'Excerpt for Transfer News.',
-        'ticket-news' => 'Excerpt for Ticket News.',
-        'interview' => 'Excerpt for Interview.',
-        'you-can-have-it-all' => 'Excerpt for You Can Have It All.',
-        'the-bluebirds-nest' => 'Excerpt for The Bluebirds Nest.',
-        'community-news' => 'Excerpt for Community News.',
-        'video' => 'Excerpt for Video.'
-    );
-
-    $image_url = get_template_directory_uri() . '/hwc-images/wp-img.png';
-    $youtube_url = 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Example YouTube URL
-
-    foreach ($categories as $slug => $post_title) {
-        $category = get_term_by('slug', $slug, 'category');
-        if (!$category) {
-            continue; // Skip if category does not exist
-        }
-
-        $category_id = $category->term_id;
-
-        // Create post
-        $post_id = wp_insert_post(array(
-            'post_title'   => $post_title,
-            'post_content' => '<p>This is a dummy post for ' . $post_title . '.</p>'
-                . '<p>Description for ' . $post_title . '.</p>'
-                . '<ul><li>Item 1</li><li>Item 2</li></ul>'
-                . '<ol><li>First</li><li>Second</li></ol>'
-                . '<table><tr><td>Dummy Table Cell</td></tr></table>'
-                . '<iframe width="560" height="315" src="' . $youtube_url . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
-            'post_excerpt' => $excerpts[$slug], // Add excerpt
-            'post_status'  => 'publish',
-            'post_category'=> array($category_id)
-        ));
-
-        if ($post_id && !is_wp_error($post_id)) {
-            // Set featured image
-            $image_id = hwc_create_image($image_url, $post_id);
-            set_post_thumbnail($post_id, $image_id);
-
-            // Add tags
-            wp_set_post_tags($post_id, 'dummy, sample', true);
-        }
-    }
-}
+    // Include the file with post creation functions
+    require_once get_template_directory() . '/inc/hwc-posts/categories_and_manual_posts.php';   
+    
+    
 
 /*--------------------------------------------------------------
 	>>> Function to add funstions of blog categories and dummy_posts
@@ -694,7 +636,7 @@ function hwc_activate_theme_setup() {
     hwc_create_blog_categories();
     
     // Create Dummy Posts
-    hwc_create_dummy_posts();
+    hwc_create_categories_and_manual_posts();
 }
 
 
