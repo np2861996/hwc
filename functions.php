@@ -1064,7 +1064,7 @@ function hwc_populate_default_data()
             update_field('staff', 'Default Staff', $team_id);
 
             // Set a unique Featured Image for each team
-            $image_path = get_template_directory() . '/hwc-images/team-' . $i . '.webp'; // Different image for each team
+            $image_path = get_template_directory() . '/hwc-images/team.jpg'; // Different image for each team
             $image_id = hwc_set_featured_image($image_path, $team_id);
             if ($image_id) {
                 set_post_thumbnail($team_id, $image_id);
@@ -1192,7 +1192,7 @@ function hwc_populate_default_data()
             update_field('league', 1, $match_id); // Default to first league
 
             // Set a unique Featured Image for each match
-            $image_path = get_template_directory() . '/hwc-images/match-' . $i . '.webp'; // Different image for each match
+            $image_path = get_template_directory() . '/hwc-images/match.jpg'; // Different image for each match
             $image_id = hwc_set_featured_image($image_path, $match_id);
             if ($image_id) {
                 set_post_thumbnail($match_id, $image_id);
@@ -1213,7 +1213,7 @@ function hwc_populate_default_data()
             update_field('line_up', 'Default Line Up', $result_id);
 
             // Set a unique Featured Image for each result
-            $image_path = get_template_directory() . '/hwc-images/result-' . $i . '.webp'; // Different image for each result
+            $image_path = get_template_directory() . '/hwc-images/result.jpg'; // Different image for each result
             $image_id = hwc_set_featured_image($image_path, $result_id);
             if ($image_id) {
                 set_post_thumbnail($result_id, $image_id);
@@ -1234,7 +1234,7 @@ function hwc_populate_default_data()
             update_field('position', 1, $league_id);
 
             // Set a unique Featured Image for each league table
-            $image_path = get_template_directory() . '/hwc-images/league-table-' . $i . '.webp'; // Different image for each league table
+            $image_path = get_template_directory() . '/hwc-images/league-table.jpg'; // Different image for each league table
             $image_id = hwc_set_featured_image($image_path, $league_id);
             if ($image_id) {
                 set_post_thumbnail($league_id, $image_id);
@@ -1253,7 +1253,7 @@ function hwc_populate_default_data()
             ));
 
             // Set a unique Featured Image for each staff member
-            $image_path = get_template_directory() . '/hwc-images/staff-' . $i . '.webp'; // Different image for each staff member
+            $image_path = get_template_directory() . '/hwc-images/staff.jpg'; // Different image for each staff member
             $image_id = hwc_set_featured_image($image_path, $staff_id);
             if ($image_id) {
                 set_post_thumbnail($staff_id, $image_id);

@@ -14,6 +14,7 @@ $formatted_date = get_the_date('j F, Y');
 $post_url = get_permalink();
 $post_title = get_the_title();
 $tags = get_the_tags();
+$post_banner_video = get_field('post_banner_video');
 ?>
 <div class="post-header">
 	<div class="container container-narrow">
@@ -47,16 +48,27 @@ $tags = get_the_tags();
 		</div>
 
 	</div>
+	<?php if (has_post_thumbnail() && empty($post_banner_video )) { ?>
+		<div class="container container-slim">
+			<figure class="post-main-image">
+				<div class="image-container ratio-16x9">
+					<?php the_post_thumbnail('large'); ?>
+				</div>
+			</figure>
+		</div>
+	<?php } else {  ?>
 
-	<div class="container container-slim">
-		<figure class="post-main-image">
-			<div class="image-container ratio-16x9">
-				<?php if (has_post_thumbnail()) {
-					the_post_thumbnail('large');
-				} ?>
-			</div>
-		</figure>
+		<?php if(!empty($post_banner_video )){ ?>
+<div class="container container-slim">
+		
+<figure class="post-main-video video-placeholder">
+	<img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" width="1280" height="720">
+	<button class="play" data-js-embed="<div class=&quot;video-container&quot;><iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;<?php echo $post_banner_video; ?>&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen title=&quot;#TheBluebirdsNest | Episode 6 - Zac Jones&quot;></iframe></div>" aria-label="Play Video">
+		<svg aria-hidden="true" height="40" width="40" viewBox="0 0 40 40"><path d="M37 20L2 40V0L37 20Z" fill="currentColor"></path></svg>	</button>
+</figure>
 	</div>
+	<?php } ?>
+		<?php } ?>
 
 </div>
 
