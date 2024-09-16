@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * The template for displaying 404 pages (not found)
+ *
+ * @link https://codex.wordpress.org/Creating_an_Error_404_Page
+ *
+ * @package hwc
+ */
+
+
 /*--------------------------------------------------------------
 	>>> Functions Action/Filter Calls
 	----------------------------------------------------------------*/
@@ -262,7 +271,7 @@ function hwc_create_categories_and_manual_posts()
             'category' => 'the-bluebirds-nest',
             'tags' => array('First Team', 'Zac Jones'),
             'image' => 'maxresdefault.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => '',
                 'sidebar_card_title' => '',
@@ -292,7 +301,7 @@ function hwc_create_categories_and_manual_posts()
             'category' => 'club-news',
             'tags' => array('First Team', 'Ifan Knott'),
             'image' => 'ifancontractFI.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'maxresdefault.jpg',
                 'sidebar_card_title' => 'Watch our club documentary series!',
@@ -322,7 +331,7 @@ function hwc_create_categories_and_manual_posts()
             'category' => 'the-bluebirds-nest',
             'tags' => array('First Team', 'Ifan Knott'),
             'image' => 'maxresdefault.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'BluebirdsNestSeries.jpg',
                 'sidebar_card_title' => 'Listen to our club podcast series!',
@@ -361,9 +370,9 @@ function hwc_create_categories_and_manual_posts()
 <p>A point was the least the Bluebirds deserved for their overall performance, which saw them create the better opportunities on the night, and they will now be hoping to replicate those levels on Saturday afternoon when we host the Seasiders (2.30pm kick-off).</p>',
             'excerpt' => 'Our take on the 1-1 draw with Cardiff Metropolitan on JD Cymru Premier MD9...',
             'category' => 'match-report',
-            'tags' => array('First Team', 'Ifan Knott','Kai Whitmore','Cardiff Met Uni vs Haverfordwest County'),
+            'tags' => array('First Team', 'Ifan Knott', 'Kai Whitmore', 'Cardiff Met Uni vs Haverfordwest County'),
             'image' => 'maxresdefault2.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'BluebirdsNestSeries.jpg',
                 'sidebar_card_title' => 'Listen to our club podcast series!',
@@ -421,9 +430,9 @@ function hwc_create_categories_and_manual_posts()
 <p></p><figure class="ratio-16x9"><iframe loading="lazy" title="Uchafbwyntiau | Highlights | Hwlffordd 3-1 Bae Colwyn | JD Cymru Premier" width="500" height="281" src="https://www.youtube.com/embed/Hx558auJWto?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe></figure><p></p>',
             'excerpt' => 'Our take on the 3-1 victory over Colwyn Bay on JD Cymru Premier MD31…',
             'category' => 'match-report',
-            'tags' => array('First Team', 'Rhys Abbruzzese','Lee Jenkins','Ben Fawcett','Haverfordwest County vs Colwyn Bay'),
+            'tags' => array('First Team', 'Rhys Abbruzzese', 'Lee Jenkins', 'Ben Fawcett', 'Haverfordwest County vs Colwyn Bay'),
             'image' => 'maxresdefault2.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'BluebirdsNestSeries.jpg',
                 'sidebar_card_title' => 'Listen to our club podcast series!',
@@ -497,7 +506,7 @@ function hwc_create_categories_and_manual_posts()
             'category' => 'match-preview',
             'tags' => array('First Team', 'Flint Town United vs Haverfordwest County'),
             'image' => 'MatchPreview.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'BluebirdsNestSeries.jpg',
                 'sidebar_card_title' => 'Listen to our club podcast series!',
@@ -536,7 +545,7 @@ function hwc_create_categories_and_manual_posts()
             'category' => 'transfer-news',
             'tags' => array('First Team', 'Kyle McCarthy'),
             'image' => '48HFC290605_NewSigning_KyleMcCarthy1920x1080.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'BluebirdsNestSeries.jpg',
                 'sidebar_card_title' => 'Listen to our club podcast series!',
@@ -567,7 +576,7 @@ function hwc_create_categories_and_manual_posts()
             'category' => 'ticket-news',
             'tags' => array('First Team'),
             'image' => '1920x1080-copy-2.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'BluebirdsNestSeries.jpg',
                 'sidebar_card_title' => 'Listen to our club podcast series!',
@@ -657,9 +666,9 @@ function hwc_create_categories_and_manual_posts()
 <p>So as a group, we’ve moved forward from last season. We don’t concede goals as easily as we have in the past, and it’s an obvious statement but, if we don’t concede, we’ve got more chance of winning, and that’s the way we’re looking to play this year. We still want to play and have as much possession as we possibly can, but we need to be sensible in our own third, defend our goal, and the boys are certainly doing that – it’s pleasing to see.</p>',
             'excerpt' => 'The manager\'s reaction to our 1-0 defeat at home to The New Saints on MD6.',
             'category' => 'interview',
-            'tags' => array('First Team','Haverfordwest County vs The New Saints'),
+            'tags' => array('First Team', 'Haverfordwest County vs The New Saints'),
             'image' => 'tonyTNSFI.jpg',
-            
+
             'acf' => array(
                 'sidebar_card_image' => 'BluebirdsNestSeries.jpg',
                 'sidebar_card_title' => 'Listen to our club podcast series!',
@@ -675,11 +684,11 @@ function hwc_create_categories_and_manual_posts()
     foreach ($posts as $post_data) {
         // Check if the post with the title already exists
         $existing_posts = get_posts(array(
-                'title' => $post_data['title'],
-                'post_type' => 'post',
-                'post_status' => 'any', // Check for any status including trash
-                'numberposts' => 1
-            ));
+            'title' => $post_data['title'],
+            'post_type' => 'post',
+            'post_status' => 'any', // Check for any status including trash
+            'numberposts' => 1
+        ));
 
         if (!$existing_posts) {
             // Post does not exist, create it

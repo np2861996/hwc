@@ -482,7 +482,11 @@ function hwc_upload_image_from_theme($filename)
     $upload_path = $wp_upload_dir['path'] . '/' . $filename;
 
     // Copy the file from the theme directory to the uploads directory
-    copy($full_path, $upload_path);
+    if (is_file($full_path)) {
+        copy($full_path, $upload_path);
+    } else {
+        error_log('Warning: ' . $full_path . ' is not a valid file.');
+    }
 
     // Check the file type
     $wp_filetype = wp_check_filetype($filename, null);
@@ -611,6 +615,11 @@ function hwc_create_image($image_url, $post_id)
 // Include the file with post creation functions
 require_once get_template_directory() . '/inc/hwc-posts/categories_and_manual_posts.php';
 
+/*--------------------------------------------------------------
+	>>> Include Function for Players Fields And Default data
+	----------------------------------------------------------------*/
+require_once get_template_directory() . '/inc/hwc-players/hwc-players.php';
+
 
 
 /*--------------------------------------------------------------
@@ -636,17 +645,6 @@ function hwc_register_custom_post_types()
         'labels' => array(
             'name' => 'Teams',
             'singular_name' => 'Team',
-        ),
-        'public' => true,
-        'has_archive' => true,
-        'supports' => array('title', 'editor', 'thumbnail'),
-    ));
-
-    // Player
-    register_post_type('player', array(
-        'labels' => array(
-            'name' => 'Players',
-            'singular_name' => 'Player',
         ),
         'public' => true,
         'has_archive' => true,
@@ -733,182 +731,6 @@ function hwc_add_acf_fields()
                             'param' => 'post_type',
                             'operator' => '==',
                             'value' => 'team',
-                        ),
-                    ),
-                ),
-            ));
-        endif;
-
-        // Players ACF Fields
-        if (function_exists('acf_add_local_field_group')):
-            acf_add_local_field_group(array(
-                'key' => 'group_players',
-                'title' => 'Players Details',
-                'fields' => array(
-                    array(
-                        'key' => 'field_team_selection',
-                        'label' => 'Team Selection',
-                        'name' => 'team_selection',
-                        'type' => 'post_object',
-                        'post_type' => array('team'),
-                        'return_format' => 'id',
-                        'multiple' => 0,
-                        'required' => 1, // Set to 1 for required, 0 for not required
-                        'default_value' => array(
-                            array(1) // Default to first team, replace with the appropriate team ID if needed
-                        ),
-                    ),
-                    array(
-                        'key' => 'field_player_number',
-                        'label' => 'Player Number',
-                        'name' => 'player_number',
-                        'type' => 'number',
-                        'default_value' => 'Default Position',
-                        'required' => 1, // Set to 1 for required, 0 for not required
-                    ),
-                    // Player Background Image
-                    array(
-                        'key' => 'field_player_background_image',
-                        'label' => 'Player Background Image',
-                        'name' => 'player_background_image',
-                        'type' => 'image',
-                        'return_format' => 'url',
-                        'preview_size' => 'medium',
-                        'library' => 'all',
-                        'required' => 0,
-                    ),
-                    // Player First Name
-                    array(
-                        'key' => 'field_player_first_name',
-                        'label' => 'Player First Name',
-                        'name' => 'player_first_name',
-                        'type' => 'text',
-                        'required' => 1,
-                    ),
-                    // Player Last Name
-                    array(
-                        'key' => 'field_player_last_name',
-                        'label' => 'Player Last Name',
-                        'name' => 'player_last_name',
-                        'type' => 'text',
-                        'required' => 1,
-                    ),
-                    // Player Role
-                    array(
-                        'key' => 'field_player_role',
-                        'label' => 'Player Role',
-                        'name' => 'player_role',
-                        'type' => 'text',
-                        'required' => 1,
-                    ),
-                    // Player Right Card Image
-                    array(
-                        'key' => 'field_player_right_card_image',
-                        'label' => 'Player Right Card Image',
-                        'name' => 'player_right_card_image',
-                        'type' => 'image',
-                        'return_format' => 'url',
-                        'preview_size' => 'medium',
-                        'library' => 'all',
-                        'required' => 0,
-                    ),
-                    // Player Right Card Title
-                    array(
-                        'key' => 'field_player_right_card_title',
-                        'label' => 'Player Right Card Title',
-                        'name' => 'player_right_card_title',
-                        'type' => 'text',
-                        'required' => 0,
-                    ),
-                    // Player Right Card Title 2
-                    array(
-                        'key' => 'field_player_right_card_title_2',
-                        'label' => 'Player Right Card Title 2',
-                        'name' => 'player_right_card_title_2',
-                        'type' => 'text',
-                        'required' => 0,
-                    ),
-                    // Player Right Card Button
-                    array(
-                        'key' => 'field_player_right_card_button',
-                        'label' => 'Player Right Card Button',
-                        'name' => 'player_right_card_button',
-                        'type' => 'link',
-                        'required' => 0,
-                        'return_format' => 'array', // You can use 'url', 'array', or 'both' depending on your needs
-                    ),
-                    // Player States Repeater
-                    array(
-                        'key' => 'field_player_stats_repeater',
-                        'label' => 'Player Stats Repeater',
-                        'name' => 'player_stats',
-                        'type' => 'repeater',
-                        'required' => 0,
-                        'sub_fields' => array(
-                            array(
-                                'key' => 'field_player_stat_title_1',
-                                'label' => 'Stat Title 1',
-                                'name' => 'stat_title_1',
-                                'type' => 'text',
-                                'required' => 0,
-                            ),
-                            array(
-                                'key' => 'field_player_stat_title_2',
-                                'label' => 'Stat Title 2',
-                                'name' => 'stat_title_2',
-                                'type' => 'text',
-                                'required' => 0,
-                            ),
-                        ),
-                        'min' => 0,
-                        'max' => 0,
-                        'layout' => 'block',
-                    ),
-                    // Player Biography Title
-                    array(
-                        'key' => 'field_player_biography_title',
-                        'label' => 'Player Biography Title',
-                        'name' => 'player_biography_title',
-                        'type' => 'text',
-                        'required' => 0,
-                    ),
-                    // Player Biography Description
-                    array(
-                        'key' => 'field_description',
-                        'label' => 'Description',
-                        'name' => 'description',
-                        'type' => 'textarea',
-                        'default_value' => 'Default Description',
-                    ),
-                    // Player Big Image 1
-                    array(
-                        'key' => 'field_player_big_image_1',
-                        'label' => 'Player Big Image 1',
-                        'name' => 'player_big_image_1',
-                        'type' => 'image',
-                        'return_format' => 'url',
-                        'preview_size' => 'medium',
-                        'library' => 'all',
-                        'required' => 0,
-                    ),
-                    // Player Big Image 2
-                    array(
-                        'key' => 'field_player_big_image_2',
-                        'label' => 'Player Big Image 2',
-                        'name' => 'player_big_image_2',
-                        'type' => 'image',
-                        'return_format' => 'url',
-                        'preview_size' => 'medium',
-                        'library' => 'all',
-                        'required' => 0,
-                    ),
-                ),
-                'location' => array(
-                    array(
-                        array(
-                            'param' => 'post_type',
-                            'operator' => '==',
-                            'value' => 'player',
                         ),
                     ),
                 ),
@@ -1068,111 +890,6 @@ function hwc_populate_default_data()
             $image_id = hwc_set_featured_image($image_path, $team_id);
             if ($image_id) {
                 set_post_thumbnail($team_id, $image_id);
-            }
-        }
-    }
-
-    // Add default Players with unique featured image
-
-    // Fetch all team IDs dynamically
-    $hwc_teams_query = new WP_Query(array(
-        'post_type' => 'team',
-        'posts_per_page' => -1,
-        'fields' => 'ids' // Only fetch IDs
-    ));
-
-    $hwc_teams = $hwc_teams_query->posts;
-
-    if (!get_posts(array('post_type' => 'player', 'posts_per_page' => 1))) {
-        for ($i = 1; $i <= 10; $i++) {
-            $player_id = wp_insert_post(array(
-                'post_type' => 'player',
-                'post_title' => 'Default Player ' . $i,
-                'post_content' => 'Description for default player ' . $i,
-                'post_status' => 'publish',
-            ));
-
-            // Randomly select a team from the fetched team IDs
-            if (!empty($hwc_teams)) {
-                $random_team_id = $hwc_teams[array_rand($hwc_teams)];
-                update_field('team_selection', array($random_team_id), $player_id);
-            }
-
-            // Set default ACF fields
-            update_field('player_number', $i, $player_id); // Player number is unique
-            update_field('player_first_name', 'Player ' . $i . ' First Name', $player_id);
-            update_field('player_last_name', 'Player ' . $i . ' Last Name', $player_id);
-            update_field('player_role', 'Goalkeeper', $player_id); // Default to 'Goalkeeper', optional field
-            update_field('player_biography_title', 'Biography', $player_id); // Biography title
-
-            // Set player stats
-            $player_stats = array(
-                array('stat_title_1' => '7', 'stat_title_2' => 'Appearances'),
-                array('stat_title_1' => '7', 'stat_title_2' => 'Starts'),
-                array('stat_title_1' => '630\'', 'stat_title_2' => 'Mins'),
-                array('stat_title_1' => '57%', 'stat_title_2' => 'Win %'),
-                array('stat_title_1' => '0', 'stat_title_2' => 'Goals'),
-                array('stat_title_1' => '1', 'stat_title_2' => 'Bookings'),
-                array('stat_title_1' => '0', 'stat_title_2' => 'Sent Off'),
-            );
-            update_field('player_stats', $player_stats, $player_id);
-
-            // Set player background image
-            $bg_image_filename = 'playerbg.jpg'; // Name of the background image file
-            $bg_image_id = hwc_upload_image_from_theme($bg_image_filename);
-
-            if (!is_wp_error($bg_image_id)) {
-                // Update the ACF field with the attachment ID
-                update_field('player_background_image', $bg_image_id, $player_id);
-            } else {
-                // Log the error message
-                error_log('Failed to upload background image: ' . $bg_image_id->get_error_message());
-            }
-
-
-            // Set big images
-            $big_image_1_filename = 'player-image1.jpg'; // Name of the first big image file
-            $big_image_2_filename = 'player-image2.jpg'; // Name of the second big image file
-
-            $big_image_1_id = hwc_upload_image_from_theme($big_image_1_filename);
-            $big_image_2_id = hwc_upload_image_from_theme($big_image_2_filename);
-
-            if (!is_wp_error($big_image_1_id)) {
-                update_field('player_big_image_1', $big_image_1_id, $player_id);
-            } else {
-                error_log('Failed to upload big image 1: ' . $big_image_1_id->get_error_message());
-            }
-
-            if (!is_wp_error($big_image_2_id)) {
-                update_field('player_big_image_2', $big_image_2_id, $player_id);
-            } else {
-                error_log('Failed to upload big image 2: ' . $big_image_2_id->get_error_message());
-            }
-
-
-            // Set player right card content
-            $right_card_image_filename = 'thatfootballdrawing.jpg'; // Filename of the right card image
-
-            $right_card_image_id = hwc_upload_image_from_theme($right_card_image_filename);
-
-            if (!is_wp_error($right_card_image_id)) {
-                update_field('player_right_card_image', $right_card_image_id, $player_id);
-            } else {
-                error_log('Failed to upload right card image for player ' . $i . ': ' . $right_card_image_id->get_error_message());
-            }
-
-            update_field('player_right_card_title', 'Player Card Title ' . $i, $player_id);
-            update_field('player_right_card_title_2', 'Player Card Title 2 ' . $i, $player_id);
-            update_field('player_right_card_button', array(
-                'url' => 'https://example.com/button-' . $i,
-                'title' => 'Button ' . $i,
-            ), $player_id);
-
-            // Set a unique Featured Image for each player
-            $image_path = get_template_directory() . '/hwc-images/player-' . $i . '.jpg'; // Different image for each player
-            $image_id = hwc_set_featured_image($image_path, $player_id);
-            if ($image_id) {
-                set_post_thumbnail($player_id, $image_id);
             }
         }
     }
