@@ -189,7 +189,7 @@ $Dis_Big_Images_sec = !empty($player_big_image_1) || !empty($player_big_image_2)
 ----------------------------------------------------------------*/
 
 ?>
-<div class="post-7189 player type-player status-publish has-post-thumbnail hentry team-first-team">
+<div class="post-<?php echo $player_id; ?> player type-player status-publish has-post-thumbnail hentry team-first-team">
 	<!--*--------------------------------------------------------------
 	>>> Header Section Code : END
 	----------------------------------------------------------------*!-->
