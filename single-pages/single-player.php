@@ -165,23 +165,29 @@ $Dis_Biography_sec = !empty($player_description) ?
 /*--------------------------------------------------------------
 	>>> Big Images Section Code : START
 ----------------------------------------------------------------*/
-$Dis_Big_Images_sec = !empty($player_big_image_1) || !empty($player_big_image_2) ?
+$Dis_player_big_image_1 = !empty($player_big_image_1) ?
+	'<div class="post-gallery-item">
+		<figure class="image-container lazy-load-container ratio-3x2">
+			<a href="' . $player_big_image_1 . '" data-fslightbox="post-gallery" data-type="image">
+				<img src="' . $player_big_image_1 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 1" loading="lazy">
+			</a>
+		</figure>
+	</div>' : '';
+
+$Dis_player_big_image_2 = !empty($player_big_image_2) ?
+	'<div class="post-gallery-item">
+		<figure class="image-container lazy-load-container ratio-3x2">
+			<a href="' . $player_big_image_2 . '" data-fslightbox="post-gallery" data-type="image">
+				<img src="' . $player_big_image_2 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 2" loading="lazy">
+			</a>
+		</figure>
+	</div>' : '';
+
+$Dis_Big_Images_sec = !empty($Dis_player_big_image_1) || !empty($Dis_player_big_image_2) ?
 	'<div class="player-gallery">
 		<div class="post-gallery">
-			<div class="post-gallery-item">
-				<figure class="image-container lazy-load-container ratio-3x2">
-					<a href="' . $player_big_image_1 . '" data-fslightbox="post-gallery" data-type="image">
-						<img src="' . $player_big_image_1 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 1" loading="lazy">
-					</a>
-				</figure>
-			</div>
-			<div class="post-gallery-item">
-				<figure class="image-container lazy-load-container ratio-3x2">
-					<a href="' . $player_big_image_2 . '" data-fslightbox="post-gallery" data-type="image">
-						<img src="' . $player_big_image_2 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 2" loading="lazy">
-					</a>
-				</figure>
-			</div>
+			' . $Dis_player_big_image_1 . $Dis_player_big_image_2 . '
+			
 		</div>
 	</div>' : '';
 /*--------------------------------------------------------------
