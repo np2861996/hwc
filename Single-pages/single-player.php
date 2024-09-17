@@ -12,7 +12,7 @@ get_header();
 
 /*--------------------------------------------------------------
 	>>> Players Post Info
-	----------------------------------------------------------------*/
+----------------------------------------------------------------*/
 if (has_post_thumbnail()) {
 	// Get the featured image URL
 	$thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
@@ -22,7 +22,7 @@ $player_id = get_the_ID();
 
 /*--------------------------------------------------------------
 	>>> ACF fields
-	----------------------------------------------------------------*/
+----------------------------------------------------------------*/
 $team_selection = get_field('team_selection', $player_id);
 $player_number = get_field('player_number', $player_id);
 $player_first_name = get_field('player_first_name', $player_id);
@@ -42,7 +42,7 @@ $player_description = get_the_content($player_id);
 
 /*--------------------------------------------------------------
 	>>> Header Section Code : START
-	----------------------------------------------------------------*/
+----------------------------------------------------------------*/
 $Dis_player_background_image = !empty($player_background_image) ?
 	'<div class="player-cover cover-photo">
 		<div class="image-container overlay-duotone">
@@ -78,20 +78,21 @@ $Dis_player_right_card_image = !empty($player_right_card_image) ?
 		</a>
 	</div>' : '';
 
-$Dis_player_right_card = !empty($player_right_card_image) || !empty($player_right_card_button['url']) || !empty($player_right_card_button['title'])
-	|| !empty($player_right_card_title) || !empty($player_right_card_title_2) || !empty($Dis_player_right_card_image) ?
+$Dis_player_right_card = (!empty($player_right_card_image) || (is_array($player_right_card_button) && !empty($player_right_card_button['url']) && !empty($player_right_card_button['title'])) ||
+	!empty($player_right_card_title) || !empty($player_right_card_title_2) || !empty($Dis_player_right_card_image)) ?
 	'<div class="card card-partner card-w-link">
-		' . $Dis_player_right_card_image . '
-		<div class="card-content">
-			<span class="card-title">' . $player_right_card_title . '</span>
-			<p class="card-summary">' . $player_right_card_title_2 . '</p>
-			<span class="btn btn-secondary">
-				<a href="' . $player_right_card_button['url'] . '" title="' . $player_right_card_button['title'] . '">
-					' . $player_right_card_button['title'] . '
-				</a>
-			</span>
-		</div>
-	</div>' : '';
+        ' . $Dis_player_right_card_image . '
+        <div class="card-content">
+            <span class="card-title">' . $player_right_card_title . '</span>
+            <p class="card-summary">' . $player_right_card_title_2 . '</p>
+            <span class="btn btn-secondary">
+                <a href="' . (!empty($player_right_card_button['url']) ? $player_right_card_button['url'] : '#') . '" title="' . (!empty($player_right_card_button['title']) ? $player_right_card_button['title'] : 'Button') . '">
+                    ' . (!empty($player_right_card_button['title']) ? $player_right_card_button['title'] : 'Learn More') . '
+                </a>
+            </span>
+        </div>
+    </div>'
+	: '';
 
 $Dis_Player_Header = !empty($Dis_player_background_image) || !empty($Dis_thumbnail) || !empty($Dis_player_details) || !empty($Dis_player_right_card) ?
 	'<header class="player-header player-header-lg">
@@ -104,30 +105,88 @@ $Dis_Player_Header = !empty($Dis_player_background_image) || !empty($Dis_thumbna
 	</header>' : '';
 /*--------------------------------------------------------------
 	>>> Header Section Code : END
-	----------------------------------------------------------------*/
+----------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
 	>>> Stats Section Code : START
-	----------------------------------------------------------------*/
+----------------------------------------------------------------*/
 $Dis_state_data = '';
 if (have_rows('player_stats', $player_id)) {
 	while (have_rows('player_stats', $player_id)) {
 		the_row();
-		$Dis_state_data .= '<span class="stat-value">' . the_sub_field('stat_title_1') . '</span>
-							<span class="stat-label">' . the_sub_field('stat_title_2') . '</span>';
+		$stat_title_1 = get_sub_field('stat_title_1');
+		$stat_title_2 = get_sub_field('stat_title_2');
+
+		if (!empty($stat_title_1) && !empty($stat_title_1)) {
+			$Dis_state_data .= '<div class="stat"><span class="stat-value">' . $stat_title_1 . '</span>
+                            <span class="stat-label">' . $stat_title_2 . '</span></div>';
+		} else {
+			$Dis_state_data .= '';
+		}
 	}
 }
 
 $Dis_Stats_sec = !empty($Dis_state_data) ?
 	'<div class="container">
-		<h2 class="legend"><span>' . $player_stats_title . '</span></h2>
-		<div class="block-stats">
-			' . $Dis_state_data . '
-		</div> 
-	</div>' : '';
+        <h2 class="legend">
+			<span>
+				' . $player_stats_title . '
+			</span>
+		</h2>
+        <div class="block-stats">
+            ' . $Dis_state_data . '
+        </div> 
+    </div>' : '';
 /*--------------------------------------------------------------
 	>>> Stats Section Code : END
-	----------------------------------------------------------------*/
+----------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+	>>> Biography Section Code : START
+----------------------------------------------------------------*/
+$Dis_Biography_sec = !empty($player_description) ?
+	'<div class="row">
+		<div class="max-width-content">
+			<div class="prose">
+					<h2 class="section-heading">
+						' . $player_biography_title . '
+					</h2>
+					' . wp_kses_post($player_description) . '
+				<div class="nwVKo">
+					<div class="loJjTe"></div>
+				</div>
+			</div>
+		</div>
+	</div>' : '';
+/*--------------------------------------------------------------
+	>>> Biography Section Code : END
+----------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+	>>> Big Images Section Code : START
+----------------------------------------------------------------*/
+$Dis_Big_Images_sec = !empty($player_big_image_1) || !empty($player_big_image_2) ?
+	'<div class="player-gallery">
+		<div class="post-gallery">
+			<div class="post-gallery-item">
+				<figure class="image-container lazy-load-container ratio-3x2">
+					<a href="' . $player_big_image_1 . '" data-fslightbox="post-gallery" data-type="image">
+						<img src="' . $player_big_image_1 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 1" loading="lazy">
+					</a>
+				</figure>
+			</div>
+			<div class="post-gallery-item">
+				<figure class="image-container lazy-load-container ratio-3x2">
+					<a href="' . $player_big_image_2 . '" data-fslightbox="post-gallery" data-type="image">
+						<img src="' . $player_big_image_2 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 2" loading="lazy">
+					</a>
+				</figure>
+			</div>
+		</div>
+	</div>' : '';
+/*--------------------------------------------------------------
+	>>> Big Images Section Code : END
+----------------------------------------------------------------*/
 
 ?>
 <div class="post-7189 player type-player status-publish has-post-thumbnail hentry team-first-team">
@@ -136,185 +195,93 @@ $Dis_Stats_sec = !empty($Dis_state_data) ?
 	----------------------------------------------------------------*!-->
 	<?php echo $Dis_Player_Header; ?>
 
-
 	<div class="block">
 		<?php echo $Dis_Stats_sec; ?>
+		<?php echo $Dis_Biography_sec; ?>
+		<?php echo $Dis_Big_Images_sec; ?>
+	</div>
+	<?php
+	// Get the player's title
+	$player_title = get_the_title($player_id);
+
+	// Retrieve the tag by name to get its slug
+	$tag = get_term_by('name', $player_title, 'post_tag');
+	if ($tag) {
+	?>
 		<div class="row">
-			<div class="max-width-content">
-				<div class="prose">
-					<?php if (!empty($player_biography_title)): ?>
-						<h2 class="section-heading"><?php echo esc_html($player_biography_title); ?></h2>
-					<?php endif; ?>
-
-					<?php if (!empty($player_description)): ?>
-						<p><?php echo esc_html($player_description); ?></p>
-					<?php endif; ?>
-
-					<div class="nwVKo">
-						<div class="loJjTe"></div>
-					</div>
+			<div class="container">
+				<div class="section-header">
+					<h2 class="section-heading section-heading-display">Player News</h2>
 				</div>
 			</div>
-		</div>
 
 
-		<div class="player-gallery">
-			<div class="post-gallery">
 
-				<?php if ($player_big_image_1) : ?>
-					<div class="post-gallery-item">
-						<figure class="image-container lazy-load-container ratio-3x2">
-							<a href="<?php echo esc_url($player_big_image_1); ?>" data-fslightbox="post-gallery" data-type="image">
-								<img src="<?php echo esc_url($player_big_image_1); ?>" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 1" loading="lazy">
-							</a>
-						</figure>
-					</div>
-				<?php endif; ?>
+			<?php
+			// Arguments for WP_Query to get posts with the tag slug
+			$args = array(
+				'post_type' => 'post', // Change this if you're querying a custom post type
+				'posts_per_page' => 3, // Adjust the number of posts as needed
+				'tag_slug__in' => array($tag->slug), // Use the slug of the tag
+			);
 
-				<?php if ($player_big_image_2) : ?>
-					<div class="post-gallery-item">
-						<figure class="image-container lazy-load-container ratio-3x2">
-							<a href="<?php echo esc_url($player_big_image_2); ?>" data-fslightbox="post-gallery" data-type="image">
-								<img src="<?php echo esc_url($player_big_image_2); ?>" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 2" loading="lazy">
-							</a>
-						</figure>
-					</div>
-				<?php endif; ?>
+			$query = new WP_Query($args);
 
-			</div>
-		</div>
-	</div>
+			// Check if we have posts
+			if ($query->have_posts()) : ?>
 
-	<div class="row">
-		<div class="container">
-			<div class="section-header">
-				<h2 class="section-heading section-heading-display">Player News</h2>
-			</div>
-		</div>
+				<div class="grid-container grid-columns-sm-2-lg-4 grid-columns-auto-scroll">
 
-		<div class="grid-container grid-columns-sm-2-lg-4 grid-columns-auto-scroll">
+					<?php while ($query->have_posts()) : $query->the_post(); ?>
 
-			<div class="card card-post card-w-link">
+						<div class="card card-post card-w-link">
 
+							<div class="card-image">
+								<a href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
+									<div class="image-container ratio-16x9">
+										<?php if (has_post_thumbnail()) : ?>
+											<?php the_post_thumbnail('medium', ['class' => 'fill', 'loading' => 'lazy', 'decoding' => 'async']); ?>
+										<?php endif; ?>
+									</div>
+								</a>
+							</div>
 
-				<div class="card-image">
-					<a href="https://haverfordwestcountyafc.com/2024/02/zac-jones-agrees-new-one-year-deal-with-the-bluebirds/" aria-label="Zac Jones agrees new one-year deal with the Bluebirds">
-						<div class="image-container ratio-16x9">
-							<img width="480" height="270" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=16x9sm" class="fill" alt="Read the full article - Zac Jones agrees new one-year deal with the Bluebirds" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=16x9sm 480w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=large 1200w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=1536x1536 1536w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=16x9md 960w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png?class=16x9lg 1280w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/02/29182505/zaccontractFI.png 1920w" sizes="(max-width: 480px) 100vw, 480px">
+							<div class="card-content">
+								<span class="card-title"><?php the_title(); ?></span>
+								<p class="card-summary"><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
+								<div class="card-meta">
+									<span class="cat"><?php the_category(', '); ?></span>
+									<span class="timestamp"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago'; ?></span>
+								</div>
+							</div>
+
 						</div>
 
-					</a>
-				</div>
-
-
-				<div class="card-content">
-
-
-					<span class="card-title">Zac Jones agrees new one-year deal with the Bluebirds</span>
-
-					<p class="card-summary">Super Zac extends his stay at the Ogi Bridge Meadow!</p>
-					<div class="card-meta">
-						<span class="cat">Latest Club News</span><span class="timestamp">7 months ago</span>
-					</div>
-
+					<?php endwhile; ?>
 
 				</div>
 
+			<?php
+			else :
+				// No posts found
+				echo '<div class="grid-container grid-columns-sm-2-lg-4 grid-columns-auto-scroll"><p>No posts found.</p></div>';
+			endif;
 
-			</div>
+			// Reset Post Data
+			wp_reset_postdata();
 
-			<div class="card card-post card-w-link">
-
-
-				<div class="card-image">
-					<a href="https://haverfordwestcountyafc.com/2023/05/zac-jones-agrees-new-one-year-deal-with-haverfordwest-county/" aria-label="Zac Jones agrees new one-year deal with Haverfordwest County">
-						<div class="image-container ratio-16x9">
-							<img width="480" height="270" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/2023-05-13-Newtown-AFC-vs-Haverfordwest-County-AFC-247.jpg?class=16x9sm" class="fill" alt="Read the full article - Zac Jones agrees new one-year deal with Haverfordwest County" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/2023-05-13-Newtown-AFC-vs-Haverfordwest-County-AFC-247.jpg?class=16x9sm 480w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/2023-05-13-Newtown-AFC-vs-Haverfordwest-County-AFC-247.jpg?class=16x9md 960w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/2023-05-13-Newtown-AFC-vs-Haverfordwest-County-AFC-247.jpg?class=16x9lg 1280w" sizes="(max-width: 480px) 100vw, 480px">
-						</div>
-
-					</a>
-				</div>
-
-
-				<div class="card-content">
-
-
-					<span class="card-title">Zac Jones agrees new one-year deal with Haverfordwest County</span>
-
-					<p class="card-summary">Super Zac signs on for another year with the Bluebirds!</p>
-					<div class="card-meta">
-						<span class="cat">Latest Club News</span><span class="timestamp">1 year ago</span>
-					</div>
-
-
-				</div>
-
-
-			</div>
-
-			<div class="card card-post card-w-link">
-
-
-				<div class="card-image">
-					<a href="https://haverfordwestcountyafc.com/2023/05/jones-the-hero-as-bluebirds-reach-maiden-european-play-off-final/" aria-label="Keeper Jones the hero as Bluebirds reach maiden European play-off final">
-						<div class="image-container ratio-16x9">
-							<img width="480" height="270" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=16x9sm" class="fill" alt="Read the full article - Keeper Jones the hero as Bluebirds reach maiden European play-off final" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=16x9sm 480w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=large 1200w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=1536x1536 1536w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=16x9md 960w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png?class=16x9lg 1280w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/05/MetAwayReportFI.png 1920w" sizes="(max-width: 480px) 100vw, 480px">
-						</div>
-
-					</a>
-				</div>
-
-
-				<div class="card-content">
-
-
-					<span class="card-title">Keeper Jones the hero as Bluebirds reach maiden European play-off final</span>
-
-					<p class="card-summary">Our report of Haverfordwest County's 4-3 penalty shoot-out victory over Cardiff Metropolitan in the JD Cymru Premier European play-off semi-finals.</p>
-					<div class="card-meta">
-						<span class="cat">Match Reports</span><span class="timestamp">1 year ago</span>
-					</div>
-
-
-				</div>
-
-
-			</div>
-
-			<div class="card card-post card-w-link">
-
-
-				<div class="card-image">
-					<a href="https://haverfordwestcountyafc.com/2022/09/thebluebirdsnest-episode-6-zac-jones/" aria-label="#TheBluebirdsNest Episode 6 – Zac Jones">
-						<div class="image-container ratio-16x9">
-							<img src="https://i.ytimg.com/vi/IiMkZbA5tgk/maxresdefault.jpg" alt="Read the full article - #TheBluebirdsNest Episode 6 – Zac Jones" width="1280" height="720" class="fill">
-						</div>
-
-					</a>
-				</div>
-
-
-				<div class="card-content">
-
-
-					<span class="card-title">#TheBluebirdsNest Episode 6 – Zac Jones</span>
-
-					<p class="card-summary">Watch Episode 6 of #TheBluebirdsNest, our vodcast and podcast series, with goalkeeper Zac Jones.
-
-					</p>
-					<div class="card-meta">
-						<span class="cat">#TheBluebirdsNest</span><span class="timestamp">2 years ago</span>
-					</div>
-
-
-				</div>
-
-
-			</div>
+			?>
 
 		</div>
-	</div>
+	<?php
+	} else {
+		// No tag found with the player's title
+		echo '';
+	}
+	?>
 
 </div>
+
+
 
 <?php get_footer(); ?>
