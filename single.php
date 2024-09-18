@@ -48,7 +48,7 @@ $post_banner_video = get_field('post_banner_video');
 		</div>
 
 	</div>
-	<?php if (has_post_thumbnail() && empty($post_banner_video )) { ?>
+	<?php if (has_post_thumbnail() && empty($post_banner_video)) { ?>
 		<div class="container container-slim">
 			<figure class="post-main-image">
 				<div class="image-container ratio-16x9">
@@ -58,17 +58,19 @@ $post_banner_video = get_field('post_banner_video');
 		</div>
 	<?php } else {  ?>
 
-		<?php if(!empty($post_banner_video )){ ?>
-<div class="container container-slim">
-		
-<figure class="post-main-video video-placeholder">
-	<img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" width="1280" height="720">
-	<button class="play" data-js-embed="<div class=&quot;video-container&quot;><iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;<?php echo $post_banner_video; ?>&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen title=&quot;#TheBluebirdsNest | Episode 6 - Zac Jones&quot;></iframe></div>" aria-label="Play Video">
-		<svg aria-hidden="true" height="40" width="40" viewBox="0 0 40 40"><path d="M37 20L2 40V0L37 20Z" fill="currentColor"></path></svg>	</button>
-</figure>
-	</div>
-	<?php } ?>
+		<?php if (!empty($post_banner_video)) { ?>
+			<div class="container container-slim">
+
+				<figure class="post-main-video video-placeholder">
+					<img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" width="1280" height="720">
+					<button class="play" data-js-embed="<div class=&quot;video-container&quot;><iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;<?php echo $post_banner_video; ?>&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen title=&quot;#TheBluebirdsNest | Episode 6 - Zac Jones&quot;></iframe></div>" aria-label="Play Video">
+						<svg aria-hidden="true" height="40" width="40" viewBox="0 0 40 40">
+							<path d="M37 20L2 40V0L37 20Z" fill="currentColor"></path>
+						</svg> </button>
+				</figure>
+			</div>
 		<?php } ?>
+	<?php } ?>
 
 </div>
 
@@ -157,20 +159,26 @@ $post_banner_video = get_field('post_banner_video');
 				while (have_posts()) : the_post();
 
 					// Get the ACF fields
-					$sidebar_card_image = get_field('sidebar_card_image'); // Assuming this is an image URL or ID
-					$sidebar_card_title = get_field('sidebar_card_title');
-					$sidebar_card_button = get_field('sidebar_card_button'); // Assuming this is an array with 'url' and 'title'
+					$sidebar_card_image_id = get_field('sidebar_card_image', get_the_ID()); // Assuming this is an image URL or ID
+					$sidebar_card_title = get_field('sidebar_card_title', get_the_ID());
+					$sidebar_card_button = get_field('sidebar_card_button', get_the_ID()); // Assuming this is an array with 'url' and 'title'
+
+					if ($sidebar_card_image_id) {
+						$sidebar_card_image_url = wp_get_attachment_image_url($sidebar_card_image_id, 'full'); // 'medium' can be replaced with any size you need
+					} else {
+						$sidebar_card_image_url = '';
+					}
 
 					// Check if the ACF fields are available and display them
 					if ($sidebar_card_image || $sidebar_card_title || $sidebar_card_button) {
 						echo '<div class="card card-promo card-centered card-w-link">';
 
 						// Display the image
-						if ($sidebar_card_image) {
+						if ($sidebar_card_image_url) {
 							echo '<div class="card-image">';
 							echo '<a target="_blank" href="' . esc_url($sidebar_card_button['url']) . '" aria-label="' . esc_attr($sidebar_card_title) . '">';
 							echo '<div class="image-container ratio-16x9">';
-							echo '<img width="480" height="270" src="' . esc_url($sidebar_card_image) . '" alt="' . esc_attr($sidebar_card_title) . '" class="attachment-16x9-sm size-16x9-sm" decoding="async" loading="lazy">';
+							echo '<img width="480" height="270" src="' . esc_url($sidebar_card_image_url) . '" alt="' . esc_attr($sidebar_card_title) . '" class="attachment-16x9-sm size-16x9-sm" decoding="async" loading="lazy">';
 							echo '</div>';
 							echo '</a>';
 							echo '</div>';

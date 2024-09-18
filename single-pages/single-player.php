@@ -31,10 +31,10 @@ $player_role = get_field('player_role', $player_id);
 $player_biography_title = get_field('player_biography_title', $player_id);
 $player_stats_title = get_field('player_stats_title', $player_id);
 $player_stats = get_field('player_stats', $player_id);
-$player_background_image = get_field('player_background_image', $player_id);
-$player_big_image_1 = get_field('player_big_image_1', $player_id);
-$player_big_image_2 = get_field('player_big_image_2', $player_id);
-$player_right_card_image = get_field('player_right_card_image', $player_id);
+$player_background_image_id = get_field('player_background_image', $player_id);
+$player_big_image_1_id = get_field('player_big_image_1', $player_id);
+$player_big_image_2_id = get_field('player_big_image_2', $player_id);
+$player_right_card_image_id = get_field('player_right_card_image', $player_id);
 $player_right_card_title = get_field('player_right_card_title', $player_id);
 $player_right_card_title_2 = get_field('player_right_card_title_2', $player_id);
 $player_right_card_button = get_field('player_right_card_button', $player_id);
@@ -43,10 +43,15 @@ $player_description = get_the_content($player_id);
 /*--------------------------------------------------------------
 	>>> Header Section Code : START
 ----------------------------------------------------------------*/
-$Dis_player_background_image = !empty($player_background_image) ?
+if ($player_background_image_id) {
+	$player_background_image_url = wp_get_attachment_image_url($player_background_image_id, 'full'); // 'medium' can be replaced with any size you need
+} else {
+	$player_background_image_url = '';
+}
+$Dis_player_background_image = !empty($player_background_image_url) ?
 	'<div class="player-cover cover-photo">
 		<div class="image-container overlay-duotone">
-				<img width="1280" height="720" src="' . $player_background_image . '?class=16x9lg" class="attachment-16x9-lg size-16x9-lg" alt="" decoding="async" srcset="' . $player_background_image . '?class=16x9md 960w" sizes="(max-width: 1280px) 100vw, 1280px">
+				<img width="1280" height="720" src="' . $player_background_image_url . '?class=16x9lg" class="attachment-16x9-lg size-16x9-lg" alt="" decoding="async" srcset="' . $player_background_image_url . '?class=16x9md 960w" sizes="(max-width: 1280px) 100vw, 1280px">
 		</div>
 	</div>' : '';
 
@@ -69,11 +74,17 @@ $Dis_player_details = !empty($player_number) || !empty($player_first_name) || !e
 		</ul>
 	</div>' : '';
 
-$Dis_player_right_card_image = !empty($player_right_card_image) ?
+if ($player_right_card_image_id) {
+	$player_right_card_image_url = wp_get_attachment_image_url($player_right_card_image_id, 'full'); // 'medium' can be replaced with any size you need
+} else {
+	$player_right_card_image_url = '';
+}
+
+$Dis_player_right_card_image = !empty($player_right_card_image_url) ?
 	'<div class="card-image">
 		<a target="_blank" href="' . $player_right_card_button['url'] . '" aria-label="' . $player_right_card_button['title'] . '">
 			<div class="image-container ratio-16x9">
-				<img width="300" height="300" src="' . $player_right_card_image . '?class=thumbnail" class="logo wp-post-image" alt="" decoding="async" srcset="' . $player_right_card_image . '?class=thumbnail 300w, ' . $player_right_card_image . '?class=1x1xs 150w, ' . $player_right_card_image . ' 400w" sizes="(max-width: 300px) 100vw, 300px">
+				<img width="300" height="300" src="' . $player_right_card_image_url . '?class=thumbnail" class="logo wp-post-image" alt="" decoding="async" srcset="' . $player_right_card_image_url . '?class=thumbnail 300w, ' . $player_right_card_image_url . '?class=1x1xs 150w, ' . $player_right_card_image_url . ' 400w" sizes="(max-width: 300px) 100vw, 300px">
 			</div>
 		</a>
 	</div>' : '';
@@ -165,20 +176,33 @@ $Dis_Biography_sec = !empty($player_description) ?
 /*--------------------------------------------------------------
 	>>> Big Images Section Code : START
 ----------------------------------------------------------------*/
-$Dis_player_big_image_1 = !empty($player_big_image_1) ?
+
+if ($player_big_image_1_id) {
+	$player_big_image_1_url = wp_get_attachment_image_url($player_big_image_1_id, 'full'); // 'medium' can be replaced with any size you need
+} else {
+	$player_big_image_1_url = '';
+}
+
+$Dis_player_big_image_1 = !empty($player_big_image_1_url) ?
 	'<div class="post-gallery-item">
 		<figure class="image-container lazy-load-container ratio-3x2">
-			<a href="' . $player_big_image_1 . '" data-fslightbox="post-gallery" data-type="image">
-				<img src="' . $player_big_image_1 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 1" loading="lazy">
+			<a href="' . $player_big_image_1_url . '" data-fslightbox="post-gallery" data-type="image">
+				<img src="' . $player_big_image_1_url . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 1" loading="lazy">
 			</a>
 		</figure>
 	</div>' : '';
 
-$Dis_player_big_image_2 = !empty($player_big_image_2) ?
+if ($player_big_image_2_id) {
+	$player_big_image_2_url = wp_get_attachment_image_url($player_big_image_2_id, 'full'); // 'medium' can be replaced with any size you need
+} else {
+	$player_big_image_2_url = '';
+}
+
+$Dis_player_big_image_2 = !empty($player_big_image_2_url) ?
 	'<div class="post-gallery-item">
 		<figure class="image-container lazy-load-container ratio-3x2">
-			<a href="' . $player_big_image_2 . '" data-fslightbox="post-gallery" data-type="image">
-				<img src="' . $player_big_image_2 . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 2" loading="lazy">
+			<a href="' . $player_big_image_2_url . '" data-fslightbox="post-gallery" data-type="image">
+				<img src="' . $player_big_image_2_url . '" class="attachment-3x2-md size-3x2-md" alt="Player Big Image 2" loading="lazy">
 			</a>
 		</figure>
 	</div>' : '';
