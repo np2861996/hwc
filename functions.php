@@ -118,27 +118,6 @@ function hwc_content_width()
 add_action('after_setup_theme', 'hwc_content_width', 0);
 
 /**
- * Register widget area.
- *
- * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
- */
-function hwc_widgets_init()
-{
-    register_sidebar(
-        array(
-            'name'          => esc_html__('Sidebar', 'hwc'),
-            'id'            => 'sidebar-1',
-            'description'   => esc_html__('Add widgets here.', 'hwc'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</section>',
-            'before_title'  => '<h2 class="widget-title">',
-            'after_title'   => '</h2>',
-        )
-    );
-}
-add_action('widgets_init', 'hwc_widgets_init');
-
-/**
  * Enqueue scripts and styles.
  */
 function hwc_scripts()
@@ -195,7 +174,7 @@ if (defined('JETPACK__VERSION')) {
 	----------------------------------------------------------------*/
 add_action('after_switch_theme', 'hwc_check_acf_pro_before_activation');
 add_action('after_switch_theme', 'hwc_activate_theme_setup');
-add_filter('template_include', 'hwc_load_custom_player_template');
+add_filter('template_include', 'hwc_load_custom_templates');
 
 /*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
@@ -287,16 +266,38 @@ function hwc_activate_theme_setup()
 }
 
 /* Use template_include Hook to Point to the New Template */
-function hwc_load_custom_player_template($template)
+function hwc_load_custom_templates($template)
 {
     if (is_singular('player')) {
         // Point to the template inside the single-pages folder
-        $custom_template = get_template_directory() . '/single-pages/single-player.php';
+        $player_template = get_template_directory() . '/single-pages/single-player.php';
 
         // Check if the custom template exists
-        if (file_exists($custom_template)) {
-            return $custom_template;
+        if (file_exists($player_template)) {
+            return $player_template;
+        }
+    }
+
+    if (is_singular('team')) {
+        // Point to the template inside the single-pages folder
+        $team_template = get_template_directory() . '/single-pages/single-team.php';
+
+        // Check if the custom template exists
+        if (file_exists($team_template)) {
+            return $team_template;
         }
     }
     return $template;
 }
+
+/*--------------------------------------------------------------
+	>>> Check if the current page is a single post of type 'team'
+	----------------------------------------------------------------*/
+function add_custom_body_class($classes)
+{
+    if (is_singular('team')) {
+        $classes[] = 'single-club_team';
+    }
+    return $classes;
+}
+add_filter('body_class', 'add_custom_body_class');
