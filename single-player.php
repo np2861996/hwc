@@ -16,7 +16,10 @@ get_header();
 if (has_post_thumbnail()) {
 	// Get the featured image URL
 	$thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
+} else {
+	$thumbnail_url = get_template_directory_uri() . '/hwc-images/default-player.jpg';
 }
+
 // Fetch player details
 $player_id = get_the_ID();
 

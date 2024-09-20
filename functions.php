@@ -174,7 +174,6 @@ if (defined('JETPACK__VERSION')) {
 	----------------------------------------------------------------*/
 add_action('after_switch_theme', 'hwc_check_acf_pro_before_activation');
 add_action('after_switch_theme', 'hwc_activate_theme_setup');
-add_filter('template_include', 'hwc_load_custom_templates');
 
 /*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
@@ -202,14 +201,18 @@ function hwc_check_acf_pro_before_activation()
 
     // Check if ACF Pro is installed but inactive
     if (!is_plugin_active('advanced-custom-fields-pro/acf.php')) {
-        // Activate ACF Pro if installed but not active
-        activate_plugin('advanced-custom-fields-pro/acf.php');
+        // Show error if ACF Pro is not available
+        add_action('admin_notices', 'acf_pro_missing_error');
+        switch_theme(WP_DEFAULT_THEME); // Revert to the default theme if ACF Pro is not installed
+        return;
     }
 
     // Check if HWC Plugin is installed but inactive
     if (!is_plugin_active('hwc/hwc.php')) {
-        // Activate ACF Pro if installed but not active
-        activate_plugin('hwc/hwc.php');
+        // Show error if ACF Pro is not available
+        add_action('admin_notices', 'hwc_plugin_missing_error');
+        switch_theme(WP_DEFAULT_THEME); // Revert to the default theme if ACF Pro is not installed
+        return;
     }
 
     // Ensure ACF content remains unchanged (ACF data is saved in the database, so this happens automatically)
@@ -265,41 +268,6 @@ function hwc_activate_theme_setup()
     }
 }
 
-/* Use template_include Hook to Point to the New Template */
-function hwc_load_custom_templates($template)
-{
-    if (is_singular('player')) {
-        // Point to the template inside the single-pages folder
-        $player_template = get_template_directory() . '/single-pages/single-player.php';
-
-        // Check if the custom template exists
-        if (file_exists($player_template)) {
-            return $player_template;
-        }
-    }
-
-    if (is_singular('team')) {
-        // Point to the template inside the single-pages folder
-        $team_template = get_template_directory() . '/single-pages/single-team.php';
-
-        // Check if the custom template exists
-        if (file_exists($team_template)) {
-            return $team_template;
-        }
-    }
-
-    if (is_singular('staff')) {
-        // Point to the template inside the single-pages folder
-        $staff_template = get_template_directory() . '/single-pages/single-staff.php';
-
-        // Check if the custom template exists
-        if (file_exists($staff_template)) {
-            return $staff_template;
-        }
-    }
-    return $template;
-}
-
 /*--------------------------------------------------------------
 	>>> Check if the current page is a single post of type 'team'
 	----------------------------------------------------------------*/
@@ -311,3 +279,4 @@ function add_custom_body_class($classes)
     return $classes;
 }
 add_filter('body_class', 'add_custom_body_class');
+//end

@@ -138,7 +138,13 @@ function display_players_for_all_roles()
                     $player_number = get_field('player_number', $player_id);
                     $player_right_card_title = get_field('player_right_card_title', $player_id);
                     $player_sponsor = get_field('player_right_card_button', $player_id);
-                    $player_image_url = get_the_post_thumbnail_url($player_id, 'full');
+
+
+                    if (has_post_thumbnail($player_id)) {
+                        $player_image_url = get_the_post_thumbnail_url($player_id, 'full');
+                    } else {
+                        $player_image_url = get_template_directory_uri() . '/hwc-images/default-player.jpg';
+                    }
 
 ?>
                     <div class="player-list-item team-first-team position-<?php echo esc_attr(strtolower($role)); ?>">
@@ -266,11 +272,16 @@ function display_staff_for_team()
                     $staff_first_name = get_field('staff_first_name', $staff_id);
                     $staff_last_name = get_field('staff_last_name', $staff_id);
                     $staff_role = get_field('staff_role', $staff_id);
-                    $staff_image_url = get_the_post_thumbnail_url($staff_id, 'full');
                     $staff_sponsor = get_field('staff_sponsor', $staff_id); // Adjust based on your ACF setup
                     $staff_right_card_title = get_field('staff_right_card_title', $staff_id);
                     $staff_right_card_title_2 = get_field('staff_right_card_title_2', $staff_id);
                     $staff_right_card_button = get_field('staff_right_card_button', $staff_id);
+
+                    if (has_post_thumbnail($staff_id)) {
+                        $staff_image_url = get_the_post_thumbnail_url($staff_id, 'full');
+                    } else {
+                        $staff_image_url = get_template_directory_uri() . '/hwc-images/default-player.jpg';
+                    }
 
                 ?>
                     <div class="player-list-item position-staff">
