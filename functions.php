@@ -276,6 +276,9 @@ function add_custom_body_class($classes)
     if (is_singular('team')) {
         $classes[] = 'single-club_team';
     }
+    if (is_singular('fixtures')) {
+        $classes[] = 'single-match';
+    }
     return $classes;
 }
 add_filter('body_class', 'add_custom_body_class');
