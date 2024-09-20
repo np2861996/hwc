@@ -27,7 +27,6 @@ $team_selection = get_field('team_selection', $player_id);
 $player_number = get_field('player_number', $player_id);
 $player_first_name = get_field('player_first_name', $player_id);
 $player_last_name = get_field('player_last_name', $player_id);
-$player_role = get_field('player_role', $player_id);
 $player_biography_title = get_field('player_biography_title', $player_id);
 $player_stats_title = get_field('player_stats_title', $player_id);
 $player_stats = get_field('player_stats', $player_id);
@@ -39,7 +38,15 @@ $player_right_card_title = get_field('player_right_card_title', $player_id);
 $player_right_card_title_2 = get_field('player_right_card_title_2', $player_id);
 $player_right_card_button = get_field('player_right_card_button', $player_id);
 $player_description = get_the_content($player_id);
+// Get the terms for the current post for the 'player_role' taxonomy
+$terms = get_the_terms(get_the_ID(), 'player_role');
 
+// Check if terms exist and assign the first term to $player_role
+if (! empty($terms) && ! is_wp_error($terms)) {
+	$player_role = $terms[0]->name; // Get the name of the first term
+} else {
+	$player_role = ''; // Default if no terms are found
+}
 /*--------------------------------------------------------------
 	>>> Header Section Code : START
 ----------------------------------------------------------------*/

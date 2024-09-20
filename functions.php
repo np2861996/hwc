@@ -287,6 +287,16 @@ function hwc_load_custom_templates($template)
             return $team_template;
         }
     }
+
+    if (is_singular('staff')) {
+        // Point to the template inside the single-pages folder
+        $staff_template = get_template_directory() . '/single-pages/single-staff.php';
+
+        // Check if the custom template exists
+        if (file_exists($staff_template)) {
+            return $staff_template;
+        }
+    }
     return $template;
 }
 

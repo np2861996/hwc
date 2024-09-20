@@ -49,27 +49,27 @@ if ($staff_background_image_id) {
     $staff_background_image_url = '';
 }
 $Dis_staff_background_image = !empty($staff_background_image_url) ?
-    '<div class="staff-cover cover-photo">
+    '<div class="player-cover cover-photo">
 		<div class="image-container overlay-duotone">
 				<img width="1280" height="720" src="' . $staff_background_image_url . '?class=16x9lg" class="attachment-16x9-lg size-16x9-lg" alt="" decoding="async" srcset="' . $staff_background_image_url . '?class=16x9md 960w" sizes="(max-width: 1280px) 100vw, 1280px">
 		</div>
 	</div>' : '';
 
 $Dis_thumbnail = !empty($thumbnail_url) ?
-    '<div class="staff-profile-image">
+    '<div class="player-profile-image">
 		<div class="image-container ratio-4x5">
 				<img width="768" height="960" src="' . $thumbnail_url . '" class="fill wp-post-image" alt="Profile photo of staff" decoding="async" srcset="' . $thumbnail_url . '?class=4x5sm 480w" sizes="(max-width: 768px) 100vw, 768px">
 		</div>
 	</div>' : '';
 
 $Dis_staff_details = !empty($staff_number) || !empty($staff_first_name) || !empty($staff_last_name) || !empty($staff_role) ?
-    '<div class="staff-details">
-		<span class="staff-number" aria-hidden="true">' . $staff_number . '</span>
-		<h1 class="staff-name">
-			<span class="staff-name-first">' . $staff_first_name . '</span>
-			<span class="staff-name-last">' . $staff_last_name . '</span>
+    '<div class="player-details">
+		<span class="player-number" aria-hidden="true">' . $staff_number . '</span>
+		<h1 class="player-name">
+			<span class="player-name-first">' . $staff_first_name . '</span>
+			<span class="player-name-last">' . $staff_last_name . '</span>
 		</h1>
-		<ul class="staff-meta-data separate-items">
+		<ul class="player-meta-data separate-items">
 			<li>' . $staff_role . '</li>
 		</ul>
 	</div>' : '';
@@ -106,7 +106,7 @@ $Dis_staff_right_card = (!empty($staff_right_card_image) || (is_array($staff_rig
     : '';
 
 $Dis_Staff_Header = !empty($Dis_staff_background_image) || !empty($Dis_thumbnail) || !empty($Dis_staff_details) || !empty($Dis_staff_right_card) ?
-    '<header class="staff-header staff-header-lg">
+    '<header class="player-header player-header-lg">
 		' . $Dis_staff_background_image . '
 		<div class="container">
 			<div class="grid-container">
@@ -208,7 +208,7 @@ $Dis_staff_big_image_2 = !empty($staff_big_image_2_url) ?
 	</div>' : '';
 
 $Dis_Big_Images_sec = !empty($Dis_staff_big_image_1) || !empty($Dis_staff_big_image_2) ?
-    '<div class="staff-gallery">
+    '<div class="player-gallery">
 		<div class="post-gallery">
 			' . $Dis_staff_big_image_1 . $Dis_staff_big_image_2 . '
 			

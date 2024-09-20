@@ -11,7 +11,6 @@
 get_header();
 $team_id = get_the_ID();
 
-
 // Query to get all team posts
 $args = array(
     'post_type'      => 'team',
@@ -55,9 +54,9 @@ if (is_singular('team')) {
     }
 }
 
-/**
- * Display players for all roles on a single team page.
- */
+/*--------------------------------------------------------------
+	>>> Display players for all roles on a single team page.
+----------------------------------------------------------------*/
 function display_players_for_all_roles()
 {
     if (is_singular('team')) {
@@ -137,7 +136,8 @@ function display_players_for_all_roles()
                     $player_first_name = get_field('player_first_name', $player_id);
                     $player_last_name = get_field('player_last_name', $player_id);
                     $player_number = get_field('player_number', $player_id);
-                    $player_sponsor = get_field('player_sponsor', $player_id);
+                    $player_right_card_title = get_field('player_right_card_title', $player_id);
+                    $player_sponsor = get_field('player_right_card_button', $player_id);
                     $player_image_url = get_the_post_thumbnail_url($player_id, 'full');
 
 ?>
@@ -162,7 +162,7 @@ function display_players_for_all_roles()
                         </div>
                         <?php if ($player_sponsor) : ?>
                             <div class="player-sponsor">
-                                <span class="label">Sponsored by</span>
+                                <span class="label"><?php echo esc_html($player_right_card_title); ?></span>
                                 <a href="<?php echo esc_url($player_sponsor['url']); ?>" target="_blank">
                                     <span class="title"><?php echo esc_html($player_sponsor['title']); ?></span>
                                     <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">
@@ -172,7 +172,7 @@ function display_players_for_all_roles()
                             </div>
                         <?php endif; ?>
                     </div>
-<?php
+                <?php
                 }
 
                 echo '</div>'; // Close .player-list
@@ -185,6 +185,135 @@ function display_players_for_all_roles()
     }
 }
 
+
+/*--------------------------------------------------------------
+	>>> Display staff for all roles on a single team page.
+----------------------------------------------------------------*/
+function display_staff_for_team()
+{
+    if (is_singular('team')) {
+        $team_id = get_the_ID(); // Get the current team's ID
+
+        // Query to get all unique staff roles for the current team
+        $roles_query = new WP_Query(array(
+            'post_type'      => 'staff', // Change to your staff post type
+            'meta_query'     => array(
+                array(
+                    'key'     => 'team_selection',
+                    'value'   => $team_id,
+                    'compare' => 'LIKE'
+                ),
+            ),
+            'fields'         => 'ids', // Retrieve only post IDs
+            'posts_per_page' => -1, // Retrieve all posts
+            'post_status'    => 'publish'
+        ));
+
+        $roles = array();
+
+        // Collect all unique roles
+        if ($roles_query->have_posts()) {
+            while ($roles_query->have_posts()) {
+                $roles_query->the_post();
+                $terms = wp_get_post_terms(get_the_ID(), 'staff_role', array('fields' => 'names')); // Adjust taxonomy if needed
+                foreach ($terms as $term) {
+                    if (!in_array($term, $roles)) {
+                        $roles[] = $term;
+                    }
+                }
+            }
+        }
+
+        // Reset post data
+        wp_reset_postdata();
+
+        // Sort roles if needed (optional)
+        $roles = array_unique($roles); // Ensure roles are unique
+        sort($roles); // Optional: sort roles alphabetically
+
+        // Query staff by role
+        foreach ($roles as $role) {
+            $query_args = array(
+                'post_type' => 'staff', // Change to your staff post type
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'staff_role', // Adjust taxonomy if needed
+                        'field'    => 'name',
+                        'terms'    => $role,
+                        'operator' => 'IN',
+                    ),
+                ),
+                'meta_query' => array(
+                    array(
+                        'key'     => 'team_selection',
+                        'value'   => $team_id,
+                        'compare' => 'LIKE'
+                    ),
+                ),
+                'posts_per_page' => -1,
+                'post_status'    => 'publish'
+            );
+
+            $staff_query = new WP_Query($query_args);
+
+            if ($staff_query->have_posts()) {
+
+
+                while ($staff_query->have_posts()) {
+                    $staff_query->the_post();
+
+                    $staff_id = get_the_ID();
+                    $staff_first_name = get_field('staff_first_name', $staff_id);
+                    $staff_last_name = get_field('staff_last_name', $staff_id);
+                    $staff_role = get_field('staff_role', $staff_id);
+                    $staff_image_url = get_the_post_thumbnail_url($staff_id, 'full');
+                    $staff_sponsor = get_field('staff_sponsor', $staff_id); // Adjust based on your ACF setup
+                    $staff_right_card_title = get_field('staff_right_card_title', $staff_id);
+                    $staff_right_card_title_2 = get_field('staff_right_card_title_2', $staff_id);
+                    $staff_right_card_button = get_field('staff_right_card_button', $staff_id);
+
+                ?>
+                    <div class="player-list-item position-staff">
+                        <div class="card card-player card-cover card-w-link">
+                            <div class="card-image">
+                                <a href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr($staff_first_name . ' ' . $staff_last_name); ?>">
+                                    <div class="image-container ratio-3x4">
+                                        <img width="768" height="960" src="<?php echo esc_url($staff_image_url); ?>" class="fill wp-post-image" alt="<?php echo esc_attr(get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true)); ?>" decoding="async" loading="lazy">
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="card-content">
+                                <span class="card-title">
+                                    <span class="player-first-name"><?php echo esc_html($staff_first_name); ?></span>
+                                    <span class="player-last-name"><?php echo esc_html($staff_last_name); ?></span>
+                                </span>
+                                <div class="card-meta">
+                                    <span class="tax tax-position"><?php echo esc_html($staff_role); ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="player-sponsor">
+                            <span class="label"><?php echo esc_html($staff_right_card_title); ?></span>
+                            <?php if ($staff_right_card_button) : ?>
+                                <a href="<?php echo esc_html($staff_right_card_button['url']); ?>">
+                                    <span class="title"><?php echo esc_html($staff_right_card_button['title']); ?></span>
+                                </a>
+
+
+                            <?php endif; ?>
+                        </div>
+                    </div>
+<?php
+                }
+            }
+
+            // Reset post data
+            wp_reset_postdata();
+        }
+    }
+}
 
 
 ?>
@@ -273,260 +402,7 @@ function display_players_for_all_roles()
         <div class="tab-panel" id="team-staff" role="tabpanel" aria-labelledby="tab-team-staff" aria-hidden="true">
             <div class="container">
                 <div class="grid-container grid-columns-2-lg-3-xl-4">
-
-                    <div class="player-list-item position-staff">
-                        <div class="card card-player card-cover card-w-link">
-
-
-                            <div class="card-image">
-                                <a href="https://haverfordwestcountyafc.com/staff/tony-pennock/" aria-label="Tony Pennock">
-                                    <div class="image-container ratio-3x4">
-                                        <img width="768" height="960" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp" class="fill wp-post-image" alt="Profile photo of Tony Pennock" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp 768w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp?class=4x5sm 480w" sizes="(max-width: 768px) 100vw, 768px">
-                                    </div>
-
-                                </a>
-                            </div>
-
-
-                            <div class="card-content">
-
-
-                                <span class="card-title">
-                                    <span class="player-first-name">Tony</span><span class="player-last-name">Pennock</span> </span>
-
-
-                                <div class="card-meta">
-                                    <span class="tax tax-position">Manager</span>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                        <div class="player-sponsor">
-
-
-                            <span class="label">Sponsored by</span>
-
-
-                            <span class="title">Haverfordwest County AFC Supporters Association</span>
-
-
-
-                        </div>
-                    </div>
-                    <div class="player-list-item position-staff">
-                        <div class="card card-player card-cover">
-
-
-                            <div class="card-image">
-
-                                <div class="image-container ratio-3x4">
-                                    <img width="768" height="960" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp" class="fill wp-post-image" alt="Profile photo of Gary Richards" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp 768w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp?class=4x5sm 480w" sizes="(max-width: 768px) 100vw, 768px">
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-content">
-
-
-                                <span class="card-title">
-                                    <span class="player-first-name">Gary</span><span class="player-last-name">Richards</span> </span>
-
-
-                                <div class="card-meta">
-                                    <span class="tax tax-position">Assistant Manager</span>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                        <div class="player-sponsor">
-
-
-                            <span class="label">This staff member is available to sponsor</span>
-
-                            <a href="https://haverfordwestcountyafc.com/commercial/sponsorship-opportunities/">
-                                <span class="title">Sponsor this staff member</span>
-                            </a>
-
-
-                        </div>
-                    </div>
-                    <div class="player-list-item position-staff">
-                        <div class="card card-player card-cover">
-
-
-                            <div class="card-image">
-
-                                <div class="image-container ratio-3x4">
-                                    <img width="768" height="960" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg" class="fill wp-post-image" alt="Profile photo of Rob  Thomas" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg 768w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg?class=4x5sm 480w" sizes="(max-width: 768px) 100vw, 768px">
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-content">
-
-
-                                <span class="card-title">
-                                    <span class="player-first-name">Rob </span><span class="player-last-name">Thomas</span> </span>
-
-
-                                <div class="card-meta">
-                                    <span class="tax tax-position">Goalkeeping Coach</span>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                        <div class="player-sponsor">
-
-
-                            <span class="label">This staff member is available to sponsor</span>
-
-                            <a href="https://haverfordwestcountyafc.com/commercial/sponsorship-opportunities/">
-                                <span class="title">Sponsor this staff member</span>
-                            </a>
-
-
-                        </div>
-                    </div>
-                    <div class="player-list-item position-staff">
-                        <div class="card card-player card-cover">
-
-
-                            <div class="card-image">
-
-                                <div class="image-container ratio-3x4">
-                                    <img width="768" height="960" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg" class="fill wp-post-image" alt="Profile photo of Richard Thompson" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg 768w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg?class=4x5sm 480w" sizes="(max-width: 768px) 100vw, 768px">
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-content">
-
-
-                                <span class="card-title">
-                                    <span class="player-first-name">Richard</span><span class="player-last-name">Thompson</span> </span>
-
-
-                                <div class="card-meta">
-                                    <span class="tax tax-position">Doctor</span>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                        <div class="player-sponsor">
-
-
-                            <span class="label">This staff member is available to sponsor</span>
-
-                            <a href="https://haverfordwestcountyafc.com/commercial/sponsorship-opportunities/">
-                                <span class="title">Sponsor this staff member</span>
-                            </a>
-
-
-                        </div>
-                    </div>
-                    <div class="player-list-item position-staff">
-                        <div class="card card-player card-cover">
-
-
-                            <div class="card-image">
-
-                                <div class="image-container ratio-3x4">
-                                    <img width="768" height="960" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp" class="fill wp-post-image" alt="Profile photo of Henry Fensome" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp 768w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/28122038/32HFC0805_PlayerProfilesBlank.webp?class=4x5sm 480w" sizes="(max-width: 768px) 100vw, 768px">
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-content">
-
-
-                                <span class="card-title">
-                                    <span class="player-first-name">Henry</span><span class="player-last-name">Fensome</span> </span>
-
-
-                                <div class="card-meta">
-                                    <span class="tax tax-position">Sports Therapist</span>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                        <div class="player-sponsor">
-
-
-                            <span class="label">This staff member is available to sponsor</span>
-
-                            <a href="https://haverfordwestcountyafc.com/commercial/sponsorship-opportunities/">
-                                <span class="title">Sponsor this staff member</span>
-                            </a>
-
-
-                        </div>
-                    </div>
-                    <div class="player-list-item position-staff">
-                        <div class="card card-player card-cover">
-
-
-                            <div class="card-image">
-
-                                <div class="image-container ratio-3x4">
-                                    <img width="768" height="960" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg" class="fill wp-post-image" alt="Profile photo of Mickey Ellis" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg 768w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/32HFC0805_PlayerProfilesBlank.jpg?class=4x5sm 480w" sizes="(max-width: 768px) 100vw, 768px">
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-content">
-
-
-                                <span class="card-title">
-                                    <span class="player-first-name">Mickey</span><span class="player-last-name">Ellis</span> </span>
-
-
-                                <div class="card-meta">
-                                    <span class="tax tax-position">Kitman</span>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                        <div class="player-sponsor">
-
-
-                            <span class="label">This staff member is available to sponsor</span>
-
-                            <a href="https://haverfordwestcountyafc.com/commercial/sponsorship-opportunities/">
-                                <span class="title">Sponsor this staff member</span>
-                            </a>
-
-
-                        </div>
-                    </div>
+                    <?php display_staff_for_team(); ?>
                 </div>
             </div>
         </div>
