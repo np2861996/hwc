@@ -282,4 +282,145 @@ function add_custom_body_class($classes)
     return $classes;
 }
 add_filter('body_class', 'add_custom_body_class');
+
+/*--------------------------------------------------------------
+	>>> Check if the current page is a single post of type 'fixtures'
+	----------------------------------------------------------------*/
+function add_custom_body_classes($classes)
+{
+    // Check if it's the fixtures post type archive
+    if (is_post_type_archive('fixtures')) {
+        $classes[] = 'post-type-archive';
+        $classes[] = 'post-type-archive-match';
+    }
+    return $classes;
+}
+add_filter('body_class', 'add_custom_body_classes');
 //end
+
+
+// 
+/*--------------------------------------------------------------
+	>>> Enqueue scripts
+----------------------------------------------------------------*/
+function enqueue_custom_scripts()
+{
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), null, true);
+
+    wp_localize_script('ajax-filter', 'ajax_filter', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('filter_fixtures_nonce')
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
+
+
+/*--------------------------------------------------------------
+	>>> AJAX handler for filtering fixtures
+----------------------------------------------------------------*/
+function filter_fixtures_by_team()
+{
+    // Security check
+    check_ajax_referer('filter_fixtures_nonce', 'nonce');
+
+    // Ensure the team_id is set
+    if (isset($_POST['team_id'])) {
+        $team_id = intval($_POST['team_id']);
+
+        // Query for upcoming fixtures
+        $args =
+            array(
+                'post_type' => 'fixtures',
+                'meta_query' => array(
+                    'relation' => 'OR', // Use OR to match either team 1 or team 2
+                    array(
+                        'key' => 'fixture_team_1',
+                        'value' => $team_id,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'fixture_team_2',
+                        'value' => $team_id,
+                        'compare' => 'LIKE'
+                    )
+                ),
+                'order' => 'ASC',
+                'posts_per_page' => -1
+            );
+
+        $fixtures = new WP_Query($args);
+
+        if ($fixtures->have_posts()) {
+            $fixtures_by_month = array();
+
+            // Group fixtures by month
+            while ($fixtures->have_posts()) {
+                $fixtures->the_post();
+                $match_date = get_field('match_date');
+                $month_year = date('F Y', strtotime($match_date)); // e.g., "September 2024"
+
+                // Add fixture to the respective month group
+                if (!isset($fixtures_by_month[$month_year])) {
+                    $fixtures_by_month[$month_year] = array();
+                }
+
+                $fixtures_by_month[$month_year][] = array(
+                    'match_date' => $match_date,
+                    'match_venue' => get_field('match_venue'),
+                    'home_team_logo' => get_field('home_team_logo'),
+                    'home_team_name' => get_field('home_team_name'),
+                    'away_team_logo' => get_field('away_team_logo'),
+                    'away_team_name' => get_field('away_team_name'),
+                    'match_time' => get_field('match_time'),
+                    'permalink' => get_permalink()
+                );
+            }
+
+            // Display fixtures grouped by month
+            foreach ($fixtures_by_month as $month => $fixtures) {
+                echo '<h2 class="match-list-sub-heading">' . esc_html($month) . '</h2>';
+
+                foreach ($fixtures as $fixture) {
+                    echo '<div class="match-card" data-status="scheduled">';
+                    echo '<div class="match-details">';
+                    echo '<img src="' . esc_url($fixture['home_team_logo']) . '" class="logo" alt="Match Logo">';
+                    echo '<span class="match-date">' . esc_html(date('D j F', strtotime($fixture['match_date']))) . '</span>';
+                    echo '<span class="match-venue-name">' . esc_html($fixture['match_venue']) . '</span>';
+                    echo '</div>';
+
+                    echo '<div class="match-clubs">';
+                    echo '<div class="match-club match-club-home">';
+                    echo '<img src="' . esc_url($fixture['home_team_logo']) . '" class="logo club-logo" alt="' . esc_attr($fixture['home_team_name']) . '">';
+                    echo '<div class="match-club-inner">';
+                    echo '<span class="match-club-name">' . esc_html($fixture['home_team_name']) . '</span>';
+                    echo '</div></div>';
+
+                    echo '<div class="match-club match-club-away">';
+                    echo '<img src="' . esc_url($fixture['away_team_logo']) . '" class="logo club-logo" alt="' . esc_attr($fixture['away_team_name']) . '">';
+                    echo '<div class="match-club-inner">';
+                    echo '<span class="match-club-name">' . esc_html($fixture['away_team_name']) . '</span>';
+                    echo '</div></div>';
+
+                    echo '<div class="match-state"><span class="match-ko">' . esc_html($fixture['match_time']) . '</span></div>';
+                    echo '</div>';
+
+                    echo '<div class="match-actions">';
+                    echo '<a href="' . esc_url($fixture['permalink']) . '" class="btn btn-sm btn-outline">Match Centre</a>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            }
+        } else {
+            echo '<p>No upcoming matches found for this team.</p>';
+        }
+
+        wp_reset_postdata();
+    } else {
+        echo '<p>No team selected.</p>';
+    }
+
+    wp_die();
+}
+add_action('wp_ajax_filter_fixtures_by_team', 'filter_fixtures_by_team');
+add_action('wp_ajax_nopriv_filter_fixtures_by_team', 'filter_fixtures_by_team');
