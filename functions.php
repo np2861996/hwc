@@ -306,7 +306,7 @@ add_filter('body_class', 'add_custom_body_classes');
 function enqueue_custom_scripts()
 {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), null, true);
+    wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), time(), true);
 
     wp_localize_script('ajax-filter', 'ajax_filter', array(
         'ajax_url' => admin_url('admin-ajax.php'),
@@ -357,7 +357,35 @@ function filter_fixtures_by_team()
             // Group fixtures by month
             while ($fixtures->have_posts()) {
                 $fixtures->the_post();
-                $match_date = get_field('match_date');
+
+                $home_team = get_field('fixture_team_1'); // Team 1
+                $away_team = get_field('fixture_team_2'); // Team 2
+                $fixture_league_id = get_field('fixture_league'); // League logo or information
+                $home_team_name = $home_team ? get_the_title($home_team) : '';
+                $home_team_logo = get_the_post_thumbnail_url($home_team) ?: '';
+                $away_team_name = $away_team ? get_the_title($away_team) : '';
+                $away_team_logo = get_the_post_thumbnail_url($away_team) ?: '';
+                $fixture_league_logo = get_the_post_thumbnail_url($fixture_league_id) ?: '';
+
+                if ($home_team_logo) {
+                    $dis_home_team_logo = $home_team_logo;
+                } else {
+                    $dis_home_team_logo = get_template_directory_uri() . '/hwc-images/default-team-logo.png';
+                }
+
+                if ($away_team_logo) {
+                    $dis_away_team_logo = $away_team_logo;
+                } else {
+                    $dis_away_team_logo = get_template_directory_uri() . '/hwc-images/default-team-logo.png';
+                }
+
+                if ($fixture_league_logo) {
+                    $dis_fixture_league_logo = $fixture_league_logo;
+                } else {
+                    $dis_fixture_league_logo = get_template_directory_uri() . '/hwc-images/default-league.png';
+                }
+
+                $match_date = get_field('fixture_match_date'); // Match date
                 $month_year = date('F Y', strtotime($match_date)); // e.g., "September 2024"
 
                 // Add fixture to the respective month group
@@ -367,12 +395,13 @@ function filter_fixtures_by_team()
 
                 $fixtures_by_month[$month_year][] = array(
                     'match_date' => $match_date,
-                    'match_venue' => get_field('match_venue'),
-                    'home_team_logo' => get_field('home_team_logo'),
-                    'home_team_name' => get_field('home_team_name'),
-                    'away_team_logo' => get_field('away_team_logo'),
-                    'away_team_name' => get_field('away_team_name'),
-                    'match_time' => get_field('match_time'),
+                    'match_venue' => get_field('fixture_stadium_name'),
+                    'home_team_logo' => $dis_home_team_logo,
+                    'home_team_name' => $home_team_name,
+                    'away_team_logo' => $dis_away_team_logo,
+                    'away_team_name' => $away_team_name,
+                    'match_time' => get_field('fixture_match_time'),
+                    'fixture_league_logo' => $dis_fixture_league_logo,
                     'permalink' => get_permalink()
                 );
             }
@@ -384,7 +413,7 @@ function filter_fixtures_by_team()
                 foreach ($fixtures as $fixture) {
                     echo '<div class="match-card" data-status="scheduled">';
                     echo '<div class="match-details">';
-                    echo '<img src="' . esc_url($fixture['home_team_logo']) . '" class="logo" alt="Match Logo">';
+                    echo '<img src="' . esc_url($fixture['fixture_league_logo']) . '" class="logo" alt="Match Logo">';
                     echo '<span class="match-date">' . esc_html(date('D j F', strtotime($fixture['match_date']))) . '</span>';
                     echo '<span class="match-venue-name">' . esc_html($fixture['match_venue']) . '</span>';
                     echo '</div>';
@@ -412,7 +441,7 @@ function filter_fixtures_by_team()
                 }
             }
         } else {
-            echo '<p>No upcoming matches found for this team.</p>';
+            echo '<p class="match-list-sub-heading">No upcoming matches found for this team.</p>';
         }
 
         wp_reset_postdata();

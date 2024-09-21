@@ -53,7 +53,11 @@ if ($fixture_league_logo) {
 	>>> Time
 ----------------------------------------------------------------*/
 // Split the date into day, month, and year
-list($day, $month, $year) = explode('/', $match_date);
+$year = substr($match_date, 0, 4);
+$month = substr($match_date, 4, 2);
+$day = substr($match_date, 6, 2);
+
+// Format the date as YYYY-MM-DD
 $formatted_date = sprintf('%04d-%02d-%02d', $year, $month, $day); // Format: 'Y-m-d'
 
 // Convert the match time to 24-hour format
@@ -84,7 +88,7 @@ function get_latest_match_preview()
     // Query for the latest 1 post in the 'Match Previews' category
     $args = array(
         'post_type'      => 'post', // Change to your custom post type if needed
-        'posts_per_page' => 1, // Set to 1 if you only want the latest post
+        'posts_per_page' => 10, // Set to 1 if you only want the latest post
         //'category_name'  => 'match-preview', // Replace with your category slug
         'orderby'        => 'date',
         'order'          => 'DESC',
