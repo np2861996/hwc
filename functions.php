@@ -276,7 +276,7 @@ function add_custom_body_class($classes)
     if (is_singular('team')) {
         $classes[] = 'single-club_team';
     }
-    if (is_singular('fixtures')) {
+    if (is_singular('fixtures') || is_singular('result')) {
         $classes[] = 'single-match';
     }
     return $classes;
@@ -305,13 +305,16 @@ add_filter('body_class', 'add_custom_body_classes');
 ----------------------------------------------------------------*/
 function enqueue_custom_scripts()
 {
-    wp_enqueue_script('jquery');
-    wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), time(), true);
+    // Check if we're on an archive page for the 'fixtures' post type
+    if (is_post_type_archive('fixtures')) {
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), time(), true);
 
-    wp_localize_script('ajax-filter', 'ajax_filter', array(
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('filter_fixtures_nonce')
-    ));
+        wp_localize_script('ajax-filter', 'ajax_filter', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('filter_fixtures_nonce')
+        ));
+    }
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
