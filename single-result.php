@@ -74,11 +74,27 @@ if ($fixture_query->have_posts()) {
     wp_reset_postdata(); // Reset post data after fixture query
 }
 
+/*--------------------------------------------------------------
+	>>> Images
+----------------------------------------------------------------*/
+$featured_image = get_the_post_thumbnail_url(get_the_ID(), 'full'); // Get featured image URL
+if ($team1_logo) {
+    $dis_home_team_logo = $team1_logo;
+} else {
+    $dis_home_team_logo = get_template_directory_uri() . '/hwc-images/default-team-logo.png';
+}
+
+if ($team2_logo) {
+    $dis_away_team_logo = $team2_logo;
+} else {
+    $dis_away_team_logo = get_template_directory_uri() . '/hwc-images/default-team-logo.png';
+}
+
 $team1_players = get_field('select_result_team1_players');
 $team1_score = get_field('field_result_total_goals_team_1');
 $team2_players = get_field('select_result_team2_players');
 $team2_score = get_field('field_result_total_goals_team_2');
-$featured_image = get_the_post_thumbnail_url(get_the_ID(), 'full'); // Get featured image URL
+
 $result_goals_info_team_1 = get_field('result_goals_info_team_1');
 $result_goals_info_team_2 = get_field('result_goals_info_team_2');
 
@@ -97,7 +113,12 @@ function display_players($players, $is_substitute = false)
     foreach ($players as $player) {
         $player_id = $player->ID; // Get the player ID
         $player_name = get_the_title($player_id); // Get the player name
-        $player_image = get_the_post_thumbnail_url($player_id, 'full'); // Get the player's featured image
+        $player_image = get_the_post_thumbnail_url($player_id, 'full');
+        if ($player_image) {
+            $player_image = $player_image;
+        } else {
+            $player_image = get_template_directory_uri() . '/hwc-images/default-team-logo.png';
+        }
 
         // Display player HTML
         echo '<li class="lineup-item' . ($is_substitute ? ' off-field' : '') . '">';
@@ -137,7 +158,7 @@ function display_players($players, $is_substitute = false)
                 <div class="match-clubs">
 
                     <div class="match-club match-club-home">
-                        <img width="250" height="293" src="<?php echo esc_url($team1_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team1_name); ?>" decoding="async">
+                        <img width="250" height="293" src="<?php echo esc_url($dis_home_team_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team1_name); ?>" decoding="async">
                         <div class="match-club-inner">
                             <span class="match-club-name"><?php echo esc_html($team1_name); ?></span>
                             <ul class="goals">
@@ -148,7 +169,7 @@ function display_players($players, $is_substitute = false)
                     </div>
 
                     <div class="match-club match-club-away">
-                        <img width="200" height="282" src="<?php echo esc_url($team2_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team2_name); ?>" decoding="async">
+                        <img width="200" height="282" src="<?php echo esc_url($dis_away_team_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team2_name); ?>" decoding="async">
                         <div class="match-club-inner">
                             <span class="match-club-name"><?php echo esc_html($team2_name); ?></span>
                             <ul class="goals">
@@ -242,15 +263,15 @@ function display_players($players, $is_substitute = false)
                         <ul class="tablist" aria-label="Team Lineups" data-js-tabs="" role="tablist">
 
                             <li>
-                                <a href="#lineup-home" class="tablist-item" id="tab-lineup-home" role="tab">
-                                    <img width="250" height="293" src="<?php echo esc_url($team1_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team1_name); ?>" decoding="async" loading="lazy"> <span><?php echo esc_attr($team1_name); ?></span>
+                                <a href="#lineup-home" class="tablist-item is-active" id="tab-lineup-home" role="tab" aria-selected="true">
+                                    <img width="250" height="293" src="<?php echo esc_url($dis_home_team_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team1_name); ?>" decoding="async" loading="lazy"> <span><?php echo esc_attr($team1_name); ?></span>
                                 </a>
                             </li>
 
 
                             <li>
-                                <a href="#lineup-away" class="tablist-item is-active" id="tab-lineup-away" role="tab" aria-selected="true">
-                                    <img width="200" height="282" src="<?php echo esc_url($team2_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team2_name); ?>" decoding="async" loading="lazy"> <span><?php echo esc_attr($team2_name); ?></span>
+                                <a href="#lineup-away" class="tablist-item " id="tab-lineup-away" role="tab">
+                                    <img width="200" height="282" src="<?php echo esc_url($dis_away_team_logo); ?>" class="logo club-logo" alt="<?php echo esc_attr($team2_name); ?>" decoding="async" loading="lazy"> <span><?php echo esc_attr($team2_name); ?></span>
                                 </a>
                             </li>
 

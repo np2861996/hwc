@@ -289,7 +289,7 @@ add_filter('body_class', 'add_custom_body_class');
 function add_custom_body_classes($classes)
 {
     // Check if it's the fixtures post type archive
-    if (is_post_type_archive('fixtures')) {
+    if (is_post_type_archive('fixtures') || is_post_type_archive('result')) {
         $classes[] = 'post-type-archive';
         $classes[] = 'post-type-archive-match';
     }
@@ -306,7 +306,7 @@ add_filter('body_class', 'add_custom_body_classes');
 function enqueue_custom_scripts()
 {
     // Check if we're on an archive page for the 'fixtures' post type
-    if (is_post_type_archive('fixtures')) {
+    if (is_post_type_archive('fixtures') || is_post_type_archive('result')) {
         wp_enqueue_script('jquery');
         wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), time(), true);
 
@@ -456,3 +456,170 @@ function filter_fixtures_by_team()
 }
 add_action('wp_ajax_filter_fixtures_by_team', 'filter_fixtures_by_team');
 add_action('wp_ajax_nopriv_filter_fixtures_by_team', 'filter_fixtures_by_team');
+
+
+/*--------------------------------------------------------------
+	>>> AJAX handler for filtering fixtures
+----------------------------------------------------------------*/
+function filter_result_by_team_result()
+{
+    // Security check
+    check_ajax_referer('filter_fixtures_nonce', 'nonce');
+
+    // Ensure the team_id is set
+    if (isset($_POST['team_result_id'])) {
+        $team_result_id = intval($_POST['team_result_id']);
+
+        // Query for upcoming result posts
+        $args = array(
+            'post_type' => 'result',
+            'order' => 'ASC',
+            'posts_per_page' => -1
+        );
+
+        $result = new WP_Query($args);
+
+        if ($result->have_posts()) {
+            $result_by_month = array();
+
+            // Group result by month
+            while ($result->have_posts()) {
+                $result->the_post();
+
+                // Access the relevant fields for each match
+                $matches = get_field('select_result_match');
+                $result_permalink = get_permalink();
+                foreach ($matches as $match) {
+                    // Get the match ID
+                    $match_id = $match->ID;
+                    $team1_id = get_field('fixture_team_1', $match_id);
+                    $team2_id = get_field('fixture_team_2', $match_id);
+
+
+                    if ($team1_id == $team_result_id || $team2_id == $team_result_id) {
+
+                        // Get the match ID and competition from the ACF field in the "result" post type
+                        $competition = get_field('select_result_match');
+                        $team1_score = get_field('field_result_total_goals_team_1');
+                        $team2_score = get_field('field_result_total_goals_team_2');
+
+                        $result_report_link = get_field('result_report_link');
+
+
+                        if ($result_report_link) {
+                            $dis_result_report_link = '<a href="' . $result_report_link['url'] . '" class="btn btn-sm btn-secondary">' . $result_report_link['title'] . '</a>';
+                        } else {
+                            $dis_result_report_link = '';
+                        }
+                        // Get the fixture post using the match (or competition) ID/title
+                        if ($competition) {
+                            foreach ($competition as $match) {
+                                // Access the relevant fields for each match
+                                $match_id = $match->ID;
+
+                                // Fetch the fixture post by match ID (assuming it's stored in "fixtures" post type)
+                                $fixture_query = new WP_Query(array(
+                                    'post_type' => 'fixtures',
+                                    'p' => $match_id, // Match by ID
+                                    'posts_per_page' => 1,
+                                ));
+
+                                if ($fixture_query->have_posts()) {
+                                    $fixture_query->the_post();
+
+                                    // Fixture data
+                                    $team1_name = get_field('fixture_team_1');
+                                    $team1_name = $team1_name ? get_the_title($team1_name) : '';
+                                    $team2_name = get_field('fixture_team_2');
+                                    $team2_name = $team2_name ? get_the_title($team2_name) : '';
+                                    $venue = get_field('fixture_stadium_name');
+                                    $fixture_league_logo = get_the_post_thumbnail_url(get_field('fixture_league'), 'full');
+
+                                    // Get team logos
+                                    $team1_logo = get_the_post_thumbnail_url(get_field('fixture_team_1'), 'full') ?: get_template_directory_uri() . '/hwc-images/default-team-logo.png';
+                                    $team2_logo = get_the_post_thumbnail_url(get_field('fixture_team_2'), 'full') ?: get_template_directory_uri() . '/hwc-images/default-team-logo.png';
+
+                                    // Date and time
+                                    $match_date = get_field('fixture_match_date');
+                                    $match_time = get_field('fixture_match_time');
+                                    $month_year = date('F Y', strtotime($match_date));
+
+                                    // Add result grouped by month
+                                    if (!isset($result_by_month[$month_year])) {
+                                        $result_by_month[$month_year] = array();
+                                    }
+
+                                    $result_by_month[$month_year][] = array(
+                                        'match_date' => $match_date,
+                                        'match_venue' => $venue,
+                                        'team1_name' => $team1_name,
+                                        'team1_logo' => $team1_logo,
+                                        'team1_score' => $team1_score,
+                                        'team2_name' => $team2_name,
+                                        'team2_logo' => $team2_logo,
+                                        'team2_score' => $team2_score,
+                                        'match_time' => $match_time,
+                                        'fixture_league_logo' => $fixture_league_logo,
+                                        'result_permalink' => $result_permalink,
+                                        'dis_result_report_link' => $dis_result_report_link,
+                                        'permalink' => get_permalink()
+                                    );
+
+                                    wp_reset_postdata(); // Reset fixture postdata
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Display result grouped by month
+            foreach ($result_by_month as $month => $fixtures) {
+                echo '<h2 class="match-list-sub-heading">' . esc_html($month) . '</h2>';
+
+                foreach ($fixtures as $fixture) {
+                    echo '<div class="match-card" data-status="complete">';
+                    echo '<div class="match-details">';
+                    echo '<img src="' . esc_url($fixture['fixture_league_logo']) . '" class="logo" alt="League Logo">';
+                    echo '<span class="match-date">' . esc_html(date('D j F', strtotime($fixture['match_date']))) . '</span>';
+                    echo '<span class="match-venue-name">' . esc_html($fixture['match_venue']) . '</span>';
+                    echo '</div>';
+
+                    echo '<div class="match-clubs">';
+                    echo '<div class="match-club match-club-home">';
+                    echo '<img src="' . esc_url($fixture['team1_logo']) . '" class="logo club-logo" alt="' . esc_attr($fixture['team1_name']) . '">';
+                    echo '<div class="match-club-inner">';
+                    echo '<span class="match-club-name">' . esc_html($fixture['team1_name']) . '</span>';
+                    echo '<span class="match-club-score">' . esc_html($fixture['team1_score']) . '</span>';
+                    echo '</div></div>';
+
+                    echo '<div class="match-club match-club-away">';
+                    echo '<img src="' . esc_url($fixture['team2_logo']) . '" class="logo club-logo" alt="' . esc_attr($fixture['team2_name']) . '">';
+                    echo '<div class="match-club-inner">';
+                    echo '<span class="match-club-name">' . esc_html($fixture['team2_name']) . '</span>';
+                    echo '<span class="match-club-score">' . esc_html($fixture['team2_score']) . '</span>';
+                    echo '</div></div>';
+
+                    echo '<div class="match-state">';
+                    echo '<span class="match-score">' . esc_html($fixture['team1_score'] . '-' . $fixture['team2_score']) . '</span>';
+                    echo '</div></div>';
+
+                    echo '<div class="match-actions">';
+                    echo '<a href="' . esc_url($fixture['result_permalink']) . '" class="btn btn-sm btn-outline">Match Centre</a>';
+                    echo $fixture['dis_result_report_link'];
+                    echo '</div></div>';
+                }
+            }
+        } else {
+            echo '<p class="match-list-sub-heading">No upcoming matches found for this team.</p>';
+        }
+
+        wp_reset_postdata();
+    } else {
+        echo '<p>No team selected.</p>';
+    }
+
+    wp_die();
+}
+add_action('wp_ajax_filter_result_by_team_result', 'filter_result_by_team_result');
+add_action('wp_ajax_nopriv_filter_result_by_team_result', 'filter_result_by_team_result');

@@ -63,9 +63,9 @@ get_header();
 
         <div class="section-sub-navigation">
             <ul class="tablist">
-                <li><a class="tabslist-item is-active" href="https://haverfordwestcountyafc.com/fixtures/first-team/">Fixtures</a></li>
-                <li><a class="tabslist-item" href="https://haverfordwestcountyafc.com/results/first-team/">Results</a></li>
-                <li><a class="tabslist-item" href="https://haverfordwestcountyafc.com/tables/first-team/">Table</a></li>
+                <li><a class="tabslist-item is-active" href="<?php echo site_url(); ?>/fixtures">Fixtures</a></li>
+                <li><a class="tabslist-item" href="<?php echo site_url(); ?>/result">Results</a></li>
+                <li><a class="tabslist-item" href="<?php echo site_url(); ?>/league_table">Table</a></li>
             </ul>
         </div>
     </div>
