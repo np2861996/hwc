@@ -5550,3 +5550,7 @@ body.menu-is-active {
   font-size: 16px;
   font-weight: bold;
 }
+a.next.page-numbers,
+a.prev.page-numbers {
+  display: none;
+}

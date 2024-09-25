@@ -174,6 +174,10 @@ if (defined('JETPACK__VERSION')) {
  */
 require get_template_directory() . '/inc/home-functions.php';
 
+/**
+ * Load News Template functions.
+ */
+require get_template_directory() . '/inc/news-functions.php';
 
 /*--------------------------------------------------------------
 	>>> All Action and Filter Functions
@@ -300,6 +304,11 @@ function add_custom_body_classes($classes)
         $classes[] = 'post-type-archive-match';
     }
 
+    if (is_post_type_archive('team')) {
+        $classes[] = 'single';
+        $classes[] = 'single-club_team';
+    }
+
     // Check if it's the Table post type archive
     if (is_post_type_archive('league_table')) {
         $classes[] = 'single';
@@ -318,7 +327,7 @@ add_filter('body_class', 'add_custom_body_classes');
 function enqueue_custom_scripts()
 {
     // Check if we're on an archive page for the 'fixtures' post type
-    if (is_post_type_archive('fixtures') || is_post_type_archive('result') || is_post_type_archive('league_table')) {
+    if (is_post_type_archive('fixtures') || is_post_type_archive('result') || is_post_type_archive('team') || is_post_type_archive('league_table')) {
         wp_enqueue_script('jquery');
         wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), time(), true);
 
