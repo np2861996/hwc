@@ -169,6 +169,12 @@ if (defined('JETPACK__VERSION')) {
     require get_template_directory() . '/inc/jetpack.php';
 }
 
+/**
+ * Load Home Template functions.
+ */
+require get_template_directory() . '/inc/home-functions.php';
+
+
 /*--------------------------------------------------------------
 	>>> All Action and Filter Functions
 	----------------------------------------------------------------*/
@@ -293,6 +299,12 @@ function add_custom_body_classes($classes)
         $classes[] = 'post-type-archive';
         $classes[] = 'post-type-archive-match';
     }
+
+    // Check if it's the Table post type archive
+    if (is_post_type_archive('league_table')) {
+        $classes[] = 'single';
+        $classes[] = 'single-league_table';
+    }
     return $classes;
 }
 add_filter('body_class', 'add_custom_body_classes');
@@ -306,7 +318,7 @@ add_filter('body_class', 'add_custom_body_classes');
 function enqueue_custom_scripts()
 {
     // Check if we're on an archive page for the 'fixtures' post type
-    if (is_post_type_archive('fixtures') || is_post_type_archive('result')) {
+    if (is_post_type_archive('fixtures') || is_post_type_archive('result') || is_post_type_archive('league_table')) {
         wp_enqueue_script('jquery');
         wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), time(), true);
 
@@ -474,7 +486,8 @@ function filter_result_by_team_result()
         $args = array(
             'post_type' => 'result',
             'order' => 'ASC',
-            'posts_per_page' => -1
+            'posts_per_page' => -1,
+            'post_status' => 'publish'
         );
 
         $result = new WP_Query($args);
@@ -623,3 +636,133 @@ function filter_result_by_team_result()
 }
 add_action('wp_ajax_filter_result_by_team_result', 'filter_result_by_team_result');
 add_action('wp_ajax_nopriv_filter_result_by_team_result', 'filter_result_by_team_result');
+
+/*--------------------------------------------------------------
+	>>> AJAX handler for filtering fixtures
+----------------------------------------------------------------*/
+function filter_league_table_by_team()
+{
+    // Security check
+    check_ajax_referer('filter_fixtures_nonce', 'nonce');
+
+
+
+    if (isset($_POST['league_table_id'])) {
+        $league_table_id = intval($_POST['league_table_id']);
+
+        // Define query arguments
+        $args = array(
+            'post_type' => 'league_table',
+            'p' => $league_table_id,
+            'posts_per_page' => -1,
+        );
+
+
+        // Create a new WP_Query
+        $query = new WP_Query($args);
+
+
+        // Start building the output
+        $output = '';
+
+        // Check if any league table was found
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $league_table = get_post();
+
+                // Get teams field
+                $teams = get_field('league_table', $league_table->ID);
+
+                // Output league title
+                $output .= '<div class="section-header">
+                                <div class="container">
+                                   
+                                </div>
+                            </div>';
+
+
+                $output .= '<div class="md:container">
+                                <table class="standings">
+                                    <thead>
+                                        <tr>
+                                            <th class="standings-number standings-pos">Pos</th>
+                                            <th colspan="2">&nbsp;</th>
+                                            <th class="standings-number standings-pld">Pld</th>
+                                            <th class="standings-number standings-w">W</th>
+                                            <th class="standings-number standings-d">D</th>
+                                            <th class="standings-number standings-l">L</th>
+                                            <th class="standings-number standings-f">F</th>
+                                            <th class="standings-number standings-a">A</th>
+                                            <th class="standings-number standings-gd">+/-</th>
+                                            <th class="standings-number standings-pts">Pts</th>
+                                            <th class="standings-form text-left">Last 6</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+
+                // Loop through each team in the league table
+                if ($teams) {
+                    foreach ($teams as $index => $team) {
+
+                        $output .= '<tr class="standings-row zone-promotion">
+                                        <td class="standings-number standings-pos">' . ($index + 1) . '</td>
+                                        <td class="standings-logo"><img width="300" height="9999" src="' . esc_url(get_the_post_thumbnail_url($team['league_team'])) . '" class="logo club-logo" alt="' . esc_attr($team['league_team']) . '" decoding="async"></td>
+                                        <td class="standings-club-name"><span>' . get_the_title($team['league_team']) . '</span></td>
+                                        <td class="standings-pld standings-number">' . esc_html($team['played_matches']) . '</td>
+                                        <td class="standings-w standings-number">' . esc_html($team['league_wins']) . '</td>
+                                        <td class="standings-d standings-number">' . esc_html($team['league_draws']) . '</td>
+                                        <td class="standings-l standings-number">' . esc_html($team['league_losses']) . '</td>
+                                        <td class="standings-f standings-number">' . esc_html($team['league_goals_for']) . '</td>
+                                        <td class="standings-a standings-number">' . esc_html($team['league_goals_against']) . '</td>
+                                        <td class="standings-gd standings-number">' . esc_html($team['league_plus_minus']) . '</td>
+                                        <td class="standings-pts standings-number">' . esc_html($team['league_points']) . '</td>
+                                        <td class="standings-form"><span class="form">';
+                        // Output last 6 games
+                        foreach ($team['league_last_6_games'] as $game) {
+                            $result = $game['league_game_result']; // Access the result
+                            $class = '';
+                            switch ($result) {
+                                case 'W':
+                                    $class = 'form-match form-match-won';
+                                    break;
+                                case 'D':
+                                    $class = 'form-match form-match-drew';
+                                    break;
+                                case 'L':
+                                    $class = 'form-match form-match-lost';
+                                    break;
+                            }
+                            $output .= '<span class="' . esc_attr($class) . '" title="' . esc_attr(ucfirst($result)) . '"></span>';
+                        }
+
+                        $output .= '</span></td></tr>'; // Close the last 6 games span and the row
+
+                    }
+                }
+
+                $output .= '</tbody></table></div>';
+
+                echo $output;
+
+                wp_die();
+            }
+            wp_reset_postdata(); // Reset the global post object
+        } else {
+            $output .= '<div class="error-message">No league data found.</div>';
+        }
+    } else {
+        echo '<p>No League selected.</p>';
+    }
+}
+
+// Helper function to generate last 6 games display
+function generate_last_6_games($last_6_games)
+{
+
+    return $form_display;
+}
+
+// Hook for AJAX
+add_action('wp_ajax_filter_league_table_by_team', 'filter_league_table_by_team');
+add_action('wp_ajax_nopriv_filter_league_table_by_team', 'filter_league_table_by_team');

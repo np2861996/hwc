@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Code For Display fixtures info.
+ * Code For Display Match Result Table.
  *
  * @link https://codex.wordpress.org/Creating_an_Error_404_Page
  *
@@ -15,17 +15,18 @@ get_header();
 <div class="match-list">
     <div class="container">
         <div class="section-header">
-            <h1 class="section-heading section-heading-display" id="selected-team-big-name">
-                First Team <span class="screen-reader-text">Fixtures</span>
+            <h1 class="section-heading section-heading-display" id="selected-league-table">
+                First Team
             </h1>
+
 
             <div class="filter filter-select">
                 <a class="filter-select-trigger" href="#filter-options" aria-label="Select Team" data-js-filter-select="" aria-controls="filter-options" aria-expanded="false">
                     <span>
                         <span class="filter-select-label">
-                            Team
+                            League
                         </span>
-                        <span class="filter-select-value" id="selected-team">
+                        <span class="filter-select-value" id="selecte-league-table">
                             First Team
                         </span>
                     </span>
@@ -39,17 +40,17 @@ get_header();
                     <ul>
                         <?php
                         // Fetch teams dynamically from 'team' post type or taxonomy
-                        $teams = get_posts(array(
-                            'post_type' => 'team',
+                        $leagues = get_posts(array(
+                            'post_type' => 'league_table',
                             'numberposts' => -1,  // Fetch all teams
                             'orderby' => 'title',
                             'order' => 'ASC',
                         ));
 
-                        foreach ($teams as $team) {
+                        foreach ($leagues as $league) {
                             // Dynamically output each team option
                             echo '<li class="filter-options-item">';
-                            echo '<a role="option" aria-selected="false" href="#" data-team-id="' . esc_attr($team->ID) . '" onclick="changeTeam(this)">' . esc_html($team->post_title) . '</a>';
+                            echo '<a role="option" aria-selected="false" href="#" data-league_table-id="' . esc_attr($league->ID) . '" onclick="change_league_table(this)">' . esc_html($league->post_title) . '</a>';
                             echo '</li>';
                         }
                         ?>
@@ -60,16 +61,15 @@ get_header();
 
         <div class="section-sub-navigation">
             <ul class="tablist">
-                <li><a class="tabslist-item is-active" href="<?php echo site_url(); ?>/fixtures">Fixtures</a></li>
+                <li><a class="tabslist-item" href="<?php echo site_url(); ?>/fixtures">Fixtures</a></li>
                 <li><a class="tabslist-item" href="<?php echo site_url(); ?>/result">Results</a></li>
-                <li><a class="tabslist-item" href="<?php echo site_url(); ?>/league_table">Table</a></li>
+                <li><a class="tabslist-item is-active" href="<?php echo site_url(); ?>/league_table">Table</a></li>
             </ul>
         </div>
     </div>
 
-    <div class="md:container">
-        <div id="fixtures-results"></div> <!-- Results will be loaded here -->
-    </div>
+    <span id="league-table-results"></span>
+
 </div>
 
 <?php get_footer(); ?>

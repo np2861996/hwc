@@ -106,15 +106,4 @@ get_header();
     </div>
 </div>
 
-<script>
-    // JavaScript function to handle team selection and update the displayed team
-    function changeTeam(element) {
-        var selectedTeam = element.innerText;
-        document.getElementById('selected-result-team').innerText = selectedTeam;
-        document.getElementById('selected-result-team-big-name').innerText = selectedTeam;
-
-        // Perform your AJAX call or other actions to update fixtures based on selected team
-    }
-</script>
-
 <?php get_footer(); ?>
