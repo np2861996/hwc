@@ -179,6 +179,11 @@ require get_template_directory() . '/inc/home-functions.php';
  */
 require get_template_directory() . '/inc/news-functions.php';
 
+/**
+ * Load About The Company Template functions.
+ */
+require get_template_directory() . '/inc/about-the-academy-functions.php';
+
 /*--------------------------------------------------------------
 	>>> All Action and Filter Functions
 	----------------------------------------------------------------*/

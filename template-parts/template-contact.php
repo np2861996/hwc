@@ -1,5 +1,5 @@
 <?php
-/* Template Name: Video */
+/* Template Name: Contact */
 get_header();
 ?>
 
