@@ -29,7 +29,7 @@ get_header();
                                 <?php
                                 $image = get_sub_field('hwc_club_officials_card_image');
                                 if ($image) : ?>
-                                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" class="image-placeholder image-placeholder-person ratio-1x1">
+                                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" class="">
                                 <?php else : ?>
                                     <div class="image-placeholder image-placeholder-person ratio-1x1"></div>
                                 <?php endif; ?>

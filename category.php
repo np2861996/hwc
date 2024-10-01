@@ -42,16 +42,23 @@ get_header(); ?>
                 <?php endwhile; ?>
 
                 <div class="pagination pagination-numbers">
-                    <span class="pagination-title">Jump to Page</span>
                     <?php
-                    // Pagination
-                    the_posts_pagination(array(
-                        'mid_size' => 2,
-                        'prev_text' => __('&laquo; Previous', 'textdomain'),
-                        'next_text' => __('Next &raquo;', 'textdomain'),
-                    ));
-                    ?>
+                    global $wp_query;
+
+                    // Check if there is more than one page of posts
+                    if ($wp_query->max_num_pages > 1): ?>
+                        <span class="pagination-title">Jump to Page</span>
+                        <?php
+                        // Pagination
+                        the_posts_pagination(array(
+                            'mid_size' => 2,
+                            'prev_text' => __('&laquo; Previous', 'textdomain'),
+                            'next_text' => __('Next &raquo;', 'textdomain'),
+                        ));
+                        ?>
+                    <?php endif; ?>
                 </div>
+
             <?php else : ?>
                 <p><?php esc_html_e('No posts found in this category.', 'textdomain'); ?></p>
             <?php endif; ?>
