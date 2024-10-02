@@ -568,10 +568,18 @@ function hwc_home_blue_big_box()
 /*--------------------------------------------------------------
 	>>> Sec6 - Posts
 ----------------------------------------------------------------*/
-function hwc_team_post_shortcode()
+function hwc_team_post_shortcode($atts)
 {
+
+    // Extract shortcode attributes and set defaults
+    $atts = shortcode_atts(
+        array(
+            'team' => '', // Default value if no ID is passed
+        ),
+        $atts
+    );
     // Get the value of the custom field 'hwc_home_select_team'
-    $team_title = get_the_title(get_field('hwc_home_select_team'));
+    $team_title = $atts['team'];
 
     // Check if the custom field has a value
     if (!$team_title) {
@@ -645,10 +653,18 @@ function hwc_team_post_shortcode()
 /*--------------------------------------------------------------
 	>>> Sec6 - Team Results
 ----------------------------------------------------------------*/
-function hwc_home_result_by_team_result()
+function hwc_home_result_by_team_result($atts)
 {
-    // Ensure the team_id is set
-    $hwc_home_team_id = get_field('hwc_home_select_team');
+
+    // Extract shortcode attributes and set defaults
+    $atts = shortcode_atts(
+        array(
+            'team' => '', // Default value if no ID is passed
+        ),
+        $atts
+    );
+    // Get the value of the custom field 'hwc_home_select_team'
+    $hwc_home_team_id = $atts['team'];
 
     // Query for result posts
     $args = array(
@@ -673,8 +689,6 @@ function hwc_home_result_by_team_result()
                 $match_id = $match->ID; // Get the match ID
                 $team1_id = get_field('fixture_team_1', $match_id);
                 $team2_id = get_field('fixture_team_2', $match_id);
-
-
 
                 // Check if the current match involves the selected team
                 if ($team1_id == $hwc_home_team_id || $team2_id == $hwc_home_team_id) {
@@ -754,7 +768,7 @@ function hwc_home_result_by_team_result()
             }
         }
     } else {
-        echo '<p class="match-list-sub-heading">No results found for this team.</p>';
+        echo '';
     }
 
     wp_reset_postdata();

@@ -84,15 +84,17 @@ echo do_shortcode('[shortcode_hwc_home_blue_big_box]');
 			>>> Sec6 - Team Posts
 			---------------------------------------------------------------->
 			<?php
+			$dis_hwc_home_select_team = get_the_title(get_field('hwc_home_select_team'));
 			// display the Team Posts
-			echo do_shortcode('[hwc_team_post_shortcode]');
+			echo do_shortcode('[hwc_team_post_shortcode team="' . $dis_hwc_home_select_team . '"]');
 			?>
 			<div class="team-row-match">
 				<?php
+				$dis_hwc_home_select_team_id = get_field('hwc_home_select_team');
 				// display the Team result
-				echo do_shortcode('[hwc_home_result_by_team_result]');
+				echo do_shortcode('[hwc_home_result_by_team_result team="' . $dis_hwc_home_select_team_id . '"]');
 				?>
-				<a class="btn btn-lg btn-primary" href="fixtures/">All Fixtures</a>
+				<a class="btn btn-lg btn-primary" href="<?php echo site_url('fixtures'); ?>">All Fixtures</a>
 			</div>
 		</div>
 
