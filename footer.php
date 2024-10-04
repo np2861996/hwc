@@ -17,24 +17,37 @@
 	</div>
 	<div class="container">
 		<div class="logo-group">
-			<div class="logo-group-item"><a target="_blank" href="https://www.facebook.com/gellimor/"><img width="300" height="72" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/07/02163115/GELLI-MOR-PRINT_Colour.png?class=thumbnail" class="logo" alt="Gelli Mor logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/07/02163115/GELLI-MOR-PRINT_Colour.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/07/02163115/GELLI-MOR-PRINT_Colour.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/07/02163115/GELLI-MOR-PRINT_Colour.png?class=large 1200w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/07/02163115/GELLI-MOR-PRINT_Colour.png?class=1536x1536 1536w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/07/02163115/GELLI-MOR-PRINT_Colour.png?class=2048x2048 2048w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.pembrokeshire.ac.uk/"><img width="300" height="84" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PembrokeshireCollege.png?class=thumbnail" class="logo" alt="Pembrokeshire College logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PembrokeshireCollege.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PembrokeshireCollege.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PembrokeshireCollege.png 1131w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.tor-sports.co.uk/"><img width="300" height="164" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/06/26123412/Tor.svg?class=thumbnail" class="logo" alt="Tor Sports logo" decoding="async" loading="lazy"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.ogi.wales/"><img width="300" height="250" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/Ogi2.png?class=thumbnail" class="logo logo-square" alt="Ogi logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/Ogi2.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/Ogi2.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/Ogi2.png 1024w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.valero.com/about/locations/pembroke-refinery"><img width="300" height="9999" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/valero.svg" class="logo" alt="Valero logo" decoding="async" loading="lazy"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.visitmalta.com/"><img width="300" height="79" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/09/VisitMalta.png?class=thumbnail" class="logo" alt="Visit Malta logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/09/VisitMalta.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/09/VisitMalta.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/09/VisitMalta.png?class=large 1200w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/09/VisitMalta.png?class=1536x1536 1536w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/09/VisitMalta.png?class=2048x2048 2048w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.troocost.com/"><img width="251" height="86" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/08/14125313/troo_logo_2-copy-e1723636604127.png" class="logo" alt="Troo. logo" decoding="async" loading="lazy"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://theturmeric.co/"><img width="300" height="297" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/TheTurmericCo.png?class=thumbnail" class="logo logo-square" alt="The Turmeric Co. logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/TheTurmericCo.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/TheTurmericCo.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/TheTurmericCo.png?class=1x1xs 150w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/TheTurmericCo.png 938w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.uflgame.com/en-en"><img width="300" height="112" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/08/14124734/UFL_tm_logo_black.svg?class=thumbnail" class="logo" alt="UFL logo" decoding="async" loading="lazy"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://theathletic.com/"><img width="300" height="41" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/Black.svg?class=thumbnail" class="logo" alt="The Athletic logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/Black.svg?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/Black.svg 522w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://youngchefyoungwaiter.com/"><img width="300" height="314" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/World-YCYW-Logo_BLK.png?class=thumbnail" class="logo logo-square" alt="Young Chef Young Waiter logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/World-YCYW-Logo_BLK.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/World-YCYW-Logo_BLK.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/World-YCYW-Logo_BLK.png?class=large 1200w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/World-YCYW-Logo_BLK.png?class=1536x1536 1467w, https://media.touchlinefc.co.uk/haverfordwestcounty/2023/07/World-YCYW-Logo_BLK.png 1847w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://je3foundation.com/"><img width="300" height="291" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/JE3.png?class=thumbnail" class="logo logo-square" alt="JE3 Foundation logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/JE3.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/JE3.png?class=mediumlarge 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/JE3.png?class=large 1200w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/JE3.png 1308w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://wineandearth.com/"><img width="300" height="300" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/23125223/OIexFDGh_400x400.png?class=thumbnail" class="logo logo-square" alt="Wine&amp;Earth logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/23125223/OIexFDGh_400x400.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/23125223/OIexFDGh_400x400.png?class=1x1xs 150w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/23125223/OIexFDGh_400x400.png 400w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://podcasts.apple.com/gb/podcast/the-socially-distant-sports-bar/id1503926981"><img width="300" height="300" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=thumbnail" class="logo logo-square" alt="Socially Distant Sports Bar logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=1x1md 900w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=large 1200w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=1536x1536 1536w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=2048x2048 2048w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=1x1xs 150w, https://media.touchlinefc.co.uk/haverfordwestcounty/2024/09/03220602/SDSB-Logo2024-Transparent.png?class=1x1sm 400w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
-			<div class="logo-group-item"><a target="_blank" href="https://www.purewestradio.com/"><img width="300" height="299" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PURE-WEST-RADIO-002.png?class=thumbnail" class="logo logo-square" alt="Pure West Radio logo" decoding="async" loading="lazy" srcset="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PURE-WEST-RADIO-002.png?class=thumbnail 300w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PURE-WEST-RADIO-002.png?class=1x1xs 150w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PURE-WEST-RADIO-002.png?class=1x1sm 400w, https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/PURE-WEST-RADIO-002.png 599w" sizes="(max-width: 300px) 100vw, 300px"></a></div>
+
+			<?php
+			// Debugging output
+			if (have_rows('footer_official_partners', 'option')) :
+				// Loop through the rows of data
+				while (have_rows('footer_official_partners', 'option')) : the_row();
+
+
+					// Get the sub field values
+					$partner_image = get_sub_field('partner_image');
+					$partner_link = get_sub_field('partner_link');
+
+					// Check if both fields are not empty
+					if (!empty($partner_image) && !empty($partner_link)) : ?>
+						<div class="logo-group-item">
+							<a target="_blank" href="<?php echo esc_url($partner_link); ?>">
+								<img width="300" height="72" src="<?php echo esc_url($partner_image); ?>" class="logo" alt="<?php echo esc_attr__('Partner Logo', 'your-text-domain'); ?>" decoding="async" loading="lazy">
+							</a>
+						</div>
+					<?php else: ?>
+						<p><?php echo esc_html__('Missing data for a partner.', 'your-text-domain'); ?></p>
+				<?php endif;
+				endwhile;
+			else : ?>
+				<!-- Debugging: no rows found -->
+				<p><?php echo esc_html__('No partners found.', 'your-text-domain'); ?></p>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>
+
 <footer class="footer" data-theme="dark">
 	<div class="touchline-branding">
 		<svg aria-hidden="true" width="640" height="441" viewBox="0 0 640 441">
@@ -44,38 +57,119 @@
 
 	<div class="container">
 		<div class="footer-main">
-			<img width="200" height="282" src="https://media.touchlinefc.co.uk/haverfordwestcounty/2022/08/haverfordwest-county.png" class="logo club-logo" alt="Haverfordwest County" decoding="async" loading="lazy">
+			<?php the_custom_logo(); ?>
 			<div>
-				<div itemscope="" itemtype="http://schema.org/PostalAddress">
-					<p class="address"><span itemprop="name" class="address-name">Ogi Bridge Meadow Stadium</span> <span itemprop="streetAddress" class="address-two">Bridge Meadow Lane</span> <span itemprop="addressLocality" class="address-locality">Haverfordwest</span> <span itemprop="addressRegion" class="address-region">Pembrokeshire</span> <span itemprop="postalCode" class="address-postcode">SA61 2EX</span></p>
-				</div>
-				<p>
-					<a class="btn btn-outline" target="_blank" href="https://www.google.com/maps/search/Ogi%20Bridge%20Meadow%20Stadium%2C%20Bridge%20Meadow%20Lane%2C%20Haverfordwest%2C%20Pembrokeshire%2C%20SA61%202EX"><span>Get Directions</span></a>
-				</p>
+				<?php
+				// Get the address, link button, and bottom text from ACF
+				$address = get_field('footer_address', 'option');
+				$link_button = get_field('footer_link_button', 'option');
+				$bottom_text = get_field('footer_bottom_text', 'option');
+
+				// Check if the address is not empty
+				if (!empty($address)) : ?>
+					<div itemscope itemtype="http://schema.org/PostalAddress">
+						<p class="address"><?php echo wp_kses_post($address); ?></p>
+					</div>
+				<?php endif; ?>
+
+				<?php
+				// Check if the link button has a URL
+				if (!empty($link_button['url'])) : ?>
+					<p>
+						<a class="btn btn-outline" target="_blank" href="<?php echo esc_url($link_button['url']); ?>">
+							<span><?php echo esc_html($link_button['title']); ?></span>
+						</a>
+					</p>
+				<?php endif; ?>
 
 				<div class="footer-text">
-					<p>Haverfordwest County AFC © 2024</p>
+					<?php
+					// Check if the bottom text is not empty
+					if (!empty($bottom_text)) : ?>
+						<p><?php echo esc_html($bottom_text); ?></p>
+					<?php endif; ?>
 				</div>
 			</div>
+
 		</div>
 		<div>
 			<h2 class="section-heading">Follow us</h2>
-			<div class="social-icons social-icons-icons"><span itemscope="" itemtype="https://schema.org/Organization">
-					<link itemprop="url" href="https://haverfordwestcountyafc.com"><a itemprop="sameAs" target="_blank" title="Find us on Twitter" href="https://twitter.com/HaverfordwestFC"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
-							<path d="M23.95 4.57a10 10 0 0 1-2.82.77 4.96 4.96 0 0 0 2.16-2.72c-.95.56-2 .96-3.12 1.19a4.92 4.92 0 0 0-8.38 4.48A13.93 13.93 0 0 1 1.63 3.16a4.92 4.92 0 0 0 1.52 6.57 4.9 4.9 0 0 1-2.23-.61v.06c0 2.38 1.7 4.37 3.95 4.82a5 5 0 0 1-2.21.09 4.94 4.94 0 0 0 4.6 3.42A9.87 9.87 0 0 1 0 19.54a14 14 0 0 0 7.56 2.21c9.05 0 14-7.5 14-13.98 0-.21 0-.42-.02-.63A9.94 9.94 0 0 0 24 4.59l-.05-.02z"></path>
-						</svg><span class="sr-only">@HaverfordwestFC</span></a><a itemprop="sameAs" target="_blank" title="Find us on Facebook" href="https://www.facebook.com/haverfordwestfc"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
-							<path d="M22.676 0H1.324C.593 0 0 .593 0 1.324v21.352C0 23.408.593 24 1.324 24h11.494v-9.294H9.689v-3.621h3.129V8.41c0-3.099 1.894-4.785 4.659-4.785 1.325 0 2.464.097 2.796.141v3.24h-1.921c-1.5 0-1.792.721-1.792 1.771v2.311h3.584l-.465 3.63H16.56V24h6.115c.733 0 1.325-.592 1.325-1.324V1.324C24 .593 23.408 0 22.676 0"></path>
-						</svg><span class="sr-only">@haverfordwestfc</span></a><a itemprop="sameAs" target="_blank" title="Find us on Instagram" href="https://www.instagram.com/haverfordwestafc"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
-							<path d="M12 0C8.74 0 8.33.01 7.05.07a8.85 8.85 0 0 0-2.91.56c-.79.3-1.46.72-2.13 1.38S.94 3.35.63 4.14c-.3.77-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13a5.87 5.87 0 0 0 2.13 1.38c.77.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07a8.88 8.88 0 0 0 2.91-.56 5.9 5.9 0 0 0 2.13-1.38 5.86 5.86 0 0 0 1.38-2.13c.3-.77.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95a8.87 8.87 0 0 0-.56-2.91 5.89 5.89 0 0 0-1.38-2.13A5.85 5.85 0 0 0 19.86.63c-.77-.3-1.64-.5-2.91-.56A83.63 83.63 0 0 0 12 0zm0 2.16c3.2 0 3.58.02 4.85.07 1.17.06 1.8.25 2.23.42.56.21.96.47 1.38.9.42.41.68.81.9 1.37.16.43.36 1.06.4 2.23.07 1.27.08 1.65.08 4.85s-.02 3.58-.08 4.85a6.75 6.75 0 0 1-.42 2.23c-.22.56-.48.96-.9 1.38-.41.42-.82.68-1.38.9-.42.16-1.06.36-2.23.4-1.27.07-1.65.08-4.86.08-3.21 0-3.59-.02-4.86-.08a6.8 6.8 0 0 1-2.23-.42 3.72 3.72 0 0 1-1.38-.9 3.64 3.64 0 0 1-.9-1.38 6.81 6.81 0 0 1-.42-2.23c-.05-1.26-.06-1.65-.06-4.84 0-3.2.01-3.6.06-4.87A6.8 6.8 0 0 1 2.6 4.9c.2-.57.48-.96.9-1.38.42-.42.8-.69 1.38-.9A6.64 6.64 0 0 1 7.1 2.2c1.27-.04 1.65-.06 4.86-.06l.04.03zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm7.85-10.4a1.44 1.44 0 1 1-2.89 0 1.44 1.44 0 0 1 2.89 0z"></path>
-						</svg><span class="sr-only">@haverfordwestafc</span></a><a itemprop="sameAs" target="_blank" title="Find us on YouTube" href="https://www.youtube.com/channel/UC6H4d_hXCWB_sP7lrEWEMww"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
-							<path class="a" d="M23.5 6.2a3 3 0 0 0-2.1-2.08c-1.86-.5-9.39-.5-9.39-.5s-7.5-.01-9.4.5A3 3 0 0 0 .53 6.2 31.25 31.25 0 0 0 0 12.02a31.25 31.25 0 0 0 .52 5.78 3 3 0 0 0 2.08 2.1c1.87.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.09-2.1 31.25 31.25 0 0 0 .5-5.78 31.25 31.25 0 0 0-.5-5.8zM9.6 15.6V8.4l6.27 3.61z"></path>
-						</svg><span class="sr-only">@UC6H4d_hXCWB_sP7lrEWEMww</span></a><a itemprop="sameAs" target="_blank" title="Find us on TikTok" href="https://www.tiktok.com/@hcafc1899official"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
-							<path d="M12.53.02c1.3-.02 2.6-.01 3.9-.02a6.23 6.23 0 0 0 1.76 4.17 7.05 7.05 0 0 0 4.24 1.79v4.03a10.7 10.7 0 0 1-5.82-1.9c-.01 2.92 0 5.84-.02 8.75a7.64 7.64 0 0 1-1.35 3.94 7.45 7.45 0 0 1-5.91 3.21A7.54 7.54 0 0 1 4.17 10.8a7.44 7.44 0 0 1 6.15-1.72c.02 1.48-.04 2.96-.04 4.44a3.5 3.5 0 0 0-3.02.37 3.47 3.47 0 0 0-1.36 1.75c-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87a3.36 3.36 0 0 0 2.77-1.61c.19-.33.4-.67.4-1.06.1-1.79.07-3.57.08-5.36 0-4.03-.01-8.05.02-12.07z"></path>
-						</svg><span class="sr-only">@hcafc1899official</span></a><a itemprop="sameAs" target="_blank" title="Find us on LinkedIn" href="https://www.linkedin.com/company/haverfordwest-county-a-f-c-/"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
-							<path d="M20.45 20.45h-3.56v-5.57c0-1.32-.02-3.03-1.85-3.03-1.85 0-2.13 1.44-2.13 2.94v5.66H9.35V9h3.42v1.56h.04a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.78C.8 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path>
-						</svg><span class="sr-only">@company</span></a>
-				</span></div>
+			<div class="social-icons">
+				<span itemscope itemtype="https://schema.org/Organization">
+					<link itemprop="url" href="https://haverfordwestcountyafc.com">
+
+					<?php
+					// An array of your social media links
+					// Fetch the footer social media group field
+					$social_links = get_field('footer_social_media', 'option');
+
+					if ($social_links) {
+						$social_links = [
+							'twitter' => !empty($social_links['footer_twitter']) ? $social_links['footer_twitter'] : '',
+							'facebook' => !empty($social_links['footer_facebook']) ? $social_links['footer_facebook'] : '',
+							'instagram' => !empty($social_links['footer_instagram']) ? $social_links['footer_instagram'] : '',
+							'youtube' => !empty($social_links['footer_youtube']) ? $social_links['footer_youtube'] : '',
+							'linkedin' => !empty($social_links['footer_linkedin']) ? $social_links['footer_linkedin'] : '',
+							'tiktok' => !empty($social_links['footer_tiktok']) ? $social_links['footer_tiktok'] : '',
+						];
+					} else {
+						$social_links = []; // Initialize as empty array if no links found
+					}
+
+					// Iterate through each social media link and display the icon
+					foreach ($social_links as $key => $link) {
+						if ($link) { // Check if the link exists
+							switch ($key) {
+								case 'twitter':
+									echo '<a itemprop="sameAs" target="_blank" title="Find us on Twitter" href="' . esc_url($link) . '">
+                                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+                                        <path d="M23.95 4.57a10 10 0 0 1-2.82.77 4.96 4.96 0 0 0 2.16-2.72c-.95.56-2 .96-3.12 1.19a4.92 4.92 0 0 0-8.38 4.48A13.93 13.93 0 0 1 1.63 3.16a4.92 4.92 0 0 0 1.52 6.57 4.9 4.9 0 0 1-2.23-.61v.06c0 2.38 1.7 4.37 3.95 4.82a5 5 0 0 1-2.21.09 4.94 4.94 0 0 0 4.6 3.42A9.87 9.87 0 0 1 0 19.54a14 14 0 0 0 7.56 2.21c9.05 0 14-7.5 14-13.98 0-.21 0-.42-.02-.63A9.94 9.94 0 0 0 24 4.59l-.05-.02z"></path>
+                                    </svg>
+                                    <span class="sr-only">twitter</span>
+                                  </a>';
+									break;
+								case 'facebook':
+									echo '<a itemprop="sameAs" target="_blank" title="Find us on Facebook" href="' . esc_url($link) . '">
+                                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+                                        <path d="M22.676 0H1.324C.593 0 0 .593 0 1.324v21.352C0 23.408.593 24 1.324 24h11.494v-9.294H9.689v-3.621h3.129V8.41c0-3.099 1.894-4.785 4.659-4.785 1.325 0 2.464.097 2.796.141v3.24h-1.921c-1.5 0-1.792.721-1.792 1.771v2.311h3.584l-.465 3.63H16.56V24h6.115c.733 0 1.325-.592 1.325-1.324V1.324C24 .593 23.408 0 22.676 0"></path>
+                                    </svg>
+                                    <span class="sr-only">facebook</span>
+                                  </a>';
+									break;
+								case 'instagram':
+									echo '<a itemprop="sameAs" target="_blank" title="Find us on Instagram" href="' . esc_url($link) . '">
+                                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+                                        <path d="M12 0C8.74 0 8.33.01 7.05.07a8.85 8.85 0 0 0-2.91.56c-.79.3-1.46.72-2.13 1.38S.94 3.35.63 4.14c-.3.77-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13a5.87 5.87 0 0 0 2.13 1.38c.77.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07a6.88 6.88 0 0 0 2.91-.56 5.9 5.9 0 0 0 2.13-1.38 5.86 5.86 0 0 0 1.38-2.13c.3-.77.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95a8.87 8.87 0 0 0-.56-2.91 5.89 5.89 0 0 0-1.38-2.13A5.85 5.85 0 0 0 19.86.63c-.77-.3-1.64-.5-2.91-.56A83.63 83.63 0 0 0 12 0zm0 2.16c3.2 0 3.58.02 4.85.07 1.17.06 1.8.25 2.23.42.56.21.96.47 1.38.9.42.41.68.81.9 1.37.16.43.36 1.06.4 2.23.07 1.27.08 1.65.08 4.85s-.02 3.58-.08 4.85a6.75 6.75 0 0 1-.42 2.23c-.22.56-.48.96-.9 1.38-.41.42-.82.68-1.38.9-.42.16-1.06.36-2.23.4-1.27.07-1.65.08-4.86.08-3.21 0-3.59-.02-4.86-.08a6.8 6.8 0 0 1-2.23-.42 3.72 3.72 0 0 1-1.38-.9 3.64 3.64 0 0 1-.9-1.38 6.81 6.81 0 0 1-.42-2.23c-.05-1.26-.06-1.65-.06-4.84 0-3.2.01-3.6.06-4.87A6.8 6.8 0 0 1 2.6 4.9c.2-.57.48-.96.9-1.38.42-.42.8-.69 1.38-.9A6.64 6.64 0 0 1 7.1 2.2c1.27-.04 1.65-.06 4.86-.06l.04.03zm0 3.68a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm7.85-10.4a1.44 1.44 0 1 1-2.89 0 1.44 1.44 0 0 1 2.89 0z"></path>
+                                    </svg>
+                                    <span class="sr-only">instagram</span>
+                                  </a>';
+									break;
+								case 'youtube':
+									echo '<a itemprop="sameAs" target="_blank" title="Find us on YouTube" href="' . esc_url($link) . '">
+                                   <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><path class="a" d="M23.5 6.2a3 3 0 0 0-2.1-2.08c-1.86-.5-9.39-.5-9.39-.5s-7.5-.01-9.4.5A3 3 0 0 0 .53 6.2 31.25 31.25 0 0 0 0 12.02a31.25 31.25 0 0 0 .52 5.78 3 3 0 0 0 2.08 2.1c1.87.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.09-2.1 31.25 31.25 0 0 0 .5-5.78 31.25 31.25 0 0 0-.5-5.8zM9.6 15.6V8.4l6.27 3.61z"></path></svg>
+                                    <span class="sr-only">YouTube Channel</span>
+                                  </a>';
+									break;
+								case 'linkedin':
+									echo '<a itemprop="sameAs" target="_blank" title="Find us on LinkedIn" href="' . esc_url($link) . '">
+                                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><path d="M12.53.02c1.3-.02 2.6-.01 3.9-.02a6.23 6.23 0 0 0 1.76 4.17 7.05 7.05 0 0 0 4.24 1.79v4.03a10.7 10.7 0 0 1-5.82-1.9c-.01 2.92 0 5.84-.02 8.75a7.64 7.64 0 0 1-1.35 3.94 7.45 7.45 0 0 1-5.91 3.21A7.54 7.54 0 0 1 4.17 10.8a7.44 7.44 0 0 1 6.15-1.72c.02 1.48-.04 2.96-.04 4.44a3.5 3.5 0 0 0-3.02.37 3.47 3.47 0 0 0-1.36 1.75c-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87a3.36 3.36 0 0 0 2.77-1.61c.19-.33.4-.67.4-1.06.1-1.79.07-3.57.08-5.36 0-4.03-.01-8.05.02-12.07z"></path></svg>
+                                    <span class="sr-only">LinkedIn Profile</span>
+                                  </a>';
+									break;
+								case 'tiktok':
+									echo '<a itemprop="sameAs" target="_blank" title="Find us on TikTok" href="' . esc_url($link) . '">
+                                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.32-.02-3.03-1.85-3.03-1.85 0-2.13 1.44-2.13 2.94v5.66H9.35V9h3.42v1.56h.04a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.78C.8 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>
+                                    <span class="sr-only">TikTok Profile</span>
+                                  </a>';
+									break;
+							}
+						}
+					}
+					?>
+				</span>
+			</div>
 		</div>
+
 	</div>
 </footer>
 </div><!-- #page -->

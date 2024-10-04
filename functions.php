@@ -51,7 +51,7 @@ function hwc_setup()
     // This theme uses wp_nav_menu() in one location.
     register_nav_menus(
         array(
-            'menu-1' => esc_html__('Primary', 'hwc'),
+            'primary' => __('Primary Menu', 'textdomain'),
         )
     );
 
@@ -189,6 +189,7 @@ require get_template_directory() . '/inc/about-the-academy-functions.php';
 	----------------------------------------------------------------*/
 add_action('after_switch_theme', 'hwc_check_acf_pro_before_activation');
 add_action('after_switch_theme', 'hwc_activate_theme_setup');
+add_action('after_switch_theme', 'my_setup_default_menu');
 
 /*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
@@ -780,3 +781,317 @@ function generate_last_6_games($last_6_games)
 // Hook for AJAX
 add_action('wp_ajax_filter_league_table_by_team', 'filter_league_table_by_team');
 add_action('wp_ajax_nopriv_filter_league_table_by_team', 'filter_league_table_by_team');
+
+
+// Add default menu items including all pages
+// Register a primary menu
+function my_register_menus()
+{
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'textdomain'),
+    ));
+}
+add_action('init', 'my_register_menus');
+
+function my_setup_default_menu()
+{
+    // Check if there's a menu already set
+    if (!wp_get_nav_menu_object('Primary Menu')) {
+        // Create a new menu
+        $menu_id = wp_create_nav_menu('Primary Menu');
+
+        // Add 'News' as a parent Page
+        $news_page = get_page_by_path('news'); // Assuming 'news' is the page slug
+        if ($news_page) {
+            $news_item_id = wp_update_nav_menu_item($menu_id, 0, array(
+                'menu-item-title' => __('News', 'textdomain'),
+                'menu-item-url' => get_permalink($news_page->ID),
+                'menu-item-object-id' => $news_page->ID,
+                'menu-item-object' => 'page',  // Use 'page' since it's a post type
+                'menu-item-type' => 'post_type',
+                'menu-item-status' => 'publish',
+            ));
+
+            // Sub-menu pages under 'News'
+            $sub_items = array(
+                'Latest Club News' => 'club-news',
+                'Match Reports' => 'match-report',
+                'Match Previews' => 'match-preview',
+                'Transfer News' => 'transfer-news',
+                'Ticket News' => 'ticket-news',
+                'Interviews' => 'interview',
+            );
+
+            foreach ($sub_items as $title => $slug) {
+                $category = get_category_by_slug($slug);
+                if ($category) {
+                    wp_update_nav_menu_item($menu_id, 0, array(
+                        'menu-item-title' => __($title, 'textdomain'),
+                        'menu-item-url' => get_category_link($category->term_id),
+                        'menu-item-object-id' => $category->term_id,
+                        'menu-item-object' => 'category',
+                        'menu-item-type' => 'taxonomy',
+                        'menu-item-parent-id' => $news_item_id, // Set as a child of 'News'
+                        'menu-item-status' => 'publish',
+                    ));
+                }
+            }
+        }
+
+        // Add the first 'Team' post dynamically from custom post type 'team'
+        $team_args = array(
+            'post_type' => 'team',
+            'post_status' => 'publish',
+            'numberposts' => 1,  // Only fetch the first team post
+        );
+
+        $team_post = get_posts($team_args);
+        if (!empty($team_post)) {
+            wp_update_nav_menu_item($menu_id, 0, array(
+                'menu-item-title' => __('Team', 'textdomain'),
+                'menu-item-url' => get_permalink($team_post[0]->ID),
+                'menu-item-object-id' => $team_post[0]->ID,
+                'menu-item-object' => 'team',  // Use 'team' since it's a custom post type
+                'menu-item-type' => 'post_type',
+                'menu-item-status' => 'publish'
+            ));
+        }
+
+        // Add 'Matches' as a parent Page
+        $fixtures_archive_url = get_post_type_archive_link('fixtures'); // Assuming 'fixtures' is the parent page
+        if ($fixtures_archive_url) {
+            $matches_item_id = wp_update_nav_menu_item($menu_id, 0, array(
+                'menu-item-title' => __('Matches', 'textdomain'),
+                'menu-item-url' => $fixtures_archive_url,
+                'menu-item-object' => 'fixtures',  // Use 'fixtures' since it's a custom post type
+                'menu-item-type' => 'post_type_archive',  // Use 'post_type_archive'
+                'menu-item-status' => 'publish'
+            ));
+
+            // Add sub-menu pages under 'Matches'
+            $matches_sub_items = array(
+                'Fixtures' => 'fixtures',          // Archive page for fixtures
+                'Results' => 'result',            // Archive page for results
+                'League Table' => 'league_table',  // Archive page for league table
+            );
+
+            foreach ($matches_sub_items as $title => $slug) {
+                // Use get_post_type_archive_link() for Results and League Table
+                if ($slug === 'fixtures') {
+                    // For Fixtures, use the archive page link
+                    $url = get_post_type_archive_link('fixtures'); // Archive link for Fixtures
+                } elseif ($slug === 'result') {
+                    // For result, use the archive page link
+                    $url = get_post_type_archive_link('result'); // Archive link for result
+                } elseif ($slug === 'league_table') {
+                    // For League Table, use the archive page link
+                    $url = get_post_type_archive_link('league_table'); // Archive link for League Table
+                } else {
+                    // If it is a regular page, get the permalink
+                    $sub_page = get_page_by_path($slug);
+                    $url = $sub_page ? get_permalink($sub_page->ID) : '';
+                }
+
+                // Create the menu item
+                if ($url) {
+                    wp_update_nav_menu_item($menu_id, 0, array(
+                        'menu-item-title' => __($title, 'textdomain'),
+                        'menu-item-url' => $url,
+                        'menu-item-object' => $slug, // Use slug for the object type
+                        'menu-item-type' => 'post_type_archive', // Set to post_type_archive
+                        'menu-item-parent-id' => $matches_item_id, // Set as child of 'Matches'
+                        'menu-item-status' => 'publish'
+                    ));
+                }
+            }
+        }
+
+        // Add 'Club' as a parent Page
+        $club_page = get_page_by_path('club');
+        if ($club_page) {
+            $club_item_id = wp_update_nav_menu_item($menu_id, 0, array(
+                'menu-item-title' => __('Club', 'textdomain'),
+                'menu-item-url' => get_permalink($club_page->ID),
+                'menu-item-object-id' => $club_page->ID,
+                'menu-item-object' => 'page',
+                'menu-item-type' => 'post_type',
+                'menu-item-status' => 'publish'
+            ));
+
+            // Add sub-menu items under 'Club'
+            $club_sub_items = array(
+                'History' => 'history',
+                'Contact' => 'contact',
+                'Stadium' => 'stadium',
+                'You Can Have It All' => 'you-can-have-it-all', // Category slug
+                'The Bluebirds Nest' => 'the-bluebirds-nest', // Category slug
+                'Social Media' => 'social-media',
+                'Bluebirds Tote' => 'bluebirds-tote',
+                'Documents' => 'documents',
+            );
+
+            foreach ($club_sub_items as $title => $slug) {
+                // Check if the slug is for a category
+                if (in_array(
+                    $slug,
+                    ['you-can-have-it-all', 'the-bluebirds-nest']
+                )) {
+                    // For categories, use get_category_by_slug() to get the category
+                    $category = get_category_by_slug($slug);
+                    if ($category) {
+                        // Get the category link if it exists
+                        $url = get_category_link($category->term_id);
+                        wp_update_nav_menu_item($menu_id, 0, array(
+                            'menu-item-title' => __($title, 'textdomain'),
+                            'menu-item-url' => $url,
+                            'menu-item-object' => 'category',
+                            'menu-item-object-id' => $category->term_id,
+                            'menu-item-type' => 'taxonomy',
+                            'menu-item-parent-id' => $club_item_id, // Set as child of 'Club'
+                            'menu-item-status' => 'publish'
+                        ));
+                    }
+                } else {
+                    // For pages, use get_page_by_path to get the URL
+                    $page = get_page_by_path($slug);
+                    if ($page) {
+                        wp_update_nav_menu_item($menu_id, 0, array(
+                            'menu-item-title' => __($title, 'textdomain'),
+                            'menu-item-url' => get_permalink($page->ID),
+                            'menu-item-object' => 'page',
+                            'menu-item-object-id' => $page->ID,
+                            'menu-item-type' => 'post_type',
+                            'menu-item-parent-id' => $club_item_id, // Set as child of 'Club'
+                            'menu-item-status' => 'publish'
+                        ));
+                    }
+                }
+            }
+        }
+
+        // Additional Pages
+        $additional_pages = array(
+            'Community' => 'community',
+            'Academy' => 'academy',
+            'Video' => 'video', // Updated to use the category slug directly
+        );
+
+        // Array of category slugs that should be treated as categories
+        $category_slugs = ['video']; // Add other category slugs as needed
+
+        foreach ($additional_pages as $title => $slug) {
+            // Check if the slug is for a category
+            if (in_array($slug, $category_slugs)) {
+                // For categories, use get_category_by_slug() to get the category
+                $category = get_category_by_slug($slug);
+                if ($category) {
+                    // Get the category link if it exists
+                    $url = get_category_link($category->term_id);
+                    wp_update_nav_menu_item($menu_id, 0, array(
+                        'menu-item-title' => __($title, 'textdomain'),
+                        'menu-item-url' => $url,
+                        'menu-item-object' => 'category',
+                        'menu-item-object-id' => $category->term_id,
+                        'menu-item-type' => 'taxonomy',
+                        'menu-item-status' => 'publish'
+                    ));
+                }
+            } else {
+                // For pages, use get_page_by_path to get the URL
+                $page = get_page_by_path($slug);
+                if ($page) {
+                    wp_update_nav_menu_item($menu_id, 0, array(
+                        'menu-item-title' => __($title, 'textdomain'),
+                        'menu-item-url' => get_permalink($page->ID),
+                        'menu-item-object' => 'page',
+                        'menu-item-object-id' => $page->ID,
+                        'menu-item-type' => 'post_type',
+                        'menu-item-status' => 'publish'
+                    ));
+                }
+            }
+        }
+
+        // Assign the menu to the primary location
+        $locations = get_theme_mod('nav_menu_locations');
+        $menu_locations = get_registered_nav_menus(); // Get all registered locations
+
+        if (!empty($menu_locations['primary'])) {
+            $locations['primary'] = $menu_id; // Assign the menu to the 'primary' location
+        }
+
+        set_theme_mod('nav_menu_locations', $locations);
+    }
+}
+
+/* Menu Layout */
+class Custom_Walker_Nav_Menu extends Walker_Nav_Menu
+{
+
+    // Start Level: Adds a wrapper for sub-menus
+    function start_lvl(&$output, $depth = 0, $args = null)
+    {
+        $indent = str_repeat("\t", $depth);
+        $output .= "\n$indent<ul class=\"sub-menu\">\n";
+    }
+
+    // Start Element: Adds custom classes and the icon structure
+    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+    {
+        $classes = empty($item->classes) ? array() : (array) $item->classes;
+        $classes[] = 'menu-item';
+
+        if (in_array('menu-item-has-children', $classes)) {
+            $classes[] = 'menu-item-has-children'; // Class for dropdowns
+        }
+
+        $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args));
+        $class_names = ' class="' . esc_attr($class_names) . '"';
+
+        $output .= '<li' . $class_names . '>';
+
+        // Link markup
+        $atts = array();
+        $atts['href'] = ! empty($item->url) ? $item->url : '';
+        $atts = apply_filters('nav_menu_link_attributes', $atts, $item, $args);
+
+        $attributes = '';
+        foreach ($atts as $attr => $value) {
+            if (! empty($value)) {
+                $value = esc_attr($value);
+                $attributes .= ' ' . $attr . '="' . $value . '"';
+            }
+        }
+
+        $icon = '';
+        if (in_array('menu-item-has-children', $classes)) {
+            // Add icon for dropdowns
+            $icon = '<span class="icon"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><path d="M3.292 5.305a1 1 0 0 1 1.413 0L7.994 8.59l3.289-3.286a.998.998 0 1 1 1.412 1.41L8.7 10.709a1 1 0 0 1-1.412 0L3.292 6.716a.998.998 0 0 1 0-1.411Z" fill="currentColor"></path></svg></span>';
+        }
+
+        $label = '<span class="label">' . apply_filters('the_title', $item->title, $item->ID) . '</span>';
+
+        $item_output = $args->before;
+        $item_output .= '<a' . $attributes . '>';
+        $item_output .= $label . $icon;
+        $item_output .= '</a>';
+        $item_output .= $args->after;
+
+        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+    }
+}
+
+/*--------------------------------------------------------------
+	>>> Add custom class to the custom logo output
+----------------------------------------------------------------*/
+add_filter('get_custom_logo', 'add_custom_logo_class');
+
+function add_custom_logo_class($html)
+{
+    // Check if the logo HTML is present
+    if ($html) {
+        // Add classes to the logo image
+        $html = str_replace('class="custom-logo"', 'class="logo club-logo custom-logo"', $html);
+    }
+    return $html;
+}

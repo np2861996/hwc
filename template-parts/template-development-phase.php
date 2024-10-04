@@ -123,7 +123,7 @@ get_header();
 
                                 <?php if ($button_link && $button_link['url']) : // Check if the button link is not empty 
                                 ?>
-                                    <span class="btn btn-secondary">Read more</span>
+                                    <span class="btn btn-secondary"><?php echo esc_html($button_link['title']); ?></span>
                                 <?php endif; ?>
                             </div>
                         </div>
