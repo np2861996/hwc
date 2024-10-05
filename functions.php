@@ -1095,3 +1095,43 @@ function add_custom_logo_class($html)
     }
     return $html;
 }
+
+function custom_theme_customizer($wp_customize)
+{
+    // Assuming you want to add colors to the existing 'colors' section
+    // Check if the section exists
+    if ($wp_customize->get_section('colors')) {
+        // Array of blue color settings
+        $blue_colors = [
+            'Primary-Color' => '#112982',
+            'Secondary-Color' => '#f8f9fe',
+        ];
+
+        // Loop through colors to create settings and controls
+        foreach ($blue_colors as $color_key => $default_color) {
+            $wp_customize->add_setting($color_key, array(
+                'default' => $default_color,
+                'transport' => 'refresh',
+            ));
+            $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, $color_key, array(
+                'label' => ucfirst(str_replace('-', ' ', $color_key)),
+                'section' => 'colors', // Change to your desired section ID
+                'settings' => $color_key,
+            )));
+        }
+    }
+}
+add_action('customize_register', 'custom_theme_customizer');
+
+function hide_header_text_color_control()
+{
+?>
+    <style type="text/css">
+        /* Hide the Header Text Color control in the WordPress Customizer */
+        #customize-control-header_textcolor {
+            display: none !important;
+        }
+    </style>
+<?php
+}
+add_action('customize_controls_print_styles', 'hide_header_text_color_control');

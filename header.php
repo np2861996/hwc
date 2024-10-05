@@ -19,6 +19,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
+	<?php
+	// Array of color settings
+	$blue_colors = [
+		'Primary-Color',
+		'Secondary-Color',
+	];
+
+	// Start dynamic CSS
+	echo '<style type="text/css">';
+
+	foreach ($blue_colors as $color_key) {
+		$color_value = get_theme_mod($color_key, '#1e73be'); // Default color
+		echo ":root { --$color_key: " . esc_attr($color_value) . "; }"; // Added !important
+	}
+
+	echo '</style>';
+	?>
 </head>
 
 <body <?php body_class(); ?>>
