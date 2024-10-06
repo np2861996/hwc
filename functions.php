@@ -190,6 +190,8 @@ require get_template_directory() . '/inc/about-the-academy-functions.php';
 add_action('after_switch_theme', 'hwc_check_acf_pro_before_activation');
 add_action('after_switch_theme', 'hwc_activate_theme_setup');
 add_action('after_switch_theme', 'my_setup_default_menu');
+add_action('after_switch_theme', 'set_default_site_logo_on_activation');
+
 
 /*--------------------------------------------------------------
 	>>> Hook into 'after_switch_theme' to run the check when the theme is activated
@@ -1135,3 +1137,44 @@ function hide_header_text_color_control()
 <?php
 }
 add_action('customize_controls_print_styles', 'hide_header_text_color_control');
+
+function set_default_site_logo_on_activation()
+{
+    // Define the path to the logo image in the theme directory
+    $logo_path = get_template_directory() . '/hwc-images/haverfordwest-county.png';
+
+    // Check if the file exists
+    if (file_exists($logo_path)) {
+        // Get WordPress upload directory
+        $upload_dir = wp_upload_dir();
+
+        // Copy the logo to the uploads directory
+        $logo_url = $upload_dir['url'] . '/haverfordwest-county.png';
+        $logo_file = $upload_dir['path'] . '/haverfordwest-county.png';
+
+        // Copy the logo file from theme directory to the upload directory
+        if (!file_exists($logo_file)) {
+            copy($logo_path, $logo_file);
+        }
+
+        // Now insert the image into the WordPress media library
+        $attachment = array(
+            'guid'           => $logo_url,
+            'post_mime_type' => 'image/png',
+            'post_title'     => sanitize_file_name('haverfordwest-county'),
+            'post_content'   => '',
+            'post_status'    => 'inherit'
+        );
+
+        // Insert the attachment and get the attachment ID
+        $attachment_id = wp_insert_attachment($attachment, $logo_file);
+
+        // Generate the attachment metadata
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        $attachment_data = wp_generate_attachment_metadata($attachment_id, $logo_file);
+        wp_update_attachment_metadata($attachment_id, $attachment_data);
+
+        // Set the site logo
+        set_theme_mod('custom_logo', $attachment_id);
+    }
+}

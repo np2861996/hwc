@@ -11,42 +11,45 @@
  */
 
 ?>
-<div class="block-logos block">
-	<div class="container container-narrow">
-		<h2 class="legend"><span>Official Partners</span></h2>
-	</div>
-	<div class="container">
-		<div class="logo-group">
-
-			<?php
-			// Debugging output
-			if (have_rows('footer_official_partners', 'option')) :
+<?php if (have_rows('footer_official_partners', 'option')) : ?>
+	<div class="block-logos block">
+		<div class="container container-narrow">
+			<h2 class="legend">
+				<span>Official Partners</span>
+			</h2>
+		</div>
+		<div class="container">
+			<div class="logo-group">
+				<?php
 				// Loop through the rows of data
 				while (have_rows('footer_official_partners', 'option')) : the_row();
-
 
 					// Get the sub field values
 					$partner_image = get_sub_field('partner_image');
 					$partner_link = get_sub_field('partner_link');
 
-					// Check if both fields are not empty
-					if (!empty($partner_image) && !empty($partner_link)) : ?>
+					// Check if image is not empty
+					if (!empty($partner_image)) : ?>
 						<div class="logo-group-item">
-							<a target="_blank" href="<?php echo esc_url($partner_link); ?>">
-								<img width="300" height="72" src="<?php echo esc_url($partner_image); ?>" class="logo" alt="<?php echo esc_attr__('Partner Logo', 'your-text-domain'); ?>" decoding="async" loading="lazy">
-							</a>
+							<?php if (!empty($partner_link)) : // If both image and link are available 
+							?>
+								<a target="_blank" href="<?php echo esc_url($partner_link); ?>">
+									<img width="300" height="72" src="<?php echo esc_url($partner_image); ?>" class="logo" alt="<?php echo esc_attr__('Partner Logo', 'hwc'); ?>" decoding="async" loading="lazy">
+								</a>
+							<?php else : // If only the image is available 
+							?>
+								<img width="300" height="72" src="<?php echo esc_url($partner_image); ?>" class="logo" alt="<?php echo esc_attr__('Partner Logo', 'hwc'); ?>" decoding="async" loading="lazy">
+							<?php endif; ?>
 						</div>
-					<?php else: ?>
-						<p><?php echo esc_html__('Missing data for a partner.', 'your-text-domain'); ?></p>
 				<?php endif;
+
 				endwhile;
-			else : ?>
-				<!-- Debugging: no rows found -->
-				<p><?php echo esc_html__('No partners found.', 'your-text-domain'); ?></p>
-			<?php endif; ?>
+				?>
+			</div>
 		</div>
 	</div>
-</div>
+<?php endif; ?>
+
 
 <footer class="footer" data-theme="dark">
 	<div class="touchline-branding">

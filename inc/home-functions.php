@@ -55,11 +55,11 @@ function display_home_sec1_latest_post()
                     </div>
                 </div>
             </div>
-        <?php
+            <?php
         endwhile;
         wp_reset_postdata();
     else :
-        echo '<p>No posts found.</p>';
+        echo '';
     endif;
 }
 
@@ -128,7 +128,7 @@ function home_sec1_latest_fixture()
             echo '</div>';
         }
     } else {
-        echo '<p class="match-list-sub-heading">No upcoming matches found.</p>';
+        echo '';
     }
 
     wp_reset_postdata();
@@ -232,7 +232,7 @@ function home_sec1_latest_result()
             echo '</div>'; // End of match-card
         }
     } else {
-        echo '<p class="match-list-sub-heading">No results found.</p>';
+        echo '';
     }
 
     wp_reset_postdata(); // Reset post data
@@ -283,7 +283,7 @@ function home_latest_news_posts_shortcode()
 
         echo '</div></div></div>'; // End of grid-container, container, and block-cards
     } else {
-        echo '<p>No posts found.</p>';
+        echo '';
     }
 
     // Restore original Post Data
@@ -378,7 +378,7 @@ function home_display_upcoming_fixtures()
 
         return $output; // Return the output
     } else {
-        return '<p class="match-list-sub-heading">No upcoming matches found.</p>';
+        return '';
     }
 }
 
@@ -412,25 +412,34 @@ function hwc_home_cards_shortcode()
             $card_link_url = isset($card_link['url']) ? $card_link['url'] : '#';
             $card_link_title = isset($card_link['title']) ? $card_link['title'] : 'Learn More';
 
-            // Output each card's structure with all original classes intact
-        ?>
-            <div class="card card-promo card-centered card-w-link">
-                <div class="card-image">
-                    <a href="<?php echo esc_url($card_link_url); ?>" aria-label="<?php echo esc_attr($card_link_title); ?>">
-                        <div class="image-container ratio-16x9">
-                            <img width="960" height="540" src="<?php echo esc_url($card_image['url']); ?>" alt="<?php echo esc_attr($card_image['alt']); ?>" class="attachment-16x9-md size-16x9-md" decoding="async" loading="lazy" />
+            // Only output the card if either an image or title is available
+            if (!empty($card_image) || !empty($card_title)) {
+            ?>
+                <div class="card card-promo card-centered card-w-link">
+                    <?php if (!empty($card_image)) { ?>
+                        <div class="card-image">
+                            <a href="<?php echo esc_url($card_link_url); ?>" aria-label="<?php echo esc_attr($card_link_title); ?>">
+                                <div class="image-container ratio-16x9">
+                                    <img width="960" height="540" src="<?php echo esc_url($card_image['url']); ?>" alt="<?php echo esc_attr($card_image['alt']); ?>" class="attachment-16x9-md size-16x9-md" decoding="async" loading="lazy" />
+                                </div>
+                            </a>
                         </div>
-                    </a>
+                    <?php } ?>
+                    <?php if (!empty($card_title)) { ?>
+                        <div class="card-content">
+                            <span class="card-title"><?php echo esc_html($card_title); ?></span>
+                            <?php if (!empty($card_link)) { ?>
+                                <span class="btn btn-secondary">
+                                    <?php echo esc_html($card_link_title); ?>
+                                </span>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
                 </div>
-                <div class="card-content">
-                    <span class="card-title"><?php echo esc_html($card_title); ?></span>
-                    <span class="btn btn-secondary">
-                        <?php echo esc_html($card_link_title); ?>
-                    </span>
-                </div>
-            </div>
 <?php
+            }
         }
+
 
         // Close the grid and container divs
         echo '</div>';
@@ -463,18 +472,17 @@ function hwc_latest_the_bluebirds_nest_posts_shortcode()
 
     // Start output buffering
     ob_start();
-
-    echo '<div id="block-6791-4" class="block block-6791-4 block-cards block-cards-video after-cards before-banner" data-theme="dark">';
-    echo '<div class="container">';
-    echo '<div class="section-header">';
-    echo '<h2 class="section-heading section-heading-display">Latest Video</h2>';
-    echo '</div>';
-    echo '</div>'; // Closing container
-
-    echo '<div class="card-carousel-container">';
-    echo '<div class="grid-container grid-columns-sm-2-lg-3 grid-columns-auto-scroll">';
-
     if ($query->have_posts()) {
+        echo '<div id="block-6791-4" class="block block-6791-4 block-cards block-cards-video after-cards before-banner" data-theme="dark">';
+        echo '<div class="container">';
+        echo '<div class="section-header">';
+        echo '<h2 class="section-heading section-heading-display">Latest Video</h2>';
+        echo '</div>';
+        echo '</div>'; // Closing container
+
+        echo '<div class="card-carousel-container">';
+        echo '<div class="grid-container grid-columns-sm-2-lg-3 grid-columns-auto-scroll">';
+
         while ($query->have_posts()) {
             $query->the_post();
             $post_title = get_the_title();
@@ -498,12 +506,11 @@ function hwc_latest_the_bluebirds_nest_posts_shortcode()
             echo '</div></div>'; // Closing card-content
             echo '</div>'; // Closing card
         }
+
+        echo '</div>'; // Closing grid-container
+        echo '</div>'; // Closing card-carousel-container
+        echo '</div>'; // Closing main block
     }
-
-    echo '</div>'; // Closing grid-container
-    echo '</div>'; // Closing card-carousel-container
-    echo '</div>'; // Closing main block
-
     // Reset post data
     wp_reset_postdata();
 
@@ -526,43 +533,43 @@ function hwc_home_blue_big_box()
     // If the button link is an array, use the first value
     $banner_button_link_url = is_array($banner_button_link) ? $banner_button_link['url'] : $banner_button_link;
 
-    // Initialize the HTML variable
-    $data = '<div id="block-6791-5" class="block block-6791-5 block-banner block-banner-full-width after-cards before-row-team">';
-    $data .= '<div class="banner banner-centered banner-full-width">';
-    $data .= '<a target="_blank" href="' . esc_url($banner_button_link_url) . '">';
-    $data .= '<div class="image-container overlay-duotone">';
+    // Check if any of the necessary fields have values
+    if (!empty($banner_image) || !empty($big_box_title) || !empty($banner_description) || !empty($banner_button_link['title'])) {
+        // Initialize the HTML variable
+        $data = '<div id="block-6791-5" class="block block-6791-5 block-banner block-banner-full-width after-cards before-row-team">';
+        $data .= '<div class="banner banner-centered banner-full-width">';
+        $data .= '<a target="_blank" href="' . esc_url($banner_button_link_url) . '">';
+        $data .= '<div class="image-container overlay-duotone">';
 
-    if (!empty($banner_image)) {
-        $data .= '<img width="4000" height="2667" src="' . esc_url($banner_image['url']) . '" class="attachment-16x-lg size-16x-lg" alt="' . esc_attr($banner_image['alt']) . '" decoding="async" loading="lazy" srcset="' . esc_url($banner_image['url']) . ' 4000w" sizes="(max-width: 4000px) 100vw, 4000px">';
-    } else {
-        $data .= '<p>No image found.</p>';
+        if (!empty($banner_image)) {
+            $data .= '<img width="4000" height="2667" src="' . esc_url($banner_image['url']) . '" class="attachment-16x-lg size-16x-lg" alt="' . esc_attr($banner_image['alt']) . '" decoding="async" loading="lazy" srcset="' . esc_url($banner_image['url']) . ' 4000w" sizes="(max-width: 4000px) 100vw, 4000px">';
+        }
+
+        $data .= '</div>'; // Close image-container
+        $data .= '<div class="banner-content">';
+
+        if (!empty($big_box_title)) {
+            $data .= '<h2 class="banner-title">' . esc_html($big_box_title) . '</h2>';
+        }
+
+        if (!empty($banner_description)) {
+            $data .= '<p class="summary">' . esc_html($banner_description) . '</p>';
+        }
+
+        if (!empty($banner_button_link['title'])) {
+            $data .= '<span class="btn btn-lg btn-primary">' . esc_html($banner_button_link['title']) . '</span>';
+        }
+
+        $data .= '</div>'; // Close banner-content
+        $data .= '</a>'; // Close anchor
+        $data .= '</div>'; // Close banner
+        $data .= '</div>'; // Close block
+
+        return $data; // Return the constructed HTML
     }
 
-    $data .= '</div>'; // Close image-container
-    $data .= '<div class="banner-content">';
-
-    if (!empty($big_box_title)) {
-        $data .= '<h2 class="banner-title">' . esc_html($big_box_title) . '</h2>';
-    } else {
-        $data .= '';
-    }
-
-    if (!empty($banner_description)) {
-        $data .= '<p class="summary">' . esc_html($banner_description) . '</p>';
-    } else {
-        $data .= '';
-    }
-
-    if (!empty($banner_button_link['title'])) {
-        $data .= '<span class="btn btn-lg btn-primary">' . esc_html($banner_button_link['title']) . '</span>';
-    }
-
-    $data .= '</div>'; // Close banner-content
-    $data .= '</a>'; // Close anchor
-    $data .= '</div>'; // Close banner
-    $data .= '</div>'; // Close block
-
-    return $data; // Return the constructed HTML
+    // If no data is available, return an empty string
+    return ''; // No output if no data is available
 }
 
 /*--------------------------------------------------------------
@@ -644,7 +651,7 @@ function hwc_team_post_shortcode($atts)
         wp_reset_postdata();
     } else {
         // If no posts are found, return a message
-        $output = 'No posts found for this team.';
+        $output = '';
     }
 
     return $output; // Return the generated HTML or the message
@@ -775,9 +782,9 @@ function hwc_home_result_by_team_result($atts)
 }
 
 /*--------------------------------------------------------------
-	>>> Sec7 - Newslatter
+	>>> Sec7 - Function to generate the newsletter section
 ----------------------------------------------------------------*/
-// Function to generate the newsletter section
+
 function hwc_home_newsletter_shortcode()
 {
     // Get ACF fields with hwc_home prefix
@@ -786,32 +793,42 @@ function hwc_home_newsletter_shortcode()
     $newsletter_description = get_field('hwc_home_newsletter_description');
     $newsletter_html_box = get_field('hwc_home_newsletter_html_box');
 
-    // Prepare the HTML output
-    $output = '<div id="block-6791-7" class="block block-6791-7 block-newsletter after-row-team last-block">';
-    $output .= '<div class="lg:container">';
-    $output .= '<div class="callout callout-newsletter" data-theme="dark">';
+    // Check if any relevant data is available
+    if (!empty($background_image) || !empty($newsletter_title) || !empty($newsletter_description) || !empty($newsletter_html_box)) {
+        // Prepare the HTML output
+        $output = '<div id="block-6791-7" class="block block-6791-7 block-newsletter after-row-team last-block">';
+        $output .= '<div class="lg:container">';
+        $output .= '<div class="callout callout-newsletter" data-theme="dark">';
 
-    // Background Image
-    if ($background_image) {
-        $output .= '<div class="callout-image">';
-        $output .= '<img width="960" height="540" src="' . esc_url($background_image['url']) . '" class="attachment-16x9-md size-16x9-md" alt="" decoding="async" loading="lazy" srcset="' . esc_url($background_image['url']) . '" sizes="(max-width: 960px) 100vw, 960px">';
-        $output .= '</div>';
+        // Background Image
+        if ($background_image) {
+            $output .= '<div class="callout-image">';
+            $output .= '<img width="960" height="540" src="' . esc_url($background_image['url']) . '" class="attachment-16x9-md size-16x9-md" alt="" decoding="async" loading="lazy" srcset="' . esc_url($background_image['url']) . '" sizes="(max-width: 960px) 100vw, 960px">';
+            $output .= '</div>';
+        }
+
+        // Callout Content
+        $output .= '<div class="callout-content">';
+        if (!empty($newsletter_title)) {
+            $output .= '<h2 class="callout-title">' . esc_html($newsletter_title) . '</h2>';
+        }
+        if (!empty($newsletter_description)) {
+            $output .= '<p>' . esc_html($newsletter_description) . '</p>';
+        }
+        $output .= '</div>'; // End callout-content
+
+        // Output the HTML from ACF field
+        if (!empty($newsletter_html_box)) {
+            $output .= '<div class="newsletter-html-box">' . $newsletter_html_box . '</div>';
+        }
+
+        $output .= '</div>'; // End callout
+        $output .= '</div>'; // End lg:container
+        $output .= '</div>'; // End block
+
+        return $output; // Return the generated HTML
     }
 
-    // Callout Content
-    $output .= '<div class="callout-content">';
-    $output .= '<h2 class="callout-title">' . esc_html($newsletter_title) . '</h2>';
-    $output .= '<p>' . esc_html($newsletter_description) . '</p>';
-    $output .= '</div>';
-
-    // Output the HTML from ACF field
-    if ($newsletter_html_box) {
-        $output .= '<div class="newsletter-html-box">' . $newsletter_html_box . '</div>';
-    }
-
-    $output .= '</div>'; // End callout
-    $output .= '</div>'; // End lg:container
-    $output .= '</div>'; // End block
-
-    return $output; // Return the generated HTML
+    // If no relevant data is available, return an empty string
+    return ''; // No output if no relevant data is available
 }

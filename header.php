@@ -20,18 +20,18 @@
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
 	<?php
-	// Array of color settings
+	// Array of color settings with default values
 	$blue_colors = [
-		'Primary-Color',
-		'Secondary-Color',
+		'Primary-Color'   => '#112982', // Default color for Primary-Color
+		'Secondary-Color' => '#f8f9fe', // Default color for Secondary-Color
 	];
 
 	// Start dynamic CSS
 	echo '<style type="text/css">';
 
-	foreach ($blue_colors as $color_key) {
-		$color_value = get_theme_mod($color_key, '#1e73be'); // Default color
-		echo ":root { --$color_key: " . esc_attr($color_value) . "; }"; // Added !important
+	foreach ($blue_colors as $color_key => $default_color) {
+		$color_value = get_theme_mod($color_key, $default_color); // Use specific default color for each key
+		echo ":root { --$color_key: " . esc_attr($color_value) . "; }";
 	}
 
 	echo '</style>';
@@ -85,16 +85,21 @@
 					if (have_rows('header_link_repeater', 'option')): // Using 'option' to fetch from the options page
 						while (have_rows('header_link_repeater', 'option')) : the_row();
 							$link = get_sub_field('header_link'); // Get the link field
+
+							// Ensure that $link is an array and contains the necessary keys
+							if (is_array($link) && isset($link['url'], $link['target'], $link['title'])):
 					?>
-							<li class="menu-item">
-								<a href="<?php echo esc_url($link['url']); ?>" target="<?php echo esc_attr($link['target']); ?>" rel="noopener">
-									<?php echo esc_html($link['title']); ?>
-								</a>
-							</li>
+								<li class="menu-item">
+									<a href="<?php echo esc_url($link['url']); ?>" target="<?php echo esc_attr($link['target']); ?>" rel="noopener">
+										<?php echo esc_html($link['title']); ?>
+									</a>
+								</li>
 					<?php
+							endif;
 						endwhile;
 					endif;
 					?>
+
 				</ul>
 			</div>
 		</nav>
@@ -129,11 +134,21 @@
 					$header_image_1 = get_field('header_image_1', 'option'); // Use 'option' if the field is in the options page
 					$header_image_1_link = get_field('header_image_1_link', 'option');
 					?>
-					<?php if ($header_image_1 && $header_image_1_link): ?>
-						<a target="_blank" href="<?php echo esc_url($header_image_1_link['url']); ?>" aria-label="Visit the Cymru Premier website">
-							<img width="300" height="98" src="<?php echo esc_url($header_image_1); ?>" class="logo" alt="Cymru Premier" decoding="async">
+					<?php
+					// Assign variables
+					$image_1_url = $header_image_1 ? esc_url($header_image_1) : '';
+					$image_1_link = $header_image_1_link ? esc_url($header_image_1_link['url']) : '';
+
+					// Check if both image and link are available
+					if ($image_1_url && $image_1_link): ?>
+						<a target="_blank" href="<?php echo $image_1_link; ?>" aria-label="Visit the Cymru Premier website">
+							<img width="300" height="98" src="<?php echo $image_1_url; ?>" class="logo" alt="Cymru Premier" decoding="async">
 						</a>
+					<?php elseif ($image_1_url): // If only the image is available 
+					?>
+						<img width="300" height="98" src="<?php echo $image_1_url; ?>" class="logo" alt="Cymru Premier" decoding="async">
 					<?php endif; ?>
+
 				</div>
 
 				<div class="header-logo">
@@ -141,13 +156,25 @@
 					// Fetch Header Image 2 and its link
 					$header_image_2 = get_field('header_image_2', 'option'); // Use 'option' if the field is in the options page
 					$header_image_2_link = get_field('header_image_2_link', 'option');
-					?>
-					<?php if ($header_image_2 && $header_image_2_link): ?>
+
+					// Assign variables
+					$image_2_url = $header_image_2 ? esc_url($header_image_2) : '';
+					$image_2_link = $header_image_2_link ? esc_url($header_image_2_link['url']) : '';
+
+					// Check if the image is available
+					if ($image_2_url): ?>
 						<figure>
 							<figcaption>Principal Partner</figcaption>
-							<a target="_blank" href="<?php echo esc_url($header_image_2_link['url']); ?>">
-								<img width="300" height="72" src="<?php echo esc_url($header_image_2); ?>" class="logo" alt="Principal Partner Logo" decoding="async">
-							</a>
+
+							<?php if ($image_2_link): // If both image and link are available 
+							?>
+								<a target="_blank" href="<?php echo $image_2_link; ?>">
+									<img width="300" height="72" src="<?php echo $image_2_url; ?>" class="logo" alt="Principal Partner Logo" decoding="async">
+								</a>
+							<?php else: // If only the image is available 
+							?>
+								<img width="300" height="72" src="<?php echo $image_2_url; ?>" class="logo" alt="Principal Partner Logo" decoding="async">
+							<?php endif; ?>
 						</figure>
 					<?php endif; ?>
 				</div>

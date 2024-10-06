@@ -68,38 +68,45 @@ echo do_shortcode('[hwc_latest_the_bluebirds_nest_posts_shortcode]');
 // display the Blue Big Box
 echo do_shortcode('[shortcode_hwc_home_blue_big_box]');
 ?>
-<div id="block-6791-6" class="block block-6791-6 block-row-team after-banner before-newsletter">
 
-	<div class="container">
-		<div class="section-header">
-			<h2 class="section-heading section-heading-display"><?php echo get_the_title(get_field('hwc_home_select_team')); ?></h2>
-		</div>
-	</div>
 
-	<div class="md:container">
+<!--------------------------------------------------------------
+>>> Sec6 sub - Team Posts
+---------------------------------------------------------------->
+<?php if (get_field('hwc_home_select_team')) { ?>
+	<div id="block-6791-6" class="block block-6791-6 block-row-team after-banner before-newsletter">
 
-		<div class="grid-container">
-
-			<!--------------------------------------------------------------
-			>>> Sec6 - Team Posts
-			---------------------------------------------------------------->
-			<?php
-			$dis_hwc_home_select_team = get_the_title(get_field('hwc_home_select_team'));
-			// display the Team Posts
-			echo do_shortcode('[hwc_team_post_shortcode team="' . $dis_hwc_home_select_team . '"]');
-			?>
-			<div class="team-row-match">
-				<?php
-				$dis_hwc_home_select_team_id = get_field('hwc_home_select_team');
-				// display the Team result
-				echo do_shortcode('[hwc_home_result_by_team_result team="' . $dis_hwc_home_select_team_id . '"]');
-				?>
-				<a class="btn btn-lg btn-primary" href="<?php echo site_url('fixtures'); ?>">All Fixtures</a>
+		<div class="container">
+			<div class="section-header">
+				<h2 class="section-heading section-heading-display"><?php echo get_the_title(get_field('hwc_home_select_team')); ?></h2>
 			</div>
 		</div>
 
+		<div class="md:container">
+
+			<div class="grid-container">
+
+				<!--------------------------------------------------------------
+			>>> Sec6 - Team Posts
+			---------------------------------------------------------------->
+				<?php
+				$dis_hwc_home_select_team = get_the_title(get_field('hwc_home_select_team'));
+				// display the Team Posts
+				echo do_shortcode('[hwc_team_post_shortcode team="' . $dis_hwc_home_select_team . '"]');
+				?>
+				<div class="team-row-match">
+					<?php
+					$dis_hwc_home_select_team_id = get_field('hwc_home_select_team');
+					// display the Team result
+					echo do_shortcode('[hwc_home_result_by_team_result team="' . $dis_hwc_home_select_team_id . '"]');
+					?>
+					<a class="btn btn-lg btn-primary" href="<?php echo site_url('fixtures'); ?>">All Fixtures</a>
+				</div>
+			</div>
+
+		</div>
 	</div>
-</div>
+<?php } ?>
 
 <!--------------------------------------------------------------
 	>>> Sec7 - NewsLatter
