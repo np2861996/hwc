@@ -173,14 +173,25 @@ $post_banner_video = get_field('post_banner_video');
 					if ($sidebar_card_image || $sidebar_card_title || $sidebar_card_button) {
 						echo '<div class="card card-promo card-centered card-w-link">';
 
-						// Display the image
-						if ($sidebar_card_image_url) {
+						// Display the image if the image URL is not empty
+						if (!empty($sidebar_card_image_url)) {
 							echo '<div class="card-image">';
-							echo '<a target="_blank" href="' . esc_url($sidebar_card_button['url']) . '" aria-label="' . esc_attr($sidebar_card_title) . '">';
+
+							// Check if the button URL is available
+							if (!empty($sidebar_card_button['url'])) {
+								echo '<a target="_blank" href="' . esc_url($sidebar_card_button['url']) . '" aria-label="' . esc_attr($sidebar_card_title) . '">';
+							}
+
+							// Display the image
 							echo '<div class="image-container ratio-16x9">';
 							echo '<img width="480" height="270" src="' . esc_url($sidebar_card_image_url) . '" alt="' . esc_attr($sidebar_card_title) . '" class="attachment-16x9-sm size-16x9-sm" decoding="async" loading="lazy">';
 							echo '</div>';
-							echo '</a>';
+
+							// Close the anchor tag if the URL is available
+							if (!empty($sidebar_card_button['url'])) {
+								echo '</a>';
+							}
+
 							echo '</div>';
 						}
 
@@ -207,7 +218,7 @@ $post_banner_video = get_field('post_banner_video');
 
 				endwhile;
 			else :
-				echo '<p>No posts found.</p>';
+				echo '<p class="no-found">No posts found.</p>';
 			endif;
 			?>
 			<div>

@@ -32,6 +32,10 @@ get_header();
                                             <img width="480" height="270" src="<?php echo esc_url($card_image['url']); ?>" class="fill" alt="<?php echo esc_attr($card_image['alt']); ?>" decoding="async" />
                                         </div>
                                     </a>
+                                <?php elseif (!empty($card_image['url'])): ?>
+                                    <div class="image-container ratio-16x9">
+                                        <img width="480" height="270" src="<?php echo esc_url($card_image['url']); ?>" class="fill" alt="<?php echo esc_attr($card_image['alt']); ?>" decoding="async" />
+                                    </div>
                                 <?php endif; ?>
                             </div>
                             <div class="card-content">
@@ -95,7 +99,6 @@ get_header();
             </div>
         </div>
     <?php else : ?>
-        <p>No commercial news found.</p>
     <?php endif;
 
     // Reset post data after the custom query

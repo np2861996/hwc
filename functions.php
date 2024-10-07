@@ -378,6 +378,7 @@ function filter_fixtures_by_team()
                     )
                 ),
                 'order' => 'ASC',
+                'post_status' => 'publish',
                 'posts_per_page' => -1
             );
 
@@ -672,6 +673,7 @@ function filter_league_table_by_team()
             'post_type' => 'league_table',
             'p' => $league_table_id,
             'posts_per_page' => -1,
+            'post_status' => 'publish',
         );
 
 
@@ -769,7 +771,7 @@ function filter_league_table_by_team()
             $output .= '<div class="error-message">No league data found.</div>';
         }
     } else {
-        echo '<p>No League selected.</p>';
+        echo '<div class="md:container"><p class="no-found">No League selected.</p></div>';
     }
 }
 

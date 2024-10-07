@@ -29,13 +29,20 @@ if (have_posts()) :
                             <?php foreach ($club_cards as $card) : ?>
                                 <div class="card card-page card-centered card-w-link">
                                     <div class="card-image">
-                                        <a href="<?php echo esc_url($card['hwc_button_link']['url']); ?>" aria-label="<?php echo esc_attr($card['hwc_club_card_title']); ?>">
-                                            <div class="image-container ratio-16x9">
-                                                <?php if ($card['hwc_club_card_image']) : ?>
-                                                    <img src="<?php echo esc_url($card['hwc_club_card_image']['url']); ?>" alt="<?php echo esc_attr($card['hwc_club_card_image']['alt']); ?>" width="<?php echo esc_attr($card['hwc_club_card_image']['width']); ?>" height="<?php echo esc_attr($card['hwc_club_card_image']['height']); ?>">
+                                        <?php if (!empty($card['hwc_club_card_image'])) : ?>
+                                            <?php if (!empty($card['hwc_button_link']['url'])) : ?>
+                                                <a href="<?php echo esc_url($card['hwc_button_link']['url']); ?>" aria-label="<?php echo esc_attr($card['hwc_club_card_title']); ?>">
                                                 <?php endif; ?>
-                                            </div>
-                                        </a>
+
+                                                <img src="<?php echo esc_url($card['hwc_club_card_image']['url']); ?>"
+                                                    alt="<?php echo esc_attr($card['hwc_club_card_image']['alt']); ?>"
+                                                    width="<?php echo esc_attr($card['hwc_club_card_image']['width']); ?>"
+                                                    height="<?php echo esc_attr($card['hwc_club_card_image']['height']); ?>">
+
+                                                <?php if (!empty($card['hwc_button_link']['url'])) : ?>
+                                                </a>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="card-content">
                                         <span class="card-title"><?php echo esc_html($card['hwc_club_card_title']); ?></span>
@@ -46,7 +53,7 @@ if (have_posts()) :
                                 </div>
                             <?php endforeach; ?>
                         <?php else : ?>
-                            <p>No club cards found.</p>
+                            <p class="no-found">No club cards found.</p>
                         <?php endif; ?>
 
                     </div>
@@ -56,7 +63,7 @@ if (have_posts()) :
 <?php
     endwhile;
 else :
-    echo '<p>No content found.</p>';
+    echo '<p class="no-found">No content found.</p>';
 endif;
 ?>
 

@@ -86,7 +86,7 @@ function news_page_latest_posts()
 
     } else {
         // If no posts found
-        echo '<p>No posts found.</p>';
+        echo '<div class="block"><div class="container container-slim"><p class="no-found">No posts found.</p></div></div>';
     }
 
     // Reset post data

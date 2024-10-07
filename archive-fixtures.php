@@ -43,6 +43,7 @@ get_header();
                             'post_type' => 'team',
                             'numberposts' => -1,  // Fetch all teams
                             'orderby' => 'title',
+                            'post_status' => 'publish',
                             'order' => 'ASC',
                         ));
 

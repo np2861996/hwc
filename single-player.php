@@ -91,13 +91,19 @@ if ($player_right_card_image_id) {
 }
 
 $Dis_player_right_card_image = !empty($player_right_card_image_url) ?
-	'<div class="card-image">
-		<a target="_blank" href="' . $player_right_card_button['url'] . '" aria-label="' . $player_right_card_button['title'] . '">
-			<div class="image-container ratio-16x9">
-				<img width="300" height="300" src="' . $player_right_card_image_url . '?class=thumbnail" class="logo wp-post-image" alt="" decoding="async" srcset="' . $player_right_card_image_url . '?class=thumbnail 300w, ' . $player_right_card_image_url . '?class=1x1xs 150w, ' . $player_right_card_image_url . ' 400w" sizes="(max-width: 300px) 100vw, 300px">
-			</div>
-		</a>
-	</div>' : '';
+	'<div class="card-image">' .
+	// Check if URL is available
+	(!empty($player_right_card_button['url']) ?
+		'<a target="_blank" href="' . esc_url($player_right_card_button['url']) . '" aria-label="' . esc_attr($player_right_card_button['title']) . '">'
+		: ''
+	) .
+	'<div class="image-container ratio-16x9">
+            <img width="300" height="300" src="' . esc_url($player_right_card_image_url) . '?class=thumbnail" class="logo wp-post-image" alt="" decoding="async" srcset="' . esc_url($player_right_card_image_url) . '?class=thumbnail 300w, ' . esc_url($player_right_card_image_url) . '?class=1x1xs 150w, ' . esc_url($player_right_card_image_url) . ' 400w" sizes="(max-width: 300px) 100vw, 300px">
+        </div>' .
+	// Close anchor tag if URL is available
+	(!empty($player_right_card_button['url']) ? '</a>' : '') .
+	'</div>'
+	: '';
 
 $Dis_player_right_card = (!empty($player_right_card_image) || (is_array($player_right_card_button) && !empty($player_right_card_button['url']) && !empty($player_right_card_button['title'])) ||
 	!empty($player_right_card_title) || !empty($player_right_card_title_2) || !empty($Dis_player_right_card_image)) ?

@@ -219,6 +219,11 @@ textarea {
   line-height: 1.15;
   margin: 0;
 }
+.no-found {
+  text-align: center;
+  font-weight: 600;
+  padding: 10px;
+}
 button,
 input {
   overflow: visible;

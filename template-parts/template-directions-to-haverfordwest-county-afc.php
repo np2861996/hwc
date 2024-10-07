@@ -32,7 +32,7 @@ get_header();
                 if (!empty($content)) {
                     echo $content;
                 } else {
-                    echo "<p>No content available.</p>";
+                    echo "";
                 }
                 ?>
             </div>

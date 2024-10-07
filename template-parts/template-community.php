@@ -103,11 +103,21 @@ get_header();
 
                         <div class="card card-partner card-centered card-w-link">
                             <div class="card-image">
-                                <a target="_blank" href="<?php echo esc_url($button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
-                                    <div class="image-container ratio-16x9">
-                                        <img width="300" height="212" src="<?php echo esc_url($card_image['url']); ?>" class="logo" alt="<?php echo esc_attr($card_image['alt']); ?>" decoding="async" loading="lazy">
-                                    </div>
-                                </a>
+                                <?php if (!empty($card_image['url'])): ?>
+                                    <?php if (!empty($button_link['url'])): ?>
+                                        <a target="_blank" href="<?php echo esc_url($button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
+                                        <?php endif; ?>
+
+                                        <div class="image-container ratio-16x9">
+                                            <img width="300" height="212" src="<?php echo esc_url($card_image['url']); ?>"
+                                                class="logo" alt="<?php echo esc_attr($card_image['alt']); ?>" decoding="async" loading="lazy">
+                                        </div>
+
+                                        <?php if (!empty($button_link['url'])): ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+
                             </div>
 
                             <div class="card-content">

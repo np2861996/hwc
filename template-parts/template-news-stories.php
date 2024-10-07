@@ -49,7 +49,7 @@ get_header();
         // Reset post data
         wp_reset_postdata();
     else : ?>
-        <p>No posts found in the Academy news category.</p>
+
     <?php endif; ?>
 
 </div>

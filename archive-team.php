@@ -16,7 +16,8 @@ function get_first_team_id()
         'post_type' => 'team', // Change this to your custom post type
         'posts_per_page' => 1, // Retrieve only one post
         'orderby' => 'date', // Order by date
-        'order' => 'ASC' // Change to 'DESC' if you want the latest
+        'order' => 'ASC', // Change to 'DESC' if you want the latest
+        'post_status' => 'publish'
     );
 
     $query = new WP_Query($args);

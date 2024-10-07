@@ -14,7 +14,10 @@ $social_media_summary_text = get_field('hwc_social_media_section_title_2'); // S
 
     <div id="block-9208-1" class="block block-banner block-banner-full-width first-block before-standard-content">
         <div class="banner banner-centered banner-full-width">
-            <a target="_blank" href="<?php echo esc_url($social_media_linktree_url['url']); ?>">
+            <?php if (!empty($social_media_linktree_url['url'])): ?>
+                <a target="_blank" href="<?php echo esc_url($social_media_linktree_url['url']); ?>">
+                <?php endif; ?>
+
                 <div class="image-container overlay-duotone">
                     <img width="2560" height="1707" src="<?php echo esc_url($social_media_bg_image['url']); ?>"
                         alt="<?php echo esc_attr($social_media_section_title); ?>" decoding="async"
@@ -24,9 +27,14 @@ $social_media_summary_text = get_field('hwc_social_media_section_title_2'); // S
                 <div class="banner-content">
                     <h2 class="banner-title"><?php echo esc_html($social_media_section_title); ?></h2>
                     <p class="summary"><?php echo esc_html($social_media_summary_text); ?></p>
-                    <span class="btn btn-lg btn-primary"><?php echo esc_html($social_media_linktree_url['title']); ?></span>
+                    <?php if (!empty($social_media_linktree_url['url'])): ?>
+                        <span class="btn btn-lg btn-primary"><?php echo esc_html($social_media_linktree_url['title']); ?></span>
+                    <?php endif; ?>
                 </div>
-            </a>
+
+                <?php if (!empty($social_media_linktree_url['url'])): ?>
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -60,22 +68,36 @@ $social_media_summary_text = get_field('hwc_social_media_section_title_2'); // S
                 ?>
                         <div class="card card-promo card-centered card-w-link">
                             <div class="card-image">
-                                <a target="_blank" href="<?php echo esc_url($hwc_social_media_card_link['url']); ?>" aria-label="<?php echo esc_attr($hwc_social_media_card_title); ?>">
-                                    <div class="image-container ratio-16x9">
-                                        <img width="960" height="540" src="<?php echo esc_url($hwc_social_media_card_image['url']); ?>" class="attachment-16x9-md size-16x9-md" alt="<?php echo esc_attr($hwc_social_media_card_title); ?>" decoding="async">
-                                    </div>
-                                </a>
+                                <?php if (!empty($hwc_social_media_card_image['url'])): ?>
+                                    <?php if (!empty($hwc_social_media_card_link['url'])): ?>
+                                        <a target="_blank" href="<?php echo esc_url($hwc_social_media_card_link['url']); ?>" aria-label="<?php echo esc_attr($hwc_social_media_card_title); ?>">
+                                        <?php endif; ?>
+
+                                        <div class="image-container ratio-16x9">
+                                            <img width="960" height="540" src="<?php echo esc_url($hwc_social_media_card_image['url']); ?>"
+                                                class="attachment-16x9-md size-16x9-md"
+                                                alt="<?php echo esc_attr($hwc_social_media_card_title); ?>"
+                                                decoding="async">
+                                        </div>
+
+                                        <?php if (!empty($hwc_social_media_card_link['url'])): ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+
                             </div>
                             <div class="card-content">
                                 <span class="card-title"><?php echo esc_html($hwc_social_media_card_title); ?></span>
-                                <span class="btn btn-secondary"><?php echo esc_html($hwc_social_media_card_link['title']); ?></span>
+                                <?php if (!empty($hwc_social_media_card_link['url'])): ?>
+                                    <span class="btn btn-secondary"><?php echo esc_html($hwc_social_media_card_link['title']); ?></span>
+                                <?php endif; ?>
                             </div>
                         </div>
                 <?php
                     endwhile;
                 else:
                     // No rows found
-                    echo '<p>No social media cards found.</p>';
+                    echo '';
                 endif;
                 ?>
             </div>

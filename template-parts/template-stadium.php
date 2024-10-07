@@ -40,11 +40,20 @@ get_header();
                         if (!empty($card_title) && !empty($card_image)): ?>
                             <div class="card card-page card-centered card-w-link">
                                 <div class="card-image">
-                                    <a href="<?php echo esc_url($card_button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
-                                        <div class="image-container ratio-16x9">
-                                            <img width="480" height="270" src="<?php echo esc_url($card_image['url']); ?>" class="fill" alt="<?php echo esc_attr($card_image['alt']); ?>" decoding="async">
-                                        </div>
-                                    </a>
+                                    <?php if (!empty($card_image['url'])): ?>
+                                        <?php if (!empty($card_button_link['url'])): ?>
+                                            <a href="<?php echo esc_url($card_button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
+                                            <?php endif; ?>
+
+                                            <div class="image-container ratio-16x9">
+                                                <img width="480" height="270" src="<?php echo esc_url($card_image['url']); ?>" class="fill"
+                                                    alt="<?php echo esc_attr($card_image['alt']); ?>" decoding="async">
+                                            </div>
+
+                                            <?php if (!empty($card_button_link['url'])): ?>
+                                            </a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="card-content">
                                     <span class="card-title"><?php echo esc_html($card_title); ?></span>

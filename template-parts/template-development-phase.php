@@ -58,7 +58,6 @@ get_header();
                     endwhile; // End of the loop
                 else : // Fallback in case there are no players
                     ?>
-                    <p>No players found.</p>
                 <?php endif; ?>
             </div>
         </div>

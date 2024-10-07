@@ -52,15 +52,30 @@ get_header();
                 ?>
                         <div class="card card-page card-centered card-w-link">
                             <div class="card-image">
-                                <a href="<?php echo esc_url($button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
-                                    <div class="image-container ratio-16x9">
-                                        <?php if ($image_url): ?>
-                                            <img width="480" height="270" src="<?php echo esc_url($image_url); ?>" class="fill" alt="<?php echo esc_attr($card_title); ?>" decoding="async" loading="lazy" srcset="<?php echo esc_url($image_url); ?> 480w, <?php echo esc_url($image_url); ?>?class=mediumlarge 900w, <?php echo esc_url($image_url); ?>?class=large 1200w, <?php echo esc_url($image_url); ?>?class=thumbnail 300w" sizes="(max-width: 480px) 100vw, 480px">
-                                        <?php else: ?>
-                                            <img width="480" height="270" src="path/to/default-image.jpg" class="fill" alt="Default image" decoding="async"> <!-- Fallback image -->
+                                <?php if (!empty($image_url)): ?>
+                                    <?php if (!empty($button_link['url'])): ?>
+                                        <a href="<?php echo esc_url($button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
                                         <?php endif; ?>
+
+                                        <div class="image-container ratio-16x9">
+                                            <img width="480" height="270" src="<?php echo esc_url($image_url); ?>" class="fill"
+                                                alt="<?php echo esc_attr($card_title); ?>" decoding="async" loading="lazy"
+                                                srcset="<?php echo esc_url($image_url); ?> 480w, 
+                                                        <?php echo esc_url($image_url); ?>?class=mediumlarge 900w, 
+                                                        <?php echo esc_url($image_url); ?>?class=large 1200w, 
+                                                        <?php echo esc_url($image_url); ?>?class=thumbnail 300w"
+                                                sizes="(max-width: 480px) 100vw, 480px">
+                                        </div>
+
+                                        <?php if (!empty($button_link['url'])): ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <div class="image-container ratio-16x9">
+                                        <img width="480" height="270" src="path/to/default-image.jpg" class="fill" alt="Default image" decoding="async">
                                     </div>
-                                </a>
+                                <?php endif; ?>
+
                             </div>
                             <div class="card-content">
                                 <span class="card-title"><?php echo esc_html($card_title); ?></span>
@@ -71,7 +86,7 @@ get_header();
                     endwhile; // End of the loop
                 else:
                     // Optional: Display a message if no cards are found
-                    echo '<p>No cards available.</p>';
+                    echo '';
                 endif;
                 ?>
             </div>
@@ -105,18 +120,26 @@ get_header();
                 ?>
                         <div class="card card-page card-centered card-w-link">
                             <div class="card-image">
-                                <a href="<?php echo esc_url($button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
-                                    <div class="image-container ratio-16x9">
-                                        <img
-                                            src="<?php echo esc_url($card_image['url']); ?>"
-                                            class="fill"
-                                            alt="<?php echo esc_attr($card_title); ?>"
-                                            decoding="async"
-                                            loading="lazy"
-                                            srcset="<?php echo esc_url($card_image['url']); ?> 480w, <?php echo esc_url($card_image['url']); ?> 900w, <?php echo esc_url($card_image['url']); ?> 1200w"
-                                            sizes="(max-width: 480px) 100vw, 480px">
-                                    </div>
-                                </a>
+                                <?php if (!empty($card_image['url'])): ?>
+                                    <?php if (!empty($button_link['url'])): ?>
+                                        <a href="<?php echo esc_url($button_link['url']); ?>" aria-label="<?php echo esc_attr($card_title); ?>">
+                                        <?php endif; ?>
+
+                                        <div class="image-container ratio-16x9">
+                                            <img
+                                                src="<?php echo esc_url($card_image['url']); ?>"
+                                                class="fill"
+                                                alt="<?php echo esc_attr($card_title); ?>"
+                                                decoding="async"
+                                                loading="lazy"
+                                                srcset="<?php echo esc_url($card_image['url']); ?> 480w, <?php echo esc_url($card_image['url']); ?> 900w, <?php echo esc_url($card_image['url']); ?> 1200w"
+                                                sizes="(max-width: 480px) 100vw, 480px">
+                                        </div>
+
+                                        <?php if (!empty($button_link['url'])): ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             </div>
                             <div class="card-content">
                                 <span class="card-title"><?php echo esc_html($card_title); ?></span>

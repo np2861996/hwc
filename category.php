@@ -52,15 +52,15 @@ get_header(); ?>
                         // Pagination
                         the_posts_pagination(array(
                             'mid_size' => 2,
-                            'prev_text' => __('&laquo; Previous', 'textdomain'),
-                            'next_text' => __('Next &raquo;', 'textdomain'),
+                            'prev_text' => __('&laquo; Previous', 'hwc'),
+                            'next_text' => __('Next &raquo;', 'hwc'),
                         ));
                         ?>
                     <?php endif; ?>
                 </div>
 
             <?php else : ?>
-                <p><?php esc_html_e('No posts found in this category.', 'textdomain'); ?></p>
+                <p class="no-found"><?php esc_html_e('No posts found in this category.', 'hwc'); ?></p>
             <?php endif; ?>
 
         </div>

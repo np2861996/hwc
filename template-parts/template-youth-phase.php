@@ -115,11 +115,6 @@ get_header();
                     endforeach; // End foreach loop
                 else :
                     ?>
-                    <div class="card card-page card-centered">
-                        <div class="card-content">
-                            <span class="card-title">No Academy Phases Available</span>
-                        </div>
-                    </div>
                 <?php endif; // End if for repeater check 
                 ?>
             </div>
